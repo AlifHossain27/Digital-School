@@ -1,6 +1,7 @@
 "use client"
 import React, { Suspense } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import * as z from "zod"
@@ -32,6 +33,8 @@ const formSchema = z.object({
   })
 
 const page = () => {
+    const router = useRouter()
+    const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,7 +45,30 @@ const page = () => {
 
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+      const res = await fetch("http://localhost:8000/api/teacher/login/",{
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+          'teacher_id': values.username,
+          'password': values.password
+      })
+    })
+    if (res.ok){
+      await router.push('/')
+      toast({
+        title: `Welcome ${values.username}`,
+        description: "Successfully logged in",
+      })
+      await router.refresh()
+    }else{
+      toast({
+        variant: "destructive",
+        title: `${res.status} Login failed`,
+        description: "Incorrect username or password",
+      })
+      await router.refresh()
+    }
     }
 
   return (

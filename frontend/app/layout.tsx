@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from "@/components/theme-provider"
 import Sidebar from '@/components/Sidebar'
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
             <div className='flex flex-col w-full'>
               <Navbar/>
               {children}
+              <Toaster />
             </div>
           </main>
         </ThemeProvider>
