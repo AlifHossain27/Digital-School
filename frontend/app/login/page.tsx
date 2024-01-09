@@ -4,10 +4,7 @@ import Link from 'next/link'
 
 const page = () => {
   return (
-    <div className='flex min-h-screen flex-col items-center justify-between p-12'>
-        <div className='z-10 max-w-5xl w-full items-center justify-between font-mono text-2xl flex border-b'>
-            <Link href="/">Digital School</Link>
-        </div>
+    <div className='flex h-full flex-col items-center justify-between p-12'>  
         <Suspense fallback = {
           <div className='pt-10'>
             <svg 
