@@ -1,7 +1,8 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
-import { FiMenu } from "react-icons/fi";
+import { useRouter } from 'next/navigation'
+import { useToast } from './ui/use-toast'
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from './ui/button';
@@ -35,6 +36,24 @@ import {
 
 const Navbar = () => {
     const { setTheme } = useTheme()
+    const router = useRouter()
+    const { toast } = useToast()
+
+    const logout = async() => {
+        await fetch('http://localhost:8000/api/logout/',{
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          credentials: 'include'
+        })
+        await router.push('/')
+        toast({
+          title: `Bye Bye`,
+          description: "Hope we will meet again !!",
+        })
+        router.refresh()
+      }
+
+
   return (
         <nav className='flex flex-row justify-between px-6 items-start py-4 w-full border-b-2 border-secondary'>
             <section>
@@ -82,7 +101,7 @@ const Navbar = () => {
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={logout}>
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Logout</span>
                     </DropdownMenuItem>
