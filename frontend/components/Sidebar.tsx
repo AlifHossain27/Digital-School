@@ -1,17 +1,30 @@
 "use client"
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useAuth } from './AuthContext';
 import Link from 'next/link'
 import { Button } from './ui/button';
 import { HiMenuAlt3 } from "react-icons/hi";
-import { LogIn } from 'lucide-react';
+import { UserType } from '@/actions/UserType';
 
 const Sidebar = () => {
-
-    const menus = [
-        { name: "Login", link: "/login", icon: LogIn },
-        
-      ];
+    const { isAuthenticated } = useAuth();
+    const [menus, setMenus] = useState<
+      { name: string; link: string; icon: React.ComponentType }[]
+    >([]);
     const [open, setOpen] =useState(true);
+
+    useEffect(() => {
+      const fetchMenus = async () => {
+        try {
+          const result = await UserType();
+          setMenus(result);
+        } catch (error) {
+          console.error('Error fetching menus:', error);
+        }
+      };
+  
+      fetchMenus();
+    }, [isAuthenticated]);
 
   return (
     <div className="border-r-2 border-secondary">
@@ -25,7 +38,7 @@ const Sidebar = () => {
                     {menus?.map((menu, i) => (
                       <Link href={menu?.link} key={i} className="group flex items-center  p-1">
                       <Button variant= 'ghost' className={`${open ? 'w-72':'w-16'} text-2xl gap-3.5 justify-start rounded-none h-20`}>
-                      <div>{React.createElement(menu?.icon, { size: "25" })}</div>
+                      <div>{React.createElement(menu?.icon as any, { size: 25 })}</div>
                       <h2 
                       className={
                           `whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 hidden overflow-hidden"}`

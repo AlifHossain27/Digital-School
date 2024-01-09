@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import { ThemeProvider } from "@/components/theme-provider"
 import Sidebar from '@/components/Sidebar'
 import { Toaster } from "@/components/ui/toaster"
+import { AuthProvider } from '@/components/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AuthProvider>
           <main className='flex'>
             <Sidebar/>
             <div className='flex flex-col w-full'>
@@ -35,6 +37,7 @@ export default function RootLayout({
               <Toaster />
             </div>
           </main>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

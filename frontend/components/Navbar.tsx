@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useToast } from './ui/use-toast'
+import { useAuth } from './AuthContext'
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from './ui/button';
@@ -38,6 +39,7 @@ const Navbar = () => {
     const { setTheme } = useTheme()
     const router = useRouter()
     const { toast } = useToast()
+    const { isAuthenticated, setAuthenticated } = useAuth();
 
     const logout = async() => {
         await fetch('http://localhost:8000/api/logout/',{
@@ -50,7 +52,9 @@ const Navbar = () => {
           title: `Bye Bye`,
           description: "Hope we will meet again !!",
         })
+        setAuthenticated(false);
         router.refresh()
+        
       }
 
 

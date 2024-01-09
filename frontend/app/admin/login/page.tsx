@@ -21,6 +21,8 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form"
+import { useAuth } from '@/components/AuthContext'
+import { ImSpinner2 } from "react-icons/im";
 
 
 const formSchema = z.object({
@@ -35,6 +37,7 @@ const formSchema = z.object({
 const page = () => {
     const router = useRouter()
     const { toast }= useToast()
+    const { isAuthenticated, setAuthenticated } = useAuth();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,6 +58,7 @@ const page = () => {
         })
       })
       if (res.ok){
+        setAuthenticated(true)
         await router.push('/')
         toast({
           title: `Welcome ${values.username}`,
@@ -62,6 +66,7 @@ const page = () => {
         })
         await router.refresh()
       }else{
+        setAuthenticated(false)
         toast({
           variant: "destructive",
           title: `${res.status} Login failed`,
@@ -74,20 +79,11 @@ const page = () => {
   return (
     <div className='flex h-full flex-col items-center p-12'>
     <div className='pt-12'>
-        <Suspense fallback = {
-          <div className='pt-10'>
-            <svg 
-            className='animate-spin h-24 w-24'
-            fill="none" 
-            height="20" 
-            viewBox="0 0 20 20" 
-            width="20" 
-            xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 3.5C6.41015 3.5 3.5 6.41015 3.5 10C3.5 10.4142 3.16421 10.75 2.75 10.75C2.33579 10.75 2 10.4142 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10C18 14.4183 14.4183 18 10 18C9.58579 18 9.25 17.6642 9.25 17.25C9.25 16.8358 9.58579 16.5 10 16.5C13.5899 16.5 16.5 13.5899 16.5 10C16.5 6.41015 13.5899 3.5 10 3.5Z" 
-            fill="#212121"/></svg>
-          </div>
-        }
-        />
+          <Suspense fallback = {
+            <div className='pt-20'>
+              <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>
+          }>
         <Card className='rounded-lg border-4 border-secondary h-max w-80'>
                 <CardHeader>
                     <CardTitle className='flex items-center justify-center gap-5 pt-12 text-3xl'>
@@ -129,6 +125,7 @@ const page = () => {
                 </CardContent>
                 <CardFooter></CardFooter>
         </Card>
+        </Suspense>
     </div>
     </div>
   )
