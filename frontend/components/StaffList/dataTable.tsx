@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useAppSelector } from '@/redux/store';
 import {  UserPlus } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
@@ -56,16 +57,29 @@ export function DataTable<TData, TValue>({
     useEffect(() => {
       table.setGlobalFilter(filterValue);
     }, [filterValue]);
-
+    let addBtn
+    const userType = useAppSelector((state) => state.authReducer.value.userType)
+    if (userType === "admin"){
+      addBtn =(
+        <div>
+          <Button>
+            <UserPlus/> 
+          </Button>
+        </div>
+      )
+    } else {
+      <div></div>
+    }
     return (
         <div>
-          <div className="flex items-center py-4 gap-4">
+          <div className="flex items-center justify-between py-4 gap-4">
             <Input
               placeholder="Filter Staffs..."
               value={filterValue}
               onChange={(event) => setFilterValue(event.target.value)}
               className="w-auto"
             />
+            {addBtn}
           </div>
         <div className="rounded-md border-2">
           <Table>
