@@ -3,12 +3,7 @@ import { LogIn } from 'lucide-react';
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineClass } from "react-icons/md"
 import { PiExamThin } from "react-icons/pi";
-import { HiOutlineUsers } from "react-icons/hi";
-import {
-  User,
-  UserPlus,
-  Users,
-} from "lucide-react"
+import { FaUserTie, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
 
 interface AdminUserData {
   id: number;
@@ -53,29 +48,30 @@ export async function UserType() {
   } else {
     const data: UserData = await res.json();
     const user_type = data.user_type;
+    
 
     if (user_type === "admin") {
       menus = [
-        { name: "DashBoard", link: "/admin/dashboard/", icon: RxDashboard},
-        { name: "Staffs", link: "/staffs/", icon: Users},
-        { name: "Teachers", link: "/teachers/", icon: Users},
-        { name: "Students", link: "/students/", icon: Users},
+        { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
+        { name: "Staffs", link: "/staffs/", icon: FaUserTie},
+        { name: "Teachers", link: "/teachers/", icon: FaChalkboardTeacher},
+        { name: "Students", link: "/students/", icon: FaUserGraduate},
       ];
     } else if (user_type === "staff") {
       menus = [
-        { name: "DashBoard", link: "/staff/dashboard/", icon: RxDashboard},
-        { name: "Teachers", link: "/teachers/", icon: Users},
-        { name: "Students", link: "/students/", icon: Users},
+        { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
+        { name: "Teachers", link: "/teachers/", icon: FaChalkboardTeacher},
+        { name: "Students", link: "/students/", icon: FaUserGraduate},
       ];
     } else if (user_type === "teacher") {
       menus = [
-        { name: "DashBoard", link: "/teacher/dashboard/", icon: RxDashboard},
+        { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
         { name: "Classrooms", link: "/classroom/", icon: MdOutlineClass},
         { name: "Exams", link: "/exams", icon: PiExamThin},
       ];
     } else if (user_type === "student") {
       menus = [
-        { name: "DashBoard", link: "/teacher/dashboard/", icon: RxDashboard},
+        { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
         { name: "Classrooms", link: "/classroom/", icon: MdOutlineClass},
         { name: "Exams", link: "/exams", icon: PiExamThin},
       ];

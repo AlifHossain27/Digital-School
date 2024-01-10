@@ -29,7 +29,7 @@ export const auth = createSlice({
                     isAuthenticated: true,
                     userType: action.payload,
                 }
-            }
+            };
         }
     }
 })

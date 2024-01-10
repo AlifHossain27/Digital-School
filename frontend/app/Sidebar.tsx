@@ -1,13 +1,13 @@
 "use client"
 import React, {useState, useEffect} from 'react'
-import { useAuth } from './AuthContext';
+import { useAppSelector } from '@/redux/store';
 import Link from 'next/link'
-import { Button } from './ui/button';
+import { Button } from '../components/ui/button';
 import { HiMenuAlt3 } from "react-icons/hi";
 import { UserType } from '@/actions/UserType';
 
 const Sidebar = () => {
-    const { isAuthenticated } = useAuth();
+    const isAuth = useAppSelector((state) => state.authReducer.value.isAuthenticated)
     const [menus, setMenus] = useState<
       { name: string; link: string; icon: React.ComponentType }[]
     >([]);
@@ -24,7 +24,7 @@ const Sidebar = () => {
       };
   
       fetchMenus();
-    }, [isAuthenticated]);
+    }, [isAuth]);
 
   return (
     <div className="border-r-2 border-secondary">

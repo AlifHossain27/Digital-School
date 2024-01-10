@@ -1,11 +1,12 @@
 import React from 'react'
+import { cookies } from "next/headers"
 import {  Staffs, columns } from "./columns"
 import { DataTable } from "./dataTable"
 
 
 async function getData(): Promise<Staffs[]> {
     const resp = await fetch("http://localhost:8000/api/staffs/", {
-      credentials: "include",
+      headers: { Cookie: cookies().toString() },
     });
     const data = resp.json()
     return data

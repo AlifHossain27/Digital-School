@@ -21,7 +21,9 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form"
-import { useAuth } from '@/components/AuthContext'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import { logIn, logOut } from '@/redux/features/auth-slice'
 import { ImSpinner2 } from "react-icons/im";
 
 
@@ -37,7 +39,7 @@ const formSchema = z.object({
 const page = () => {
     const router = useRouter()
     const { toast } = useToast()
-    const { isAuthenticated, setAuthenticated } = useAuth();
+    const dispatcher = useDispatch<AppDispatch>()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,8 +59,9 @@ const page = () => {
           'password': values.password
       })
     })
+    const user_type = 'staff'
     if (res.ok){
-      setAuthenticated(true)
+      dispatcher(logIn(user_type))
       await router.push('/')
       toast({
         title: `Welcome ${values.username}`,
@@ -66,7 +69,7 @@ const page = () => {
       })
       await router.refresh()
     }else{
-      setAuthenticated(false)
+      dispatcher(logOut())
       toast({
         variant: "destructive",
         title: `${res.status} Login failed`,
@@ -77,8 +80,8 @@ const page = () => {
     }
 
   return (
-    <div className='flex h-full flex-col items-center p-12'>
-    <div className='pt-12'>
+    <div className='flex h-full flex-col items-center'>
+    <div className='pt-12 flex flex-auto'>
           <Suspense fallback = {
             <div className='pt-20'>
               <ImSpinner2 className= "animate-spin" size= "50"/>

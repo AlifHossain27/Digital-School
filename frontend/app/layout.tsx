@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
+import Navbar from './Navbar'
 import { ThemeProvider } from "@/components/theme-provider"
-import Sidebar from '@/components/Sidebar'
+import Sidebar from './Sidebar'
 import { Toaster } from "@/components/ui/toaster"
-import { AuthProvider } from '@/components/AuthContext'
+import { CustomProvider } from '@/redux/provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
+          <CustomProvider>
           <main className='flex'>
             <Sidebar/>
             <div className='flex flex-col w-full'>
@@ -37,7 +37,7 @@ export default function RootLayout({
               <Toaster />
             </div>
           </main>
-          </AuthProvider>
+          </CustomProvider>
         </ThemeProvider>
       </body>
     </html>

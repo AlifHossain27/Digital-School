@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useAuth } from '@/components/AuthContext';
 import {  UserPlus } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
@@ -57,7 +56,6 @@ export function DataTable<TData, TValue>({
     useEffect(() => {
       table.setGlobalFilter(filterValue);
     }, [filterValue]);
-    const { user_type } = useAuth();
     return (
         <div>
           <div className="flex items-center py-4 gap-4">
