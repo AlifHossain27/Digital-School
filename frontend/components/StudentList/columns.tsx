@@ -1,15 +1,21 @@
 "use client"
 import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
+import StudentViewer from "../UserViewer/StudentViewer"
+
 
 
 export type Students = {
     student_profile_id: string
     full_name: string
+    first_name: string
+    last_name: string
+    father_name: string
     father_phone: string
+    mother_name: string
     mother_phone: string
+    permanent_address: string
     present_address: string
-    data_of_birth: string
+    date_of_birth: string
 }
 
 export const columns: ColumnDef<Students>[] = [
@@ -36,5 +42,27 @@ export const columns: ColumnDef<Students>[] = [
     {
       accessorKey: "date_of_birth",
       header: "Date of Birth",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const data = row.original
+        return (
+          <div>
+            <StudentViewer
+                  profile_id= {data.student_profile_id} 
+                  full_name= {data.full_name} 
+                  first_name= {data.first_name} 
+                  last_name= {data.last_name} 
+                  father_name= {data.father_name}
+                  father_phone= {data.father_phone}
+                  mother_name= {data.mother_name}
+                  mother_phone= {data.mother_phone}
+                  permanent_address= {data.permanent_address}
+                  present_address= {data.present_address}
+                  date_of_birth= {data.date_of_birth} />
+          </div>
+        )
+      },
     },
   ]
