@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAppSelector } from '@/redux/store';
-import {  UserPlus } from "lucide-react"
+import AddTeacher from '../AddUser/AddTeacher'
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -63,9 +63,7 @@ export function DataTable<TData, TValue>({
     if (userType === "admin" || userType === "staff"){
       addBtn =(
         <div>
-          <Button>
-            <UserPlus/> 
-          </Button>
+          <AddTeacher />
         </div>
       )
     } else {
