@@ -1,5 +1,5 @@
 'use client'
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useToast } from '../components/ui/use-toast'
@@ -40,6 +40,9 @@ const Navbar = () => {
     const { toast } = useToast()
     const dispatcher = useDispatch<AppDispatch>()
     const isAuth = useAppSelector((state) => state.authReducer.value.isAuthenticated)
+    const user_type = useAppSelector((state) => state.authReducer.value.userType)
+    const uid = useAppSelector((state) => state.uidReducer.value.userID)
+    const [ userAvatar, SetUserAvatar ] =useState('/media/Default.png')
 
     useEffect(() => {
         fetch('http://localhost:8000/api/me/', {
@@ -64,6 +67,26 @@ const Navbar = () => {
             dispatcher(ResetUID())
           });
       }, []);
+
+      useEffect(() => {
+        (
+          async () => {
+            try {
+            const resp = await fetch(`http://localhost:8000/api/${user_type}/${uid}/`,{
+              credentials: 'include'
+            })
+            const data = await resp.json();
+            if (resp.ok){
+              SetUserAvatar(data.profile_picture)
+            }else{
+              SetUserAvatar('/media/Default.png')
+            }
+          } catch(e){
+            console.log('connection failed')
+          }
+          }
+        )()
+      })
 
     const logout = async() => {
         await fetch('http://localhost:8000/api/logout/',{
@@ -116,7 +139,7 @@ const Navbar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                         <Avatar>
-                            <AvatarImage src="/DefaultUser.svg" alt="@profile" />
+                            <AvatarImage src={userAvatar} alt="@profile" />
                             <AvatarFallback>Profile</AvatarFallback>
                         </Avatar>
                         </DropdownMenuTrigger>
@@ -124,7 +147,7 @@ const Navbar = () => {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem onClick={() => router.push("/profile")}>
+                            <DropdownMenuItem onClick={() => router.push(`/${user_type}/profile`)}>
                                 <User className="mr-2 h-4 w-4" />
                                 <span>Profile</span>
                             </DropdownMenuItem>
