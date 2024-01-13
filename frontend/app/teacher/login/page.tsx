@@ -24,6 +24,7 @@ import {
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
 import { logIn, logOut } from '@/redux/features/auth-slice'
+import { SetUID, ResetUID } from '@/redux/features/uid-slice'
 import { ImSpinner2 } from "react-icons/im";
 
 
@@ -62,6 +63,7 @@ const page = () => {
     const user_type = 'teacher'
     if (res.ok){
       dispatcher(logIn(user_type))
+      dispatcher(SetUID(values.username))
       await router.push('/')
       toast({
         title: `Welcome ${values.username}`,
@@ -70,6 +72,7 @@ const page = () => {
       await router.refresh()
     }else{
       dispatcher(logOut())
+      dispatcher(ResetUID())
       toast({
         variant: "destructive",
         title: `${res.status} Login failed`,

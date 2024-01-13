@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
 import { useAppSelector } from '@/redux/store';
 import { logIn, logOut } from '@/redux/features/auth-slice'
+import { SetUID, ResetUID } from '@/redux/features/uid-slice' 
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from '../components/ui/button';
@@ -53,11 +54,14 @@ const Navbar = () => {
           })
           .then((data) => {
             const user_type = data.user_type;
+            const uid = data.admin_id || data.staff_id || data.teacher_id || data.student_id
             dispatcher(logIn(user_type));
+            dispatcher(SetUID(uid))
           })
           .catch((error) => {
             console.error('Error fetching data:', error);
             dispatcher(logOut());
+            dispatcher(ResetUID())
           });
       }, []);
 
@@ -120,7 +124,7 @@ const Navbar = () => {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => router.push("/profile")}>
                                 <User className="mr-2 h-4 w-4" />
                                 <span>Profile</span>
                             </DropdownMenuItem>
