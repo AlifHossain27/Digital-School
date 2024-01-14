@@ -4,6 +4,7 @@ import { useAppSelector } from '@/redux/store';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {  Pencil } from "lucide-react"
+import Link from 'next/link';
 
 
 
@@ -50,17 +51,19 @@ const StaffProfile = () => {
   return (
     <div>
       <div className="w-full sm:flex">
-        <Image 
-        src={data.profile_picture} 
+      <Image 
+        src={data.profile_picture || '/Default.png'}
         alt={data.full_name} 
         width={100} 
         height={100}/>
       </div>
       <div className='flex flex-row justify-between pt-6 gap-4'>
           <h1 className='pl-4 text-2xl'>{data.full_name}</h1>
-          <Button variant='ghost'>
-            <Pencil/>
-          </Button>
+          <Link href={`/${user_type}/profile/edit`}>
+            <Button variant='ghost'>
+              <Pencil/>
+            </Button>
+          </Link>
       </div>
 
       <div className='pt-6 text-xl font-semi-bold'>
