@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {  Pencil } from "lucide-react"
 import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 
@@ -51,14 +52,13 @@ const StaffProfile = () => {
   return (
     <div>
       <div className="w-full sm:flex">
-      <Image 
-        src={data.profile_picture || '/Default.png'}
-        alt={data.full_name} 
-        width={100} 
-        height={100}/>
+        <Avatar className='h-40 w-40 border-2'>
+          <AvatarImage src={data.profile_picture || '/Default.png'} />
+          <AvatarFallback>{data.full_name} </AvatarFallback>
+        </Avatar>
       </div>
       <div className='flex flex-row justify-between pt-6 gap-4'>
-          <h1 className='pl-4 text-2xl'>{data.full_name}</h1>
+          <h1 className='pl-6 text-2xl'>{data.full_name}</h1>
           <Link href={`/${user_type}/profile/edit`}>
             <Button variant='ghost'>
               <Pencil/>
