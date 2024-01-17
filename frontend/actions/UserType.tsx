@@ -62,6 +62,7 @@ export async function UserType() {
         { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
         { name: "Teachers", link: "/teachers/", icon: FaChalkboardTeacher},
         { name: "Students", link: "/students/", icon: FaUserGraduate},
+        { name: "Classrooms", link: "/classroom/", icon: MdOutlineClass},
       ];
     } else if (user_type === "teacher") {
       menus = [
