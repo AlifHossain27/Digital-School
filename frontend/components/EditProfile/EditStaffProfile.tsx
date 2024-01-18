@@ -25,6 +25,7 @@ import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation";
 
 
 
@@ -41,6 +42,7 @@ const formSchema = z.object({
 
 const EditStaffProfile = () => {
     const { toast } = useToast()
+    const router = useRouter()
     const user_type = useAppSelector((state) => state.authReducer.value.userType);
     const uid = useAppSelector((state) => state.uidReducer.value.userID);
     const [data, setData] = useState({
@@ -130,6 +132,7 @@ const EditStaffProfile = () => {
                 title: "Profile updated",
                 description: "Successfully Updated Your Profile",
               })
+            router.push('/staff/profile')
         } else {
             toast({
                 variant: "destructive",

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
+import Image from 'next/image'
 
 const page = () => {
   const router = useRouter()
@@ -25,8 +26,13 @@ const page = () => {
     fetchData();
 }, []);
   return (
-    <div>
-      <h1>home</h1>
+    <div className='flex flex-col pt-6'>
+      <Image 
+        src="/backtoschool.png" 
+        width={500}
+        height={500}
+        alt="Picture of the author" className='w-full h-60 rounded-md'>
+      </Image>
       <h1>{name}</h1>
     </div>
   )
