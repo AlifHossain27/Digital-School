@@ -1,5 +1,6 @@
 "use client"
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
 import {
     Card,
     CardHeader,
@@ -8,6 +9,9 @@ import {
 import { Separator } from "@/components/ui/separator"
 import CreateClassroom from '@/components/Classroom/StaffClassroom/CreateClassroom'
 import DeleteClassroom from './DeleteClassroom'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import { SetClassroom } from '@/redux/features/classroom-slice';
 
 
 interface Teacher {
@@ -34,6 +38,7 @@ interface Teacher {
 
 
 const StaffClassroomList = () => {
+    const dispatcher = useDispatch<AppDispatch>()
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -54,15 +59,17 @@ const StaffClassroomList = () => {
   return (
     <div>
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
-            {classrooms.map((classroom) => (
-                <Card className='h-32 flex justify-between items-center'>
-                <CardHeader>
-                <CardTitle>{classroom.name}</CardTitle>
-                </CardHeader>
+            {classrooms.map((classroom,i) => (
+              <Card className='h-32 flex justify-between items-center' key={i} onClick={() => dispatcher(SetClassroom(classroom.class_id))}>
+                <Link href='classroom/home'>
+                  <CardHeader>
+                    <CardTitle>{classroom.name}</CardTitle>
+                  </CardHeader>
+                </Link>
                 <div className='px-6'>
                   <DeleteClassroom classroomName={classroom.name} classroomID={classroom.class_id}/>
                 </div>
-            </Card>
+              </Card>
             ))}
         </div>
       <Separator />
