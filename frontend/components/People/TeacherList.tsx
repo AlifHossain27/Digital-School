@@ -15,7 +15,7 @@ const TeacherList = () => {
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/teachers`, {
+            const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/teachers/`, {
               method: "GET",
               credentials: 'include',
             });

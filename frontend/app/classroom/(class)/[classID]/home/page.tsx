@@ -4,7 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
 import Image from 'next/image'
 
-const page = () => {
+const page = ({params,}:{
+    params: {classID: 'string'}
+}) => {
   const router = useRouter()
   const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
   const [name,setname] = useState('')
@@ -33,7 +35,7 @@ const page = () => {
         height={500}
         alt="Picture of the author" className='w-full h-60 rounded-md'>
       </Image>
-      <h1>{name}</h1>
+      <h1>{params.classID}</h1>
     </div>
   )
 }
