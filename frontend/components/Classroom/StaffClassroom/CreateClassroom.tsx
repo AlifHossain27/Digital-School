@@ -58,7 +58,7 @@ const CreateClassroom = () => {
         description: `Successfully created ${values.classroom}`,
       })
       await form.reset();
-      await router.push('/classroom')
+      await router.refresh();
     }
     else {
       toast({

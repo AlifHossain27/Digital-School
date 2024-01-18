@@ -7,9 +7,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { useAppSelector } from '@/redux/store';
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@/redux/store'
-import { SetClassroom } from '@/redux/features/classroom-slice';
 
 
 interface Teacher {
@@ -36,7 +33,6 @@ interface Teacher {
 
 
 const ClassroomList = () => {
-    const dispatcher = useDispatch<AppDispatch>()
     const user_type = useAppSelector((state) => state.authReducer.value.userType)
     const uid = useAppSelector((state) => state.uidReducer.value.userID)
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
@@ -61,8 +57,8 @@ const ClassroomList = () => {
     <div>
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
             {classrooms.map((classroom, i) => (
-              <Link href='classroom/home'>
-                <Card className='h-32' key={i} onClick={() => dispatcher(SetClassroom(classroom.class_id))}>
+              <Link href={`classroom/${classroom.class_id}/home`}>
+                <Card className='h-32' key={i}>
                   <CardHeader>
                   <CardTitle>{classroom.name}</CardTitle>
                   </CardHeader>

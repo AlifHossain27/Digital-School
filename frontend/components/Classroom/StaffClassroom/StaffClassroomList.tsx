@@ -9,9 +9,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import CreateClassroom from '@/components/Classroom/StaffClassroom/CreateClassroom'
 import DeleteClassroom from './DeleteClassroom'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@/redux/store'
-import { SetClassroom } from '@/redux/features/classroom-slice';
 
 
 interface Teacher {
@@ -38,7 +35,6 @@ interface Teacher {
 
 
 const StaffClassroomList = () => {
-    const dispatcher = useDispatch<AppDispatch>()
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -60,7 +56,7 @@ const StaffClassroomList = () => {
     <div>
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
             {classrooms.map((classroom,i) => (
-              <Card className='h-32 flex justify-between items-center' key={i} onClick={() => dispatcher(SetClassroom(classroom.class_id))}>
+              <Card className='h-32 flex justify-between items-center' key={i}>
                 <Link href={`classroom/${classroom.class_id}/home`}>
                   <CardHeader>
                     <CardTitle>{classroom.name}</CardTitle>

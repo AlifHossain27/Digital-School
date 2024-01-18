@@ -1,24 +1,20 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/redux/store';
 import Image from 'next/image'
 
 const page = ({params,}:{
     params: {classID: 'string'}
 }) => {
   const router = useRouter()
-  const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-  const [name,setname] = useState('')
   useEffect(() => {
     const fetchData = async () => {
     try {
-        const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/`, {
+        const resp = await fetch(`http://localhost:8000/api/classroom/${params.classID}/`, {
           method: "GET",
           credentials: 'include',
         });
         const data = await resp.json();
-        setname(data.name)
     } catch (error) {
         await router.push('../classroom/')
         console.error('Error fetching data:', error);
