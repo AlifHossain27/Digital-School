@@ -25,42 +25,42 @@ import { Button } from '../ui/button'
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-    teacherID: z.string().min(4, {
+    studentID: z.string().min(4, {
       message: "Teacher ID must be at least 4 characters.",
     })
     
   })
 
-const AddTeacher = () => {
+const AddStudent = () => {
     const router = useRouter()
     const { toast } = useToast()
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-          teacherID: ""
+          studentID: ""
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>){
-        const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/teacher/`,{
+        const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/student/`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
-            "teacher_profile_id": values.teacherID
+            "student_profile_id": values.studentID
         })
     })
     if (resp.ok){
         await router.refresh()
         await form.reset();
         toast({
-            title: `Successfully Added Teacher`,
+            title: `Successfully Added Student`,
         })
         } else {
             toast({
                 variant: "destructive",
-                title: `${resp.status} Failed to add Teacher`,
+                title: `${resp.status} Failed to add Student`,
                 description: "Something went wrong. Please try again",
             })
             await router.refresh()
@@ -75,24 +75,24 @@ const AddTeacher = () => {
     </DialogTrigger>
     <DialogContent>
         <DialogHeader>
-        <DialogTitle>Add Teacher to Classroom</DialogTitle>
+        <DialogTitle>Add Student to Classroom</DialogTitle>
         </DialogHeader>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">
                 <FormField
                 control={form.control}
-                name="teacherID"
+                name="studentID"
                 render={({ field }) => (
                     <FormItem>
                     <FormControl>
-                        <Input autoComplete='off' placeholder="Teacher ID" {...field} />
+                        <Input autoComplete='off' placeholder="Student ID" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
                 />
                 <DialogClose asChild>
-                        <Button className='text-center w-full h-12 text-lg' type="submit" >Add Teacher</Button>
+                        <Button className='text-center w-full h-12 text-lg' type="submit" >Add Student</Button>
                 </DialogClose>
             </form>
         </Form>
@@ -101,4 +101,4 @@ const AddTeacher = () => {
   )
 }
 
-export default AddTeacher
+export default AddStudent

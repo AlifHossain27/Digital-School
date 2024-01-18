@@ -5,6 +5,7 @@ import { useAppSelector } from '@/redux/store';
 import TeacherList from '@/components/People/TeacherList'
 import StudentList from '@/components/People/StudentList'
 import AddTeacher from '@/components/People/AddTeacher';
+import AddStudent from '@/components/People/AddStudent';
 
 const page = () => {
   const user_type = useAppSelector((state) => state.authReducer.value.userType);
@@ -21,7 +22,7 @@ const page = () => {
       <div className='pt-8'>
         <div className='flex flex-row justify-between text-2xl border-b h-10'>
           <h1 className=''>Students</h1>
-          {user_type === 'staff' ? <UserPlus/> : <></>}
+          {user_type === 'staff' ? <AddStudent/> : <></>}
         </div>
         <div className='pt-6'>
           <StudentList/>
