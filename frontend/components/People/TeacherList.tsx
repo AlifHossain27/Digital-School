@@ -1,6 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
+import getTeachers from '@/actions/getTeachers'
+import AddTeacher from '@/components/People/AddTeacher';
 
 interface Teacher {
     teacher_profile_id: string;
@@ -11,31 +15,36 @@ interface Teacher {
 
 const TeacherList = () => {
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-    const [teachers, setTeachers] = useState<Teacher[]>([]);
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/teachers/`, {
-              method: "GET",
-              credentials: 'include',
-            });
-            const data = await resp.json();
-            setTeachers(data)
-        } catch (error) {
-            
-            console.error('Error fetching data:', error);
-        }
-        };
+    const router = useRouter()
+    const {data: teachers} = useQuery({
+        queryFn: () => getTeachers(classroomID),
+        queryKey: ['teachers']
+      })
     
-        fetchData();
-    }, []);
+    let addBtn
+    const userType = useAppSelector((state) => state.authReducer.value.userType)
+    if (userType === "admin" || userType === "staff"){
+      addBtn =(
+        <div>
+          <AddTeacher />
+        </div>
+      )
+    } else {
+      <div></div>
+    }
   return (
     <div>
-        {teachers.map(teacher => (
-            <div className='py-4 text-xl pl-4'>
-                <h1 key={teacher.teacher_profile_id}>{teacher.full_name}</h1>
-            </div>
-    ))}
+        <div className='flex flex-row justify-between text-2xl border-b h-10'>
+            <h1 className=''>Teachers</h1>
+            {addBtn}
+        </div>
+        {teachers?.map((teacher:Teacher) => {
+            return (
+        <div className='py-4 text-xl pl-4'>
+            <h1 key={teacher.teacher_profile_id}>{teacher.full_name}</h1>
+        </div>
+            )
+        })}
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { useAppSelector } from '@/redux/store';
 import Link from 'next/link'
 import { Button } from '../components/ui/button';
 import { HiMenuAlt3 } from "react-icons/hi";
-import { UserType } from '@/actions/UserType';
+import { navItems } from '@/actions/navItems';
 
 const Sidebar = () => {
     const isAuth = useAppSelector((state) => state.authReducer.value.isAuthenticated)
@@ -16,7 +16,7 @@ const Sidebar = () => {
     useEffect(() => {
       const fetchMenus = async () => {
         try {
-          const result = await UserType();
+          const result = await navItems();
           setMenus(result);
         } catch (error) {
           console.error('Error fetching menus:', error);

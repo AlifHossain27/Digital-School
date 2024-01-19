@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import { useAppSelector } from '@/redux/store';
+import {  useMutation, useQueryClient } from '@tanstack/react-query';
 import {  UserPlus } from "lucide-react"
 import { Button } from '../ui/button'
 import { Input } from "@/components/ui/input"
@@ -42,30 +43,43 @@ const AddTeacher = () => {
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>){
-        const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/teacher/`,{
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
+        mutationFn: (values: z.infer<typeof formSchema>) =>
+        fetch(`http://localhost:8000/api/classroom/${classroomID}/teacher/`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
             "teacher_profile_id": values.teacherID
-        })
-    })
-    if (resp.ok){
-        await router.refresh()
-        await form.reset();
+        }),
+        }),
+        onSuccess: async (_, values) => {
+        queryClient.invalidateQueries({queryKey: ['teachers']})
         toast({
-            title: `Successfully Added Teacher`,
-        })
-        } else {
-            toast({
-                variant: "destructive",
-                title: `${resp.status} Failed to add Teacher`,
-                description: "Something went wrong. Please try again",
-            })
-            await router.refresh()
+            title: `${values.teacherID} Added`,
+            description: `Successfully added ${values.teacherID} to the Classroom`,
+        });
+        await form.reset();
+        },
+        onError: (error) => {
+        toast({
+            variant: "destructive",
+            title: `Failed to add Teacher: ${error.message || "Unknown error"}`,
+        });
+        router.refresh();
+        },
+    });
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+          await mutate(values);
+        } catch (error) {
+          console.error("Error in onSubmit:", error);
         }
-    }
+      }
+
+
   return (
     <Dialog>
     <DialogTrigger asChild>

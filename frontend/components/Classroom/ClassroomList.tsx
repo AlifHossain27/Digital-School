@@ -61,7 +61,7 @@ const ClassroomList = () => {
     <div>
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
             {classrooms.map((classroom, i) => (
-              <Link href={`classroom/${classroom.class_id}/home`}>
+              <Link href={`classroom/home`}>
                 <Card className='h-32' key={i} onClick={() => dispatcher(SetClassroom(classroom.class_id))}>
                   <CardHeader>
                   <CardTitle>{classroom.name}</CardTitle>

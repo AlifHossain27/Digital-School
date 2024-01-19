@@ -23,29 +23,6 @@ type DeleteData = {
 const DeleteClassroom = ({ classroomName,classroomID }: DeleteData) => {
     const router = useRouter()
     const { toast } = useToast()
-    {/*
-    const deleteClassroom = async() => {
-        const res = await fetch(`http://localhost:8000/api/classroom/${classroomID}/delete/`,{
-          method: "DELETE",
-          credentials: "include"
-        })
-        if (res.ok){
-            toast({
-                title: "Classroom deleted",
-                description: `Successfully Deleted ${classroomName}`,
-              })
-            await router.refresh();
-        }
-        else{
-            toast({
-                variant: "destructive",
-                title: `${res.status} oops`,
-                description: "Something went wrong. Please Try again",
-              })
-            await router.refresh();
-        }
-    }
-    */}
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
       mutationFn: async () => fetch(`http://localhost:8000/api/classroom/${classroomID}/delete/`,{

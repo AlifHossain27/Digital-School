@@ -1,6 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/redux/store';
+import getStudents from '@/actions/getStudents'
+import AddStudent from './AddStudent';
 
 interface Student {
     student_profile_id: string;
@@ -11,32 +14,36 @@ interface Student {
 
 const StudentList = () => {
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-    const [students, setStudents] = useState<Student[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const resp = await fetch(`http://localhost:8000/api/classroom/${classroomID}/students`, {
-              method: "GET",
-              credentials: 'include',
-            });
-            const data = await resp.json();
-            setStudents(data)
-        } catch (error) {
-            
-            console.error('Error fetching data:', error);
-        }
-        };
-    
-        fetchData();
-    }, []);
+    const {data: students} = useQuery({
+        queryFn: () => getStudents(classroomID),
+        queryKey: ['students']
+      })
+
+    let addBtn
+    const userType = useAppSelector((state) => state.authReducer.value.userType)
+    if (userType === "admin" || userType === "staff"){
+      addBtn =(
+        <div>
+          <AddStudent />
+        </div>
+      )
+    } else {
+      <div></div>
+    }
   return (
     <div>
-        {students.map(student => (
-            <div className='py-4 text-xl pl-4'>
-                <h1 key={student.student_profile_id}>{student.full_name}</h1>
-            </div>
-    ))}
+        <div className='flex flex-row justify-between text-2xl border-b h-10'>
+            <h1 className=''>Students</h1>
+            {addBtn}
+        </div>
+        {students?.map((student: Student) => {
+            return (
+        <div className='py-4 text-xl pl-4'>
+            <h1 key={student.student_profile_id}>{student.full_name}</h1>
+        </div>
+            )
+        })}
     </div>
   )
 }

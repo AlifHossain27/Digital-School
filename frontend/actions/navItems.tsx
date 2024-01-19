@@ -34,7 +34,7 @@ interface StudentUserData {
 
 type UserData = AdminUserData | StaffUserData | TeacherUserData | StudentUserData;
 
-export async function UserType() {
+export async function navItems() {
   const res = await fetch("http://localhost:8000/api/me/", {
     credentials: 'include',
   });
