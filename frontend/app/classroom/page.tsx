@@ -5,8 +5,12 @@ import ClassroomList from '@/components/Classroom/ClassroomList';
 import StaffClassroomList from '@/components/Classroom/StaffClassroom/StaffClassroomList'
 import { Separator } from "@/components/ui/separator"
 import { ImSpinner2 } from "react-icons/im";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
-
+const queryClient = new QueryClient()
 const page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user_type = useAppSelector((state) => state.authReducer.value.userType);
@@ -32,7 +36,10 @@ const page = () => {
         </div>
       ) : (
         <div className='pt-6'>
-          {user_type === 'staff' ? <StaffClassroomList /> : <ClassroomList />}
+          {user_type === 'staff' ? 
+          <QueryClientProvider client={queryClient}>
+            <StaffClassroomList />
+          </QueryClientProvider> : <ClassroomList />}
         </div>
       )}
     </div>

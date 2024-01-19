@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { BsFileEarmarkPlus } from "react-icons/bs"
-
+import {  useMutation, useQueryClient } from '@tanstack/react-query';
 
 const formSchema = z.object({
   classroom: z.string().min(4, {
@@ -42,32 +42,44 @@ const CreateClassroom = () => {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("http://localhost:8000/api/classroom/create/",{
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      credentials: 'include',
-      body: JSON.stringify({
-          "staff_profile_id": uid,
-          "name": values.classroom
-      })
-    })
-    if (res.ok){
+  
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) =>
+      fetch("http://localhost:8000/api/classroom/create/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          staff_profile_id: uid,
+          name: values.classroom,
+        }),
+      }),
+    onSuccess: async (_, values) => {
+      queryClient.invalidateQueries({queryKey: ['classrooms']})
       toast({
         title: `Classroom ${values.classroom} created`,
         description: `Successfully created ${values.classroom}`,
-      })
+      });
       await form.reset();
-      await router.refresh();
-    }
-    else {
+    },
+    onError: (error) => {
       toast({
         variant: "destructive",
-        title: `${res.status} Failed to create new Classroom`,
-      })
-      await router.refresh()
+        title: `Failed to create new Classroom: ${error.message || "Unknown error"}`,
+      });
+      router.refresh();
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await mutate(values);
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
     }
   }
+
 
   return (
     <div>
@@ -97,7 +109,7 @@ const CreateClassroom = () => {
                 )}
               />
               <DialogClose asChild>
-                <Button className='w-full' type="submit" >Create</Button>
+                <Button className='w-full' type="submit">Create</Button>
               </DialogClose>
             </form>
           </Form>

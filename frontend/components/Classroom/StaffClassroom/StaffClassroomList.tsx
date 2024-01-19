@@ -9,6 +9,11 @@ import {
 import { Separator } from "@/components/ui/separator"
 import CreateClassroom from '@/components/Classroom/StaffClassroom/CreateClassroom'
 import DeleteClassroom from './DeleteClassroom'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import getClassroom from '@/actions/getClassroom'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import { SetClassroom } from '@/redux/features/classroom-slice';
 
 
 interface Teacher {
@@ -35,28 +40,29 @@ interface Teacher {
 
 
 const StaffClassroomList = () => {
-    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const resp = await fetch('http://localhost:8000/api/classroom/', {
-            credentials: 'include',
-            });
-            const data = await resp.json();
-            setClassrooms(data);
-            
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-        };
+  const queryClient = useQueryClient()
+  const dispatcher = useDispatch<AppDispatch>()
+  const {data: classrooms, isLoading} = useQuery({
+    queryFn: () => getClassroom(),
+    queryKey: ['classrooms']
+  })
 
-        fetchData();
-    }, []);
+  const mutation = useMutation({
+    mutationFn: getClassroom,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['classrooms'] })
+    },
+  })
+
+  if (isLoading) {
+    <div>Loading....</div>
+  }
   return (
     <div>
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
-            {classrooms.map((classroom,i) => (
-              <Card className='h-32 flex justify-between items-center' key={i}>
+            {classrooms?.map((classroom:Classroom) => {
+              return (
+                <Card className='h-32 flex justify-between items-center' key={classroom.class_id} onClick={() => dispatcher(SetClassroom(classroom.class_id))}>
                 <Link href={`classroom/${classroom.class_id}/home`}>
                   <CardHeader>
                     <CardTitle>{classroom.name}</CardTitle>
@@ -66,7 +72,8 @@ const StaffClassroomList = () => {
                   <DeleteClassroom classroomName={classroom.name} classroomID={classroom.class_id}/>
                 </div>
               </Card>
-            ))}
+              )
+            })}
         </div>
       <Separator />
       <div className='pt-8'>

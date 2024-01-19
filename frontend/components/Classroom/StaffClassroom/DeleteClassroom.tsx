@@ -13,6 +13,7 @@ import { RiDeleteBin5Line } from "react-icons/ri"
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useToast } from "@/components/ui/use-toast"
+import {  useMutation, useQueryClient } from '@tanstack/react-query';
 
 type DeleteData = {
     classroomName: string,
@@ -22,6 +23,7 @@ type DeleteData = {
 const DeleteClassroom = ({ classroomName,classroomID }: DeleteData) => {
     const router = useRouter()
     const { toast } = useToast()
+    {/*
     const deleteClassroom = async() => {
         const res = await fetch(`http://localhost:8000/api/classroom/${classroomID}/delete/`,{
           method: "DELETE",
@@ -42,6 +44,36 @@ const DeleteClassroom = ({ classroomName,classroomID }: DeleteData) => {
               })
             await router.refresh();
         }
+    }
+    */}
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
+      mutationFn: async () => fetch(`http://localhost:8000/api/classroom/${classroomID}/delete/`,{
+        method: "DELETE",
+        credentials: "include"
+      }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: ['classrooms']})
+        toast({
+          title: "Classroom deleted",
+          description: `Successfully Deleted ${classroomName}`,
+        })
+      },
+      onError: (error) => {
+        toast({
+          variant: "destructive",
+          title: `${error.message || "Unknown error"} oops`,
+          description: "Something went wrong. Please Try again",
+        })
+      }
+    })
+
+    async function deleteClassroom(){
+      try {
+        await mutate();
+      } catch (error) {
+        console.error("Error in onSubmit:", error);
+      }
     }
   return (
     <div>
