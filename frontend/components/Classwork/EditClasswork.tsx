@@ -33,32 +33,39 @@ import {  useMutation, useQueryClient } from '@tanstack/react-query';
 import { Input } from "@/components/ui/input"
 import { Button } from "../ui/button"
 
+
 const formSchema = z.object({
     title: z.string(),
     description: z.string(),
     due_date: z.any()
-    
-  })
+})
 
-const AddClasswork = () => {
+type ClassworkData = {
+    classworkID: number,
+    classworkTitle: string,
+    classworkDescription: string,
+    classworkDueDate: any
+}
+
+const EditClasswork = ({classworkID, classworkTitle, classworkDescription, classworkDueDate}: ClassworkData) => {
     const { toast } = useToast()
     const router = useRouter()
     const uid = useAppSelector((state) => state.uidReducer.value.userID)
-    const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            description: "",
-            due_date: undefined
+            title: classworkTitle,
+            description: classworkDescription,
+            due_date: classworkDueDate
         },
     });
+
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch(`http://localhost:8000/api/assignment/create/`,{
-            method: 'POST',
+        fetch(`http://localhost:8000/api/assignment/${classworkID}/`,{
+            method: 'PUT',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
@@ -67,27 +74,26 @@ const AddClasswork = () => {
             "description": values.description,
             "due_date": values.due_date
             ? format(new Date(values.due_date), "yyyy-MM-dd")
-            : null,
-            "class_id": classroomID
+            : null
         }),
         }),
         onSuccess: async (_, values) => {
         queryClient.invalidateQueries({queryKey: ['classworks']})
         toast({
-            title: `${values.title} created`,
-            description: `Successfully created ${values.title} to the Classroom`,
+            title: `${values.title} Updated`,
+            description: `Successfully updated ${values.title}`,
         });
         await form.reset();
         },
         onError: (error) => {
         toast({
             variant: "destructive",
-            title: `Failed to Create Classwork: ${error.message || "Unknown error"}`,
+            title: `Failed to Update Classwork: ${error.message || "Unknown error"}`,
         });
         router.refresh();
         },
     });
-    
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             await mutate(values);
@@ -95,10 +101,11 @@ const AddClasswork = () => {
             console.error("Error in onSubmit:", error);
           }
     }
+
   return (
     <Dialog>
     <DialogTrigger asChild>
-        <Button className="rounded-full h-12">Create New Classwork</Button>
+        <Button className="rounded-full">Update Classwork</Button>
     </DialogTrigger>
     <DialogContent>
         <DialogHeader>
@@ -172,7 +179,7 @@ const AddClasswork = () => {
                 )}
                 />
                 <DialogClose asChild>
-                        <Button className='text-center w-full h-12 text-lg' type="submit" >Create</Button>
+                        <Button className='text-center w-full h-12 text-lg' type="submit" >Update</Button>
                 </DialogClose>
             </form>
         </Form>
@@ -181,4 +188,4 @@ const AddClasswork = () => {
   )
 }
 
-export default AddClasswork
+export default EditClasswork
