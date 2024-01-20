@@ -4,9 +4,9 @@ import React from 'react'
 
 const Navbar = () => {
   const NavLinks = [
-    { name: "Home", href: "home/"},
-    { name: "Classwork", href: "classwork/"},
-    { name: "People", href: "people/"},
+    { name: "Home", href: "/classroom/home/"},
+    { name: "Classwork", href: "/classroom/classwork/"},
+    { name: "People", href: "/classroom/people/"},
   ]
   return (
     <div className='flex flex-row px-6 items-start h-12 w-full border-b-2 border-secondary'>

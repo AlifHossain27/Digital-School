@@ -38,7 +38,7 @@ const formSchema = z.object({
     description: z.string(),
     due_date: z.any()
     
-  })
+})
 
 const AddClasswork = () => {
     const { toast } = useToast()

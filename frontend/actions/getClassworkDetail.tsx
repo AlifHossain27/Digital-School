@@ -1,5 +1,5 @@
-export default async function getAssignments(classroomID:string) {
-    const resp = await fetch(`http://localhost:8000/api/assignment/classroom/${classroomID}/`, {
+export default async function getAssignment(classworkID: number) {
+    const resp = await fetch(`http://localhost:8000/api/assignment/${classworkID}`, {
         credentials: 'include',
     });
     if (!resp.ok) {
