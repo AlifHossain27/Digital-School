@@ -5,6 +5,7 @@ import React from 'react'
 const Navbar = () => {
   const NavLinks = [
     { name: "Home", href: "home/"},
+    { name: "Classwork", href: "classwork/"},
     { name: "People", href: "people/"},
   ]
   return (

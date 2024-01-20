@@ -39,8 +39,8 @@ const StudentList = () => {
         </div>
         {students?.map((student: Student) => {
             return (
-        <div className='py-4 text-xl pl-4'>
-            <h1 key={student.student_profile_id}>{student.full_name}</h1>
+        <div className='py-4 text-xl pl-4' key={student.student_profile_id}>
+            <h1>{student.full_name}</h1>
         </div>
             )
         })}

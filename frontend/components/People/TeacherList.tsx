@@ -40,8 +40,8 @@ const TeacherList = () => {
         </div>
         {teachers?.map((teacher:Teacher) => {
             return (
-        <div className='py-4 text-xl pl-4'>
-            <h1 key={teacher.teacher_profile_id}>{teacher.full_name}</h1>
+        <div className='py-4 text-xl pl-4' key={teacher.teacher_profile_id}>
+            <h1>{teacher.full_name}</h1>
         </div>
             )
         })}
