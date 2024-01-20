@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/store';
 import getClassworks from '@/actions/getClassworks'
 import { Button } from "../ui/button";
 import EditClasswork from "./EditClasswork";
+import DeleteClasswork from "./DeleteClasswork";
 
 interface Classwork {
     id: number,
@@ -46,7 +47,7 @@ const ClassworkList = () => {
                         classworkTitle={classwork.title} 
                         classworkDescription={classwork.description}
                         classworkDueDate={classwork.due_date}/>
-                        <Button variant='destructive'>Delete Classwork</Button>
+                        <DeleteClasswork classworkID={classwork.id} classworkTitle={classwork.title}/>
                     </div>
                     ):(<div></div>)}
                 </AccordionContent>
