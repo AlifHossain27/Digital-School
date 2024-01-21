@@ -59,15 +59,16 @@ const page = () => {
     : '';
   return (
     <div className='pt-6 flex flex-col'>
-      <div className='text-4xl'>
-        {classwork?.title}
-      </div>
-      <div className='text-sm pb-2 font-mono'>
-      Due Date: {formattedDueDate.replace(/\b\d{1,2}\b/, `$&${daySuffix}`)}
-      </div>
-      <div className='pt-4'>
-        <h1 className='text-2xl'>Description:</h1>
-        <h1 className='text-xl'>{classwork?.description}</h1>
+      <div className='border px-8 py-6 rounded-lg'>
+        <div className='text-4xl'>
+          {classwork?.title}
+        </div>
+        <div className='text-sm pb-2 font-mono'>
+          Due Date: {formattedDueDate.replace(/\b\d{1,2}\b/, `$&${daySuffix}`)}
+        </div>
+        <div className='pt-4'>
+          <h1 className='text-xl'>{classwork?.description}</h1>
+        </div>
       </div>
       <StudentSubmissionList/>
       <AddSubmission classworkID= {classworkID} uid={uid}/>

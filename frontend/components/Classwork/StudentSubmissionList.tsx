@@ -1,16 +1,9 @@
 "use client"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
 import React from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/redux/store';
 import getSubmissionDetail from '@/actions/getSubmissionDetail'
+import DeleteSubmission from "./DeleteSubmission";
 
 
 interface Submission {
@@ -61,22 +54,21 @@ const StudentSubmissionList = () => {
       })
 
   return (
-    <div className="pt-4">
+      <div className="pt-4">
         {submissions?.map((submission: Submission,i: number) => {
             return (
-                <div className="pt-2" key={i}>
-                    <Card>
-                    <CardHeader>
-                    <CardTitle>{submission.submission_text}</CardTitle>
-                    <CardDescription>{formatDate(submission.submission_time)}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                    </CardContent>
-                </Card>
-              </div>
+                <div className="flex flex-row justify-between mb-4 pt-2 px-4 py-4 border rounded-md" key={i}>
+                  <div>
+                    <h1 className="text-xl">{submission.submission_text}</h1>
+                    <h1 className="text-sm pb-2 font-mono">{formatDate(submission.submission_time)}</h1>
+                  </div>
+                  <div className='pt-3'>
+                    <DeleteSubmission classworkID= {classworkID} uid={uid} submissionID={submission.id}/>
+                  </div>
+                </div>
             )
         })}
-    </div>
+      </div>
   )
 }
 
