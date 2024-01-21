@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from "next/navigation"
 import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input"
 
@@ -26,6 +27,7 @@ const formSchema = z.object({
     
 })
 const AddSubmission = ({classworkID, uid}:SubmissionData) => {
+    const router = useRouter()
     const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -63,6 +65,7 @@ const AddSubmission = ({classworkID, uid}:SubmissionData) => {
                 title: `Added Submission`,
             });
             await form.reset();
+            await router.push('/classroom/classwork')
         },
         onError: (error) => {
             toast({
@@ -90,7 +93,7 @@ const AddSubmission = ({classworkID, uid}:SubmissionData) => {
                     <FormItem>
                         <FormLabel className='text-lg pb-2'>Submission:</FormLabel>
                     <FormControl>
-                        <Input autoComplete='off' placeholder="" {...field} className="border-b-0 border"/>
+                        <Input autoComplete='off' placeholder="" {...field} className="border-b-0 border w-full"/>
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -106,7 +109,12 @@ const AddSubmission = ({classworkID, uid}:SubmissionData) => {
                         type="file"
                         accept=".pdf"
                         {...field}
-                        onChange={(e) => field.onChange(e.target.files)}
+                        onChange={(e) => {
+                            field.onChange(e.target.files);
+                            if (!e.target.files || e.target.files.length === 0) {
+                              form.setValue('attachment', []);
+                            }
+                          }}
                         value={undefined}
                         className="border-b-0"
                     />
@@ -115,7 +123,7 @@ const AddSubmission = ({classworkID, uid}:SubmissionData) => {
                     </FormItem>
                 )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit" className="h-12 w-32 rounded-full">Submit</Button>
             </form>
         </Form>
     </div>

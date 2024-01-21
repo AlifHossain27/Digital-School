@@ -70,24 +70,28 @@ const StudentSubmissionList = () => {
       })
 
   return (
-      <div className="pt-4">
+      <div className="pt-4 w-full">
         {submissions?.map((submission: Submission,i: number) => {
           const { submission_text, submission_time, attachment, attachment_name, attachment_size, id } = submission;
-          const filename = path.basename(attachment_name)
+          const filename = attachment_name ? path.basename(attachment_name) : "NoFileName";
             return (
-                <div className="flex flex-row justify-between mb-4 pt-2 px-4 py-4 border rounded-md" key={i}>
+                <div className="flex flex-row justify-between w-auto mb-2 pt-2 px-4 py-4 border rounded-md" key={i}>
                   <div>
                     <h1 className="text-xl">{submission_text}</h1>
                     <h1 className="text-sm pb-2 font-mono">{formatDate(submission_time)}</h1>
-                    <Link href={submission.attachment}>
-                    <div className='flex flex-row gap-4'>
-                          <File size={100}/>
-                      <div className='flex flex-col'>
-                        <h1 className='text-xl'>{filename}</h1>
-                        <h1>{formatFileSize(attachment_size)}</h1>
-                      </div>
-                    </div>
-                    </Link>
+                    {attachment !== null ? (
+                      <Link href={submission.attachment}>
+                        <div className="flex flex-row gap-2">
+                          <File size={80} />
+                          <div className="flex flex-col">
+                            <h1 className="text-xl">{filename}</h1>
+                            <h1>{formatFileSize(attachment_size)}</h1>
+                          </div>
+                        </div>
+                      </Link>
+                    ) : (
+                      <p>No Attachment</p>
+                    )}
                   </div>
                   <div className='pt-3'>
                     <DeleteSubmission classworkID= {classworkID} uid={uid} submissionID={submission.id}/>

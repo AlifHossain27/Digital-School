@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import getClassworkDetail from '@/actions/getClassworkDetail'
 import AddSubmission from '@/components/Classwork/AddSubmission';
 import StudentSubmissionList from '@/components/Classwork/StudentSubmissionList';
-
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 interface Teacher {
   teacher_profile_id: string;
@@ -58,19 +58,22 @@ const page = () => {
     ? getDaySuffix(new Date(classwork.due_date).getDate())
     : '';
   return (
-    <div className='pt-6 flex flex-col'>
-      <div className='border px-8 py-6 rounded-lg'>
-        <div className='text-4xl'>
-          {classwork?.title}
+    <div className='pt-4 flex flex-col'>
+      <ScrollArea className="h-[550px] w-full">
+        <div className='border px-8 py-6 rounded-lg'>
+          <div className='text-4xl'>
+            {classwork?.title}
+          </div>
+          <div className='text-sm pb-2 font-mono'>
+            Due Date: {formattedDueDate.replace(/\b\d{1,2}\b/, `$&${daySuffix}`)}
+          </div>
+          <div className='pt-4'>
+            <h1 className='text-xl'>{classwork?.description}</h1>
+          </div>
         </div>
-        <div className='text-sm pb-2 font-mono'>
-          Due Date: {formattedDueDate.replace(/\b\d{1,2}\b/, `$&${daySuffix}`)}
-        </div>
-        <div className='pt-4'>
-          <h1 className='text-xl'>{classwork?.description}</h1>
-        </div>
-      </div>
-      <StudentSubmissionList/>
+        <StudentSubmissionList/>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
       <AddSubmission classworkID= {classworkID} uid={uid}/>
     </div>
   )
