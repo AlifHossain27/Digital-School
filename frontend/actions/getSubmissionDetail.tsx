@@ -6,5 +6,6 @@ export default async function getAssignment(uid: string, classworkID: number) {
         window.location.replace('/classroom');
     }
     const data = await resp.json();
+    console.log(data);
     return data
 }
