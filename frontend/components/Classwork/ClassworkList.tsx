@@ -47,7 +47,7 @@ const ClassworkList = () => {
                     {classwork.description}
                     {userType==="teacher" ? (
                     <div className="pt-6 flex flex-row gap-6">
-                        <Link href='/classroom/classwork/submissions/'>
+                        <Link href='/classroom/classwork/submissions/' onClick={() => dispatcher(SetClasswork(classwork.id))}>
                             <Button className="rounded-full">View Submissions</Button>
                         </Link>
                         <EditClasswork 
