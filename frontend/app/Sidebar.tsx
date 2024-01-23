@@ -27,7 +27,7 @@ const Sidebar = () => {
     }, [isAuth]);
 
   return (
-    <div className="border-r-2 border-secondary">
+    <div className="h-screen sticky top-0 border-r-2 border-secondary bg-background">
         <div className={`min-h-screen ${open ? 'w-72':'w-16'} duration-500`}>
             <div className='py-5 px-5 flex justify-end'>
                 <HiMenuAlt3 
