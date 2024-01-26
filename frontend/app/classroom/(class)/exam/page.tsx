@@ -2,6 +2,7 @@
 import React from 'react'
 import { useAppSelector } from '@/redux/store';
 import TeacherExamList from '@/components/Exam/TeacherExamList/TeacherExamList';
+import PublicExamList from '@/components/Exam/PublicExamList';
 
 const page = () => {
     const user_type = useAppSelector((state) => state.authReducer.value.userType);
@@ -13,7 +14,7 @@ const page = () => {
         <div>
         {user_type === 'teacher' || user_type === 'staff' ? 
             <TeacherExamList/>
-           : <h1>student</h1>}
+           : <PublicExamList/>}
         </div>
     </div>
   )
