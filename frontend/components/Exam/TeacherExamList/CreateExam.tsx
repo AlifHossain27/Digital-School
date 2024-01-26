@@ -62,9 +62,7 @@ const CreateExam = () => {
         }),
       }),
     onSuccess: async (_, values) => {
-      {/*
       queryClient.invalidateQueries({queryKey: ['exams']})
-      */}
       toast({
         title: `Exam ${values.title} created`,
         description: `Successfully created ${values.title}`,
@@ -88,7 +86,7 @@ const CreateExam = () => {
     }
   }
   return (
-    <div>
+
         <Dialog>
         <DialogTrigger asChild>
             <Button variant= "outline" className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4">
@@ -133,7 +131,7 @@ const CreateExam = () => {
           </Form>
         </DialogContent>
         </Dialog>
-    </div>
+
   )
 }
 

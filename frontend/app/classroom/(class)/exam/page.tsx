@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { useAppSelector } from '@/redux/store';
-import TeacherExamList from '@/components/Exam/StaffExam/TeacherExamList';
+import TeacherExamList from '@/components/Exam/TeacherExamList/TeacherExamList';
 
 const page = () => {
     const user_type = useAppSelector((state) => state.authReducer.value.userType);
