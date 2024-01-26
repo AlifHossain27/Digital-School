@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
 import getTeachers from '@/actions/getTeachers'
 import AddTeacher from '@/components/People/AddTeacher';
+import { ImSpinner2 } from "react-icons/im";
 
 interface Teacher {
     teacher_profile_id: string;
@@ -16,7 +17,7 @@ interface Teacher {
 const TeacherList = () => {
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
     const router = useRouter()
-    const {data: teachers} = useQuery({
+    const {data: teachers, isLoading} = useQuery({
         queryFn: () => getTeachers(classroomID),
         queryKey: ['teachers']
       })
@@ -38,6 +39,11 @@ const TeacherList = () => {
             <h1 className=''>Teachers</h1>
             {addBtn}
         </div>
+        {isLoading && (
+          <div className='pt-20 flex justify-center'>
+            <ImSpinner2 className= "animate-spin" size= "50"/>
+          </div>
+        )}
         {teachers?.map((teacher:Teacher) => {
             return (
         <div className='py-4 text-xl pl-4' key={teacher.teacher_profile_id}>

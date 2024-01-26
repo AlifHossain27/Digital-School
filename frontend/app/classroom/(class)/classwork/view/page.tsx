@@ -6,6 +6,7 @@ import getClassworkDetail from '@/actions/getClassworkDetail'
 import AddSubmission from '@/components/Classwork/AddSubmission';
 import StudentSubmissionList from '@/components/Classwork/StudentSubmissionList';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ImSpinner2 } from "react-icons/im";
 
 interface Teacher {
   teacher_profile_id: string;
@@ -41,7 +42,7 @@ const lastDigit = day % 10;
 const page = () => {
   const classworkID = useAppSelector((state) => state.classworkReducer.value.classworkID)
   const uid = useAppSelector((state) => state.uidReducer.value.userID)
-  const {data: classwork} = useQuery<Classwork>({
+  const {data: classwork, isLoading} = useQuery<Classwork>({
     queryFn: () => getClassworkDetail(classworkID),
     queryKey: ['classwork']
   })
@@ -57,6 +58,14 @@ const page = () => {
   const daySuffix = classwork?.due_date
     ? getDaySuffix(new Date(classwork.due_date).getDate())
     : '';
+
+  if (isLoading) {
+    return (
+      <div className='pt-20 flex justify-center'>
+        <ImSpinner2 className= "animate-spin" size= "50"/>
+      </div>
+    )
+  }
   return (
     <div className='pt-4 flex flex-col w-auto'>
       <ScrollArea className="h-[300px] sm:h-[300px] md:h-[350px] lg:h-[450px] xl:h-[550px] w-full">

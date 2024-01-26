@@ -12,6 +12,7 @@ import getSubmissions from '@/actions/getSubmissions'
 import Link from 'next/link'
 import path from 'path'
 import { File } from 'lucide-react'
+import { ImSpinner2 } from "react-icons/im";
 
 interface Student {
   student_profile_id: string;
@@ -79,15 +80,18 @@ if (kiloBytes < 1) {
 
 const page = () => {
   const classworkID = useAppSelector((state) => state.classworkReducer.value.classworkID)
-  const {data: submissionDetails} = useQuery<SubmissionDetail[]>({
+  const {data: submissionDetails, isLoading} = useQuery<SubmissionDetail[]>({
     queryFn: () => getSubmissions(classworkID),
     queryKey: ['submissionDetails']
   })
   return (
     <div className="pt-6">
        <div className='flex flex-row justify-between text-2xl border-b h-10'>
-            <h1 className=''>Classworks</h1>
+            <h1>Submissions</h1>
         </div>
+        {isLoading && (<div className='pt-20 flex justify-center'>
+                <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>)}
       {submissionDetails &&
         submissionDetails.map((submissionDetail) => {
           return (

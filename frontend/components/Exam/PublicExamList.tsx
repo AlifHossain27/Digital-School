@@ -11,12 +11,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppSelector } from '@/redux/store'
 import getExams from '@/actions/getExams'
 import Link from "next/link";
-import { Badge } from '@/components/ui/badge'
 import { formatDistance } from 'date-fns'
-import { LuView } from 'react-icons/lu'
 import { FaWpforms } from 'react-icons/fa'
-import { BiRightArrowAlt } from 'react-icons/bi'
-import { FaEdit } from 'react-icons/fa'
+import { ImSpinner2 } from "react-icons/im";
 import { Button } from '@/components/ui/button'
 
 interface Exam {
@@ -34,10 +31,17 @@ interface Exam {
 
 const PublicExamList = () => {
   const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-  const {data: exams} = useQuery({
+  const {data: exams, isLoading} = useQuery({
     queryFn: () => getExams(classroomID),
     queryKey: ['exams']
   })
+
+  if (isLoading) {
+    return (<div className='pt-20 flex justify-center'>
+              <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>)
+  }
+
   const noPublishedExams = exams?.every((exam: Exam) => !exam.published);
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-8'>

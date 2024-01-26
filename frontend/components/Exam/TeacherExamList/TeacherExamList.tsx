@@ -18,6 +18,7 @@ import { LuView } from 'react-icons/lu'
 import { FaWpforms } from 'react-icons/fa'
 import { BiRightArrowAlt } from 'react-icons/bi'
 import { FaEdit } from 'react-icons/fa'
+import { ImSpinner2 } from "react-icons/im";
 import { Button } from '@/components/ui/button'
 
 interface Exam {
@@ -35,10 +36,15 @@ interface Exam {
 
 const TeacherExamList = () => {
   const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-  const {data: exams} = useQuery({
+  const {data: exams, isLoading} = useQuery({
     queryFn: () => getExams(classroomID),
     queryKey: ['exams']
   })
+  if (isLoading) {
+    return (<div className='pt-20 flex justify-center'>
+              <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>)
+  }
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-8'>
       <CreateExam/>

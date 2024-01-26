@@ -16,6 +16,7 @@ import EditClasswork from "./EditClasswork";
 import DeleteClasswork from "./DeleteClasswork";
 import Link from "next/link";
 import { SetClasswork } from "@/redux/features/classwork-slice";
+import { ImSpinner2 } from "react-icons/im";
 
 interface Classwork {
     id: number,
@@ -29,7 +30,7 @@ const ClassworkList = () => {
     const dispatcher = useDispatch<AppDispatch>()
     const userType = useAppSelector((state) => state.authReducer.value.userType)
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-    const {data: classworks} = useQuery({
+    const {data: classworks, isLoading} = useQuery({
         queryFn: () => getClassworks(classroomID),
         queryKey: ['classworks']
       })
@@ -38,6 +39,9 @@ const ClassworkList = () => {
         <div className='flex flex-row justify-between text-2xl border-b h-10'>
             <h1 className=''>Classworks</h1>
         </div>
+        {isLoading && (<div className='pt-20 flex justify-center'>
+                <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>)}
         {classworks?.map((classwork: Classwork,i: number) => {
             return (
             <Accordion type="single" collapsible className="text-xl" key={classwork.id}>
