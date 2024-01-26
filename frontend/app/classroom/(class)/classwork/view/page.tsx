@@ -58,8 +58,8 @@ const page = () => {
     ? getDaySuffix(new Date(classwork.due_date).getDate())
     : '';
   return (
-    <div className='pt-4 flex flex-col'>
-      <ScrollArea className="h-[550px] w-full">
+    <div className='pt-4 flex flex-col w-auto'>
+      <ScrollArea className="h-[300px] sm:h-[300px] md:h-[350px] lg:h-[450px] xl:h-[550px] w-full">
         <div className='border px-8 py-6 rounded-lg'>
           <div className='text-4xl'>
             {classwork?.title}

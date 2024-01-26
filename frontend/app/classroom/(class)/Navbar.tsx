@@ -6,10 +6,11 @@ const Navbar = () => {
   const NavLinks = [
     { name: "Home", href: "/classroom/home/"},
     { name: "Classwork", href: "/classroom/classwork/"},
+    { name: "Exam", href: "/classroom/exam/"},
     { name: "People", href: "/classroom/people/"},
   ]
   return (
-    <div className='sticky top-[74px] flex flex-row px-6 items-start h-12 w-full border-b-2 border-secondary bg-background'>
+    <div className='sticky top-[74px] flex flex-row px-0 md:px-4 lg:px-6 items-start h-12 w-full border-b-2 border-secondary bg-background'>
       { NavLinks.map((link) => {
         return(
         <Link href={link.href} key={link.name} className='h-full'>

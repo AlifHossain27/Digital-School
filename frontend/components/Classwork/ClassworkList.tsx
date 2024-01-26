@@ -46,9 +46,9 @@ const ClassworkList = () => {
                 <AccordionContent className="text-lg">
                     {classwork.description}
                     {userType==="teacher" ? (
-                    <div className="pt-6 flex flex-row gap-6">
+                    <div className="pt-6 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-4">
                         <Link href='/classroom/classwork/submissions/' onClick={() => dispatcher(SetClasswork(classwork.id))}>
-                            <Button className="rounded-full">View Submissions</Button>
+                            <Button className="rounded-full w-full">View Submissions</Button>
                         </Link>
                         <EditClasswork 
                         classworkID={classwork.id} 
@@ -59,7 +59,7 @@ const ClassworkList = () => {
                     </div>
                     ):(<div className="pt-6 flex flex-row gap-6">
                         <Link href='/classroom/classwork/view/' onClick={() => dispatcher(SetClasswork(classwork.id))}>
-                            <Button className="rounded-full">View Submissions</Button>
+                            <Button className="rounded-full">View Classwork</Button>
                         </Link>
                     </div>)}
                 </AccordionContent>
