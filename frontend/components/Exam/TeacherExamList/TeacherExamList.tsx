@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import {
   Card,
@@ -9,6 +10,8 @@ import {
 } from "@/components/ui/card"
 import { useQuery } from '@tanstack/react-query'
 import { useAppSelector } from '@/redux/store'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
 import getExams from '@/actions/getExams'
 import CreateExam from './CreateExam'
 import Link from "next/link";
@@ -20,6 +23,7 @@ import { BiRightArrowAlt } from 'react-icons/bi'
 import { FaEdit } from 'react-icons/fa'
 import { ImSpinner2 } from "react-icons/im";
 import { Button } from '@/components/ui/button'
+import { SetExam } from '@/redux/features/exam-slice'
 
 interface Exam {
     id: number,
@@ -35,6 +39,7 @@ interface Exam {
 }
 
 const TeacherExamList = () => {
+  const dispatcher = useDispatch<AppDispatch>()
   const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
   const {data: exams, isLoading} = useQuery({
     queryFn: () => getExams(classroomID),
@@ -87,7 +92,7 @@ const TeacherExamList = () => {
                   </Button>
                 )}
                 {!exam.published && (
-                  <Button asChild variant="outline" className='w-full mt-2 text-md gap-4'>
+                  <Button asChild variant="outline" className='w-full mt-2 text-md gap-4' onClick={() => dispatcher(SetExam(exam.id))}>
                     <Link href={'/classroom/exam/edit'}>
                       Edit Exam <FaEdit/>
                     </Link>

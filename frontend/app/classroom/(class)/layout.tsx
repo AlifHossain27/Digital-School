@@ -14,7 +14,7 @@ export default function ClassroomLayout({
 return(
         <div className=''>
           <Navbar/>
-            <section className="container">
+            <section>
             <QueryClientProvider client={queryClient}>
               {children}
             </QueryClientProvider>
