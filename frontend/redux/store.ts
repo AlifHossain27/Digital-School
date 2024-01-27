@@ -3,7 +3,9 @@ import authReducer from './features/auth-slice'
 import uidReducer from './features/uid-slice'
 import classroomReducer from './features/classroom-slice'
 import classworkReducer from './features/classwork-slice'
+import examReducer from './features/exam-slice'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
+
 
 
 export const store = configureStore({
@@ -12,6 +14,7 @@ export const store = configureStore({
     uidReducer,
     classroomReducer,
     classworkReducer,
+    examReducer,
   },
 })
 
