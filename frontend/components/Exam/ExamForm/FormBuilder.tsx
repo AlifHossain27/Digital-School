@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
 import getExam from '@/actions/getExam';
@@ -9,6 +9,8 @@ import PublishFormBtn from './PublishFormBtn';
 import Designer from './Designer';
 import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import DragOverlayWrapper from './DragOverlayWrapper';
+import useDesigner from './Hooks/useDesigner';
+import { ImSpinner2 } from 'react-icons/im'
 
 interface Exam {
     id: number,
@@ -24,6 +26,8 @@ interface Exam {
 }
 
 const FormBuilder = () => {
+    const { setElements } = useDesigner()
+    const [ ready, setReady ] = useState(false)
     const examID = useAppSelector((state) => state.examReducer.value.examID)
     const {data: exam, isLoading} = useQuery<Exam>({
         queryFn: () => getExam(examID),
@@ -31,17 +35,37 @@ const FormBuilder = () => {
       })
     const mouseSensor = useSensor(MouseSensor, {
         activationConstraint: {
-            distance: 10,
-        }
-    })
+          distance: 10, // 10px
+        },
+    });
+    
     const touchSensor = useSensor(TouchSensor, {
         activationConstraint: {
-            delay: 300,
-            tolerance: 5,
-        }
-    })
+          delay: 300,
+          tolerance: 5,
+        },
+    });
     const sensors = useSensors(mouseSensor, touchSensor)
-  return (
+  
+    useEffect(() => {
+        const examContent = `${exam?.content ?? '[]'}`;
+        const elements = JSON.parse(examContent);
+        setElements(elements);
+
+        const readyTimeout = setTimeout(() => setReady(true), 1500);
+
+        return () => clearTimeout(readyTimeout);
+    }, [exam, setElements]);
+
+    if (isLoading || !ready) {
+        return (
+            <div className='pt-20 flex justify-center'>
+                <ImSpinner2 className="animate-spin" size="50" />
+            </div>
+        );
+    }
+  
+    return (
     <DndContext sensors={sensors}>
         <main className='flex flex-col w-full h-full'>
             <nav className='flex justify-between border-b-2 border-secondary p-4 gap-3 items-center'>
