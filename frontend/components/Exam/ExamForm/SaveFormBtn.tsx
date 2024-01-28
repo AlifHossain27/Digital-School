@@ -16,7 +16,7 @@ const SaveFormBtn = ({examID}: {examID: number}) => {
       await updateExam(examID, JsonElements)
       toast({
         title: "Success",
-        description: "Your Form has been saved",
+        description: "Your Exam has been saved",
       });
     } catch (error) {
       toast({

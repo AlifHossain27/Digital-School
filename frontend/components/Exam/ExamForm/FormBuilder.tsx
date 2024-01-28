@@ -78,7 +78,7 @@ const FormBuilder = () => {
                         {!exam?.published && (
                             <div className='flex items-center gap-2'>
                                 <SaveFormBtn examID={examID}/>
-                                <PublishFormBtn/>
+                                <PublishFormBtn examID={examID}/>
                             </div>
                         )}
                 </div>

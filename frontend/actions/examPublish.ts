@@ -1,10 +1,10 @@
-export default async function updateExam(examID:number, content:string) {
-    const resp = await fetch(`http://localhost:8000/api/classroom/exam/${examID}/`, {
+export default async function publishExam(examID:number) {
+    const resp = await fetch(`http://localhost:8000/api/classroom/exam/${examID}/publish/`, {
         method: 'PUT',
         headers: {'Content-Type':'application/json'},
         credentials: 'include',
         body: JSON.stringify({
-            "content": content
+            "published": true
         })
     });
     if (!resp.ok) {
