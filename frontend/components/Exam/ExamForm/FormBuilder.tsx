@@ -60,7 +60,7 @@ const FormBuilder = () => {
                         )}
                 </div>
             </nav>
-            <div className='flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[740px] bg-accent bg-[url(/paper.svg)] dark:bg-[url(/paper-dark.svg)]'>
+            <div className='flex w-full flex-grow items-center justify-center relative overflow-y-auto h-[740px] bg-accent bg-[url(/paper.svg)]'>
                 <Designer/>
             </div>
         </main>
