@@ -3,7 +3,6 @@ import React from 'react'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
 import getExam from '@/actions/getExam';
-import { Button } from '@/components/ui/button';
 import PreviewDialogBtn from './PreviewDialogBtn';
 import SaveFormBtn from './SaveFormBtn';
 import PublishFormBtn from './PublishFormBtn';
@@ -54,7 +53,7 @@ const FormBuilder = () => {
                     <PreviewDialogBtn/>
                         {!exam?.published && (
                             <div className='flex items-center gap-2'>
-                                <SaveFormBtn/>
+                                <SaveFormBtn examID={examID}/>
                                 <PublishFormBtn/>
                             </div>
                         )}
