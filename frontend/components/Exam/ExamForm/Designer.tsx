@@ -102,7 +102,7 @@ const Designer = () => {
                 </div>
                 )}
                 {elements.length > 0 && (
-                    <div className='flex flex-col w-full gap-2 p-4'>
+                    <div className='flex flex-col w-full gap-2 p-4 pb-20'>
                         {elements.map(element => (
                             <DesignerElementWrapper key={element.id} element={element}/>
                         ))}

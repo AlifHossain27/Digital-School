@@ -1,6 +1,6 @@
 import DesignerContextProvider from "@/components/Exam/ExamForm/Context/DesignerContext"
 
-export default function ExamLayout({
+export default function BuilderLayout({
     children,
   }: {
     children: React.ReactNode

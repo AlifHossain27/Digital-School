@@ -85,8 +85,8 @@ const TeacherExamList = () => {
               </CardContent>
               <CardFooter>
                 {exam.published && (
-                  <Button asChild variant="outline" className='w-full mt-2 text-md gap-4'>
-                    <Link href={'/classroom/exam/view'}>
+                  <Button asChild variant="outline" className='w-full mt-2 text-md gap-4' onClick={() => dispatcher(SetExam(exam.id))}>
+                    <Link href={'/classroom/exam/submissions'}>
                       View Submissions <BiRightArrowAlt/>
                     </Link>
                   </Button>
