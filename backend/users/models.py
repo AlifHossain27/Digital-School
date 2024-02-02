@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password, check_password
+from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 
 # Create Admin ID
 class AdminManager(models.Manager):
@@ -54,6 +55,28 @@ class Staff(models.Model):
 
     def is_authenticated(self):
         return True
+    
+    def save(self, *args, **kwargs):
+        # If staff_id is not set, generate a new one
+        if not self.uid:
+            self.uid = self.objects.create_staff_id()
+
+        # Call the parent class's save method
+        super().save(*args, **kwargs)
+
+        # Create a StaffProfile for the newly created Staff
+        StaffProfile.objects.create(
+            staff = self,
+            profile_uid = self.uid,
+            full_name = self.username,
+            first_name = "", 
+            last_name = "",
+            email = "",
+            contact_info = "",
+            permanent_address = "",
+            present_address = "",
+            date_of_birth = "",
+        )
 
 
 # Create Teacher ID
@@ -82,6 +105,28 @@ class Teacher(models.Model):
     def is_authenticated(self):
         return True 
     
+    def save(self, *args, **kwargs):
+        # If teacher_id is not set, generate a new one
+        if not self.uid:
+            self.uid = self.objects.create_teacher_id()
+
+        # Call the parent class's save method
+        super().save(*args, **kwargs)
+
+        # Create a TeacherProfile for the newly created Teacher
+        TeacherProfile.objects.create(
+            teacher = self,
+            profile_uid = self.uid,
+            full_name = self.username,
+            first_name = "", 
+            last_name = "",
+            email = "",
+            contact_info = "",
+            permanent_address = "",
+            present_address = "",
+            date_of_birth = "",
+        )
+    
     
 # Create Student ID
 class StudentManager(models.Manager):
@@ -108,3 +153,27 @@ class Student(models.Model):
 
     def is_authenticated(self):
         return True
+    
+    def save(self, *args, **kwargs):
+        # If student_id is not set, generate a new one
+        if not self.uid:
+            self.uid = self.objects.create_student_id()
+
+        # Call the parent class's save method
+        super().save(*args, **kwargs)
+
+        # Create a StudentProfile for the newly created Student
+        StudentProfile.objects.create(
+            student = self,
+            profile_uid = self.uid,
+            full_name = self.username,
+            first_name = "",
+            last_name = "",
+            father_name = "",
+            father_phone = "",
+            mother_name = "",
+            mother_phone = "",
+            permanent_address = "",
+            present_address = "",
+            date_of_birth = ""
+        )
