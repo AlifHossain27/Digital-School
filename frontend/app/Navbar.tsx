@@ -57,7 +57,7 @@ const Navbar = () => {
           })
           .then((data) => {
             const user_type = data.user_type;
-            const uid = data.admin_id || data.staff_id || data.teacher_id || data.student_id
+            const uid = data.uid
             dispatcher(logIn(user_type));
             dispatcher(SetUID(uid))
           })

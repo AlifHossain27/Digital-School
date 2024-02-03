@@ -2,7 +2,7 @@ import StudentDataTable from '@/components/StudentList/StudentDataTable'
 import React, {Suspense} from 'react'
 import { ImSpinner2 } from "react-icons/im";
 
-const StudentList = () => {
+const StudentListPage = () => {
   return (
     <div className='px-4'>
       <Suspense fallback = {
@@ -16,4 +16,4 @@ const StudentList = () => {
   )
 }
 
-export default StudentList
+export default StudentListPage

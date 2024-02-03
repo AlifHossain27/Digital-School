@@ -37,7 +37,7 @@ const formSchema = z.object({
       }),
   })
 
-const page = () => {
+const TeacherLoginPage = () => {
     const router = useRouter()
     const { toast } = useToast()
     const dispatcher = useDispatch<AppDispatch>()
@@ -56,7 +56,7 @@ const page = () => {
         headers: {'Content-Type':'application/json'},
         credentials: 'include',
         body: JSON.stringify({
-          'teacher_id': values.username,
+          'uid': values.username,
           'password': values.password
       })
     })
@@ -137,4 +137,4 @@ const page = () => {
   )
 }
 
-export default page
+export default TeacherLoginPage

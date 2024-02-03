@@ -5,7 +5,7 @@ import StudentViewer from "../UserViewer/StudentViewer"
 
 
 export type Students = {
-    student_profile_id: string
+    profile_uid: string
     full_name: string
     first_name: string
     last_name: string
@@ -20,7 +20,7 @@ export type Students = {
 
 export const columns: ColumnDef<Students>[] = [
     {
-      accessorKey: "student_profile_id",
+      accessorKey: "profile_uid",
       header: "ID",
     },
     {
@@ -50,7 +50,7 @@ export const columns: ColumnDef<Students>[] = [
         return (
           <div>
             <StudentViewer
-                  profile_id= {data.student_profile_id} 
+                  profile_id= {data.profile_uid} 
                   full_name= {data.full_name} 
                   first_name= {data.first_name} 
                   last_name= {data.last_name} 

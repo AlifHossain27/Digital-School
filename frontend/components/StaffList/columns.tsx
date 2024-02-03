@@ -4,7 +4,7 @@ import EmployeeViewer from "../UserViewer/EmployeeViewer"
 
 
 export type Staffs = {
-    staff_profile_id: string
+    profile_uid: string
     full_name: string
     first_name: string
     last_name: string
@@ -17,7 +17,7 @@ export type Staffs = {
 
 export const columns: ColumnDef<Staffs>[] = [
     {
-      accessorKey: "staff_profile_id",
+      accessorKey: "profile_uid",
       header: "ID",
     },
     {
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Staffs>[] = [
         return (
           <div>
             <EmployeeViewer 
-                  profile_id= {data.staff_profile_id} 
+                  profile_id= {data.profile_uid} 
                   full_name= {data.full_name} 
                   first_name= {data.first_name} 
                   last_name= {data.last_name} 

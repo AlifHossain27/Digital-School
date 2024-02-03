@@ -30,14 +30,14 @@ import { ImSpinner2 } from "react-icons/im";
 
 const formSchema = z.object({
     username: z.string().min(4, {
-      message: "Staff ID must be at least 4 characters.",
+      message: "Student ID must be at least 4 characters.",
     }),
     password: z.string().min(4, {
         message: "Password must be at least 4 characters.",
       }),
   })
 
-const page = () => {
+const StudentLoginPage = () => {
     const router = useRouter()
     const { toast } = useToast()
     const dispatcher = useDispatch<AppDispatch>()
@@ -51,16 +51,16 @@ const page = () => {
 
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      const res = await fetch("http://localhost:8000/api/staff/login/",{
+      const res = await fetch("http://localhost:8000/api/student/login/",{
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         credentials: 'include',
         body: JSON.stringify({
-          'staff_id': values.username,
+          'uid': values.username,
           'password': values.password
       })
     })
-    const user_type = 'staff'
+    const user_type = 'student'
     if (res.ok){
       dispatcher(logIn(user_type))
       dispatcher(SetUID(values.username))
@@ -83,13 +83,13 @@ const page = () => {
     }
 
   return (
-    <div className='flex h-full flex-col items-center'>
-    <Suspense fallback = {
+    <div className='flex h-full flex-col items-center '>
+    <div className='pt-12 flex flex-auto'>
+          <Suspense fallback = {
             <div className='pt-20'>
               <ImSpinner2 className= "animate-spin" size= "50"/>
             </div>
-      }>
-    <div className='pt-12 flex flex-auto'>
+          }>
         <Card className='rounded-lg border-4 border-secondary h-max w-80'>
                 <CardHeader>
                     <CardTitle className='flex items-center justify-center gap-5 pt-12 text-3xl'>
@@ -97,44 +97,44 @@ const page = () => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent className='pt-12'>
-                  <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                          <FormField
-                          control={form.control}
-                          name="username"
-                          render={({ field }) => (
-                              <FormItem>
-                              <FormControl>
-                                  <Input autoComplete='off' placeholder="Staff ID" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                              </FormItem>
-                          )}
-                          />
-                          <FormField
-                          control={form.control}
-                          name="password"
-                          render={({ field }) => (
-                              <FormItem>
-                              <FormControl>
-                                  <Input type='password' placeholder="Password" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                              </FormItem>
-                          )}
-                          />
-                          <div className='pt-2 pb-10'>
-                          <Button className='text-center w-full h-12 text-lg' type="submit" >Login</Button>
-                          </div>
-                      </form>
-                  </Form>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormControl>
+                                <Input autoComplete='off' placeholder="Student ID" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormControl>
+                                <Input type='password' placeholder="Password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <div className='pt-2 pb-10'>
+                        <Button className='text-center w-full h-12 text-lg' type="submit" >Login</Button>
+                        </div>
+                    </form>
+                    </Form>
                 </CardContent>
+                <CardFooter></CardFooter>
         </Card>
-        
+        </Suspense>
     </div>
-    </Suspense>
     </div>
   )
 }
 
-export default page
+export default StudentLoginPage

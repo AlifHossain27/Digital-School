@@ -2,32 +2,32 @@ import React from 'react';
 import { LogIn } from 'lucide-react';
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineClass } from "react-icons/md"
-import { PiExamThin } from "react-icons/pi";
 import { FaUserTie, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
 
 interface AdminUserData {
   id: number;
+  uid: string;
   username: string;
   user_type: string;
 }
 
 interface StaffUserData {
   id: number;
-  staff_id: string;
+  uid: string;
   username: string;
   user_type: string;
 }
 
 interface TeacherUserData {
   id: number;
-  teacher_id: string;
+  uid: string;
   username: string;
   user_type: string;
 }
 
 interface StudentUserData {
   id: number;
-  student_id: string;
+  uid: string;
   username: string;
   user_type: string;
 }
@@ -68,13 +68,11 @@ export async function navItems() {
       menus = [
         { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
         { name: "Classrooms", link: "/classroom/", icon: MdOutlineClass},
-        { name: "Exams", link: "/exams", icon: PiExamThin},
       ];
     } else if (user_type === "student") {
       menus = [
         { name: "DashBoard", link: "/dashboard/", icon: RxDashboard},
         { name: "Classrooms", link: "/classroom/", icon: MdOutlineClass},
-        { name: "Exams", link: "/exams", icon: PiExamThin},
       ];
     }
   }

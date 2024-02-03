@@ -15,7 +15,7 @@ const StaffProfile = () => {
     const [ data, setData] = useState(
       {
         id: 0,
-        staff_profile_id: '',
+        profile_uid: '',
         full_name: '',
         first_name: '',
         last_name: '',
