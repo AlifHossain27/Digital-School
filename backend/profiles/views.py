@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import views, response, permissions, status
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import StaffProfileSerializer, StaffProfilePictureSerializer, TeacherProfileSerializer, TeacherProfilePictureSerializer, StudentProfileSerializer
+from .serializers import StaffProfileSerializer, StaffProfilePictureSerializer, TeacherProfileSerializer, TeacherProfilePictureSerializer, StudentProfileSerializer, StudentProfilePictureSerializer
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
 from . import services
@@ -62,7 +62,8 @@ class UpdateStaffProfilePicture(views.APIView):
         serializer.instance = services.update_staff_profile_picture(user = request.user, profile_uid= profile_uid, profile_data = profile)
 
         return response.Response(data = serializer.data)
-    
+
+# Retrieving Teacher Profile and Updating Profile  
 class RetrieveUpdateTeacherProfile(views.APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsAdministrator | IsStaff | IsTeacher]
@@ -82,7 +83,7 @@ class RetrieveUpdateTeacherProfile(views.APIView):
     
 class UpdateTeacherProfilePicture(views.APIView):
     authentication_classes = [Authentication]
-    permission_classes = [IsAdministrator | IsStaff]
+    permission_classes = [IsTeacher]
     parser_classes = (MultiPartParser, FormParser)
     
     def put(self, request, profile_uid):
@@ -93,3 +94,33 @@ class UpdateTeacherProfilePicture(views.APIView):
 
         return response.Response(data = serializer.data)
 
+# Retrieving Student Profile and Updating Profile
+class RetrieveUpdateStudentProfile(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsAdministrator | IsStaff | IsTeacher | IsStudent]
+
+    def get(self, request, profile_uid): 
+        profile = services.student_profile_detail(profile_uid=profile_uid)
+        serializer = StudentProfileSerializer(profile)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, profile_uid):
+        serializer = StudentProfileSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        profile = serializer.validated_data
+        serializer.instance = services.update_student_profile(user = request.user, profile_uid= profile_uid, profile_data = profile)
+
+        return response.Response(data = serializer.data)
+    
+class UpdateStudentProfilePicture(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsStudent]
+    parser_classes = (MultiPartParser, FormParser)
+    
+    def put(self, request, profile_uid):
+        serializer = StudentProfilePictureSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        profile = serializer.validated_data
+        serializer.instance = services.update_student_profile_picture(user = request.user, profile_uid= profile_uid, profile_data = profile)
+
+        return response.Response(data = serializer.data)

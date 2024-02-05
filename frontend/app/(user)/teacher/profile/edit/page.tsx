@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { ImSpinner2 } from "react-icons/im";
 import EditEmployeeProfile from '@/components/EditProfile/EditEmployeeProfile';
 
-const page = () => {
+const TeacherProfileUpdate = () => {
   return (
     <main className="flex h-full flex-col p-12">
       <Suspense fallback = {
@@ -16,4 +16,4 @@ const page = () => {
   )
 }
 
-export default page
+export default TeacherProfileUpdate

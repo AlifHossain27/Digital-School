@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RetrieveStaffProfiles, RetrieveUpdateStaffProfile, UpdateStaffProfilePicture, RetrieveTeacherProfiles, RetrieveUpdateTeacherProfile, UpdateTeacherProfilePicture, RetrieveStudentProfiles
+from .views import RetrieveStaffProfiles, RetrieveUpdateStaffProfile, UpdateStaffProfilePicture, RetrieveTeacherProfiles, RetrieveUpdateTeacherProfile, UpdateTeacherProfilePicture, RetrieveStudentProfiles, RetrieveUpdateStudentProfile, UpdateStudentProfilePicture
 
 urlpatterns = [
     path("staffs/", RetrieveStaffProfiles.as_view(), name = "Staff List"),
@@ -8,5 +8,7 @@ urlpatterns = [
     path("staff/<str:profile_uid>/", RetrieveUpdateStaffProfile.as_view(), name = "Staff Profile"),
     path("staff/<str:profile_uid>/profile-picture/", UpdateStaffProfilePicture.as_view(), name = "Staff Profile Picture"),
     path("teacher/<str:profile_uid>/", RetrieveUpdateTeacherProfile.as_view(), name = "Teacher Profile"),
-    path("teacher/<str:profile_uid>/", UpdateTeacherProfilePicture.as_view(), name = "Teacher Profile Picture")
+    path("teacher/<str:profile_uid>/", UpdateTeacherProfilePicture.as_view(), name = "Teacher Profile Picture"),
+    path("student/<str:profile_uid>/", RetrieveUpdateStudentProfile.as_view(), name = "Student Profile"),
+    path("student/<str:profile_uid>/", UpdateStudentProfilePicture.as_view(), name = "Student Profile Picture")
 ]

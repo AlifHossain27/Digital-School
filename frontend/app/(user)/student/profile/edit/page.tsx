@@ -1,9 +1,9 @@
+import EditStudentProfile from '@/components/EditProfile/EditStudentProfile';
 import React, { Suspense } from 'react';
 import { ImSpinner2 } from "react-icons/im";
-import StaffProfile from '@/components/Profile/StaffProfile';
 
 
-const StaffProfileDetails = () => {
+const StudentProfileUpdate = () => {
   return (
     <main className="flex h-full flex-col p-12">
       <Suspense fallback = {
@@ -11,10 +11,10 @@ const StaffProfileDetails = () => {
                 <ImSpinner2 className= "animate-spin" size= "50"/>
               </div>
         }>
-          <StaffProfile/>
+          <EditStudentProfile/>
         </Suspense>
     </main>
   )
 }
 
-export default StaffProfileDetails
+export default StudentProfileUpdate

@@ -221,6 +221,29 @@ def update_teacher_profile(user: "Teacher", profile_uid: str, profile_data: "Tea
     profile.save()
     return TeacherProfileDataClass.from_instance(profile_model = profile)
 
+def update_student_profile(user: "Student", profile_uid: str, profile_data: "StudentProfileDataClass"):
+    profile = get_object_or_404(StudentProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+
+    profile.full_name = profile_data.full_name
+    profile.first_name = profile_data.first_name
+    profile.last_name = profile_data.last_name
+    profile.father_name = profile_data.father_name
+    profile.father_phone = profile_data.father_phone
+    profile.mother_name = profile_data.mother_name
+    profile.mother_phone = profile_data.mother_phone
+    profile.permanent_address = profile_data.permanent_address
+    profile.present_address = profile_data.present_address
+    profile.date_of_birth = profile_data.date_of_birth
+
+    profile.save()
+    return StudentProfileDataClass.from_instance(profile_model = profile)
+
+# Update Profile Picture
 def update_staff_profile_picture(user: "Staff", profile_uid: str, profile_data: "StaffProfilePictureDataClass"):
     profile = get_object_or_404(StaffProfile, profile_uid=profile_uid)
     try:
@@ -244,3 +267,15 @@ def update_teacher_profile_picture(user: "Teacher", profile_uid: str, profile_da
     profile.profile_picture = profile_data.profile_picture
     profile.save()
     return TeacherProfilePictureDataClass.from_instance(profile_model=profile)
+
+def update_student_profile_picture(user: "Student", profile_uid: str, profile_data: "StudentProfilePictureDataClass"):
+    profile = get_object_or_404(StudentProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+    
+    profile.profile_picture = profile_data.profile_picture
+    profile.save()
+    return StudentProfilePictureDataClass.from_instance(profile_model=profile)

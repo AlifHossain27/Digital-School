@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card"
 import { ImSpinner2 } from "react-icons/im";
 import Link from 'next/link'
 
-const page = () => {
+const LoginPage = () => {
   return (
     <div className='flex h-full w-auto flex-col items-center justify-between p-12'>  
         <Suspense fallback = {
@@ -48,4 +48,4 @@ const page = () => {
   )
 }
 
-export default page
+export default LoginPage

@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 import { ImSpinner2 } from "react-icons/im";
 
 
-const page = () => {
+const StaffProfileUpdate = () => {
   return (
     <main className="flex h-full flex-col p-12">
       <Suspense fallback = {
@@ -17,4 +17,4 @@ const page = () => {
   )
 }
 
-export default page
+export default StaffProfileUpdate
