@@ -4,6 +4,7 @@ import { useAppSelector } from '@/redux/store';
 import { Button } from '@/components/ui/button';
 import {  Pencil } from "lucide-react"
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 const TeacherProfile = () => {
@@ -12,7 +13,7 @@ const TeacherProfile = () => {
     const [ data, setData] = useState(
       {
         id: 0,
-        teacher_profile_id: '',
+        profile_uid: '',
         full_name: '',
         first_name: '',
         last_name: '',
@@ -57,9 +58,11 @@ const TeacherProfile = () => {
       </div>
       <div className='flex flex-row justify-between pt-6 gap-4'>
           <h1 className='pl-4 text-2xl'>{data.full_name}</h1>
-          <Button variant='ghost'>
-            <Pencil/>
-          </Button>
+          <Link href={`/${user_type}/profile/edit`}>
+            <Button variant='ghost'>
+              <Pencil/>
+            </Button>
+          </Link>
       </div>
 
       <div className='pt-6 text-xl font-semi-bold'>

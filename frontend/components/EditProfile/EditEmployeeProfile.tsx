@@ -40,14 +40,14 @@ const formSchema = z.object({
     date_of_birth: z.any(),
 })
 
-const EditStaffProfile = () => {
+const EditEmployeeProfile = () => {
     const { toast } = useToast()
     const router = useRouter()
     const user_type = useAppSelector((state) => state.authReducer.value.userType);
     const uid = useAppSelector((state) => state.uidReducer.value.userID);
     const [data, setData] = useState({
         id: 0,
-        staff_profile_id: '',
+        profile_uid: '',
         full_name: '',
         first_name: '',
         last_name: '',
@@ -55,8 +55,8 @@ const EditStaffProfile = () => {
         contact_info: '',
         permanent_address: '',
         present_address: '',
-        date_of_birth: undefined,
-        profile_picture: undefined
+        date_of_birth: '',
+        profile_picture: ''
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -110,7 +110,7 @@ const EditStaffProfile = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const formattedDateOfBirth = values.date_of_birth
         ? format(new Date(values.date_of_birth), "yyyy-MM-dd")
-        : null;
+        : '';
         
         const res = await fetch(`http://localhost:8000/api/${user_type}/${uid}/`,{
             method: 'PUT',
@@ -296,4 +296,4 @@ const EditStaffProfile = () => {
   )
 }
 
-export default EditStaffProfile
+export default EditEmployeeProfile

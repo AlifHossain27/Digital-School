@@ -168,14 +168,79 @@ def student_profile_list() -> list["StudentProfileDataClass"]:
 
 
 # Profile Details
-def staff_profile_detail(profile_id: str) -> "StaffProfileDataClass":
-    profile = get_object_or_404(StaffProfile, uid = profile_id)
+def staff_profile_detail(profile_uid: str) -> "StaffProfileDataClass":
+    profile = get_object_or_404(StaffProfile, profile_uid = profile_uid)
     return StaffProfileDataClass.from_instance(profile_model=profile)
 
-def teacher_profile_detail(profile_id: str) -> "TeacherProfileDataClass":
-    profile = get_object_or_404(TeacherProfile, uid = profile_id)
+def teacher_profile_detail(profile_uid: str) -> "TeacherProfileDataClass":
+    profile = get_object_or_404(TeacherProfile, profile_uid = profile_uid)
     return TeacherProfileDataClass.from_instance(profile_model=profile)
 
-def student_profile_detail(profile_id: str) -> "StudentProfileDataClass":
-    profile = get_object_or_404(StudentProfile, uid = profile_id)
+def student_profile_detail(profile_uid: str) -> "StudentProfileDataClass":
+    profile = get_object_or_404(StudentProfile, profile_uid = profile_uid)
     return StudentProfileDataClass.from_instance(profile_model=profile)
+
+# Update Profile
+def update_staff_profile(user: "Staff", profile_uid: str, profile_data: "StaffProfileDataClass"):
+    profile = get_object_or_404(StaffProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+
+    profile.full_name = profile_data.full_name
+    profile.first_name = profile_data.first_name
+    profile.last_name = profile_data.last_name
+    profile.email = profile_data.email
+    profile.contact_info = profile_data.contact_info
+    profile.permanent_address = profile_data.permanent_address
+    profile.present_address = profile_data.present_address
+    profile.date_of_birth = profile_data.date_of_birth
+
+    profile.save()
+    return StaffProfileDataClass.from_instance(profile_model = profile)
+
+def update_teacher_profile(user: "Teacher", profile_uid: str, profile_data: "TeacherProfileDataClass"):
+    profile = get_object_or_404(TeacherProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+
+    profile.full_name = profile_data.full_name
+    profile.first_name = profile_data.first_name
+    profile.last_name = profile_data.last_name
+    profile.email = profile_data.email
+    profile.contact_info = profile_data.contact_info
+    profile.permanent_address = profile_data.permanent_address
+    profile.present_address = profile_data.present_address
+    profile.date_of_birth = profile_data.date_of_birth
+
+    profile.save()
+    return TeacherProfileDataClass.from_instance(profile_model = profile)
+
+def update_staff_profile_picture(user: "Staff", profile_uid: str, profile_data: "StaffProfilePictureDataClass"):
+    profile = get_object_or_404(StaffProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+    
+    profile.profile_picture = profile_data.profile_picture
+    profile.save()
+    return StaffProfilePictureDataClass.from_instance(profile_model=profile)
+
+def update_teacher_profile_picture(user: "Teacher", profile_uid: str, profile_data: "TeacherProfilePictureDataClass"):
+    profile = get_object_or_404(TeacherProfile, profile_uid=profile_uid)
+    try:
+        if profile.profile_uid != user.uid:
+            raise PermissionDenied("You do not have permission to update this profile.")
+    except:
+        raise PermissionDenied("You do not have permission to update this profile.")
+    
+    profile.profile_picture = profile_data.profile_picture
+    profile.save()
+    return TeacherProfilePictureDataClass.from_instance(profile_model=profile)

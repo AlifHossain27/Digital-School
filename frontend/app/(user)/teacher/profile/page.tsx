@@ -7,7 +7,7 @@ const page = () => {
   return (
     <main className="flex h-full flex-col p-12">
       <Suspense fallback = {
-              <div className='pt-20'>
+              <div className='h-full flex items-center justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>
               </div>
         }>

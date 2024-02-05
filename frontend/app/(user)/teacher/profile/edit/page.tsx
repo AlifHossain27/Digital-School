@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { ImSpinner2 } from "react-icons/im";
-import StaffProfile from '@/components/Profile/StaffProfile';
-
+import EditEmployeeProfile from '@/components/EditProfile/EditEmployeeProfile';
 
 const page = () => {
   return (
@@ -11,7 +10,7 @@ const page = () => {
                 <ImSpinner2 className= "animate-spin" size= "50"/>
               </div>
         }>
-          <StaffProfile/>
+          <EditEmployeeProfile/>
         </Suspense>
     </main>
   )
