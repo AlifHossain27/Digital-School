@@ -3,7 +3,7 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
-import getTeachers from '@/actions/getTeachers'
+import { getTeachers } from '@/actions/classroom'
 import AddTeacher from '@/components/People/AddTeacher';
 import { ImSpinner2 } from "react-icons/im";
 
@@ -12,6 +12,7 @@ interface Teacher {
     full_name: string;
     email: string;
     contact_info: string;
+    profile_picture: string;
 }
 
 const TeacherList = () => {

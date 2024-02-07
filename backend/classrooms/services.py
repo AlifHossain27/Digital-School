@@ -58,7 +58,7 @@ def create_classroom(classroom_dc: "ClassroomCreateDataClass") -> "ClassroomCrea
 def delete_classroom(user: "Staff",class_id: str) -> None:
     classroom = get_object_or_404(Classroom, class_id=class_id)
     if user.uid != classroom.staff.profile_uid:
-        raise exceptions.PermissionDenied("You're not the owner of this sale")
+        raise exceptions.PermissionDenied("You're not the owner of this Classroom")
     print(user.uid)
     classroom.delete()
     
@@ -86,23 +86,41 @@ def get_classrooms(user_type: str, profile_uid: str) -> list['ClassroomDataClass
         return [ClassroomDataClass.from_instance(classroom) for classroom in classrooms]
     return []
 
-# Add Teacher to Classroom
-def add_teacher_to_classroom(class_id: str, profile_uid: str) -> "ClassroomDataClass":
+# Get Teachers List
+def get_teachers(class_id: str):
     classroom = get_object_or_404(Classroom, class_id=class_id)
+    teachers = classroom.teachers.all()
+    return teachers
+
+# Add Teacher to Classroom
+def add_teacher_to_classroom(user: "Staff", class_id: str, profile_uid: str) -> "ClassroomDataClass":
+    classroom = get_object_or_404(Classroom, class_id=class_id)
+    if user.uid != classroom.staff.profile_uid:
+        raise exceptions.PermissionDenied("You're not the owner of this Classroom")
     teacher= get_object_or_404(TeacherProfile, profile_uid=profile_uid)
     classroom.teachers.add(teacher)
     return ClassroomDataClass.from_instance(classroom_model= classroom)
 
 # Remove Teacher from Classroom
-def remove_teacher_from_classroom(class_id: str, profile_uid: str) -> "ClassroomDataClass":
+def remove_teacher_from_classroom(user: "Staff", class_id: str, profile_uid: str) -> "ClassroomDataClass":
     classroom = get_object_or_404(Classroom, class_id=class_id)
+    if user.uid != classroom.staff.profile_uid:
+        raise exceptions.PermissionDenied("You're not the owner of this Classroom")
     teacher= get_object_or_404(TeacherProfile, profile_uid=profile_uid)
     classroom.teachers.remove(teacher)
     return ClassroomDataClass.from_instance(classroom_model= classroom)
 
-# Add Student to Classroom
-def add_student_to_classroom(class_id: str, profile_uid: str) -> "ClassroomDataClass":
+# Get Students List
+def get_students(class_id: str):
     classroom = get_object_or_404(Classroom, class_id=class_id)
+    students = classroom.students.all()
+    return students
+
+# Add Student to Classroom
+def add_student_to_classroom(user: "Staff", class_id: str, profile_uid: str) -> "ClassroomDataClass":
+    classroom = get_object_or_404(Classroom, class_id=class_id)
+    if user.uid != classroom.staff.profile_uid:
+        raise exceptions.PermissionDenied("You're not the owner of this Classroom")
     student= get_object_or_404(StudentProfile, profile_uid=profile_uid)
     classroom.students.add(student)
     return ClassroomDataClass.from_instance(classroom_model= classroom)

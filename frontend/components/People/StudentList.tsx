@@ -2,7 +2,7 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query';
 import { useAppSelector } from '@/redux/store';
-import getStudents from '@/actions/getStudents'
+import { getStudents } from '@/actions/classroom'
 import AddStudent from './AddStudent';
 import { ImSpinner2 } from "react-icons/im";
 

@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import ClassroomSerializer, ClassroomCreateSerializer, AddRemoveTeacherSerializer
+from .serializers import TeacherProfileSerializer, StudentProfileSerializer, ClassroomSerializer, ClassroomCreateSerializer, AddRemoveTeacherSerializer
 from . import services
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
@@ -40,6 +40,14 @@ class ListClassrooms(views.APIView):
         serializer = ClassroomSerializer(classrooms, many = True)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
 
+# List Teachers View
+class TeacherList(views.APIView):
+    authentication_classes = [Authentication]
+    def get(self, request, class_id):
+        teachers = services.get_teachers(class_id=class_id)
+        serializer = TeacherProfileSerializer(teachers, many = True)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
 # Add Teacher to Classroom View 
 class AddTeacher(views.APIView):
     authentication_classes = [Authentication]
@@ -49,7 +57,7 @@ class AddTeacher(views.APIView):
         serializer.is_valid(raise_exception=True)
         class_id = serializer.validated_data['class_id']
         teacher = serializer.validated_data['teachers']
-        serializer.instance = services.add_teacher_to_classroom(class_id=class_id, profile_uid= teacher)
+        serializer.instance = services.add_teacher_to_classroom(user=request.user, class_id=class_id, profile_uid= teacher)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
     
 # Remove Teacher from Classroom View
@@ -61,9 +69,17 @@ class RemoveTeacher(views.APIView):
         serializer.is_valid(raise_exception=True)
         class_id = serializer.validated_data['class_id']
         teacher = serializer.validated_data['teachers']
-        serializer.instance = services.remove_teacher_from_classroom(class_id=class_id, profile_uid= teacher)
+        serializer.instance = services.remove_teacher_from_classroom(user= request.user, class_id=class_id, profile_uid= teacher)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
-    
+
+# List Students View
+class StudentList(views.APIView):
+    authentication_classes = [Authentication]
+    def get(self, request, class_id):
+        students = services.get_students(class_id=class_id)
+        serializer = StudentProfileSerializer(students, many = True)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+   
 # Add Student to Classroom View 
 class AddStudent(views.APIView):
     authentication_classes = [Authentication]

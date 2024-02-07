@@ -46,12 +46,13 @@ const AddTeacher = () => {
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch(`http://localhost:8000/api/classroom/${classroomID}/teacher/`,{
+        fetch('http://localhost:8000/api/classroom/add-teacher/',{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
-            "teacher_profile_id": values.teacherID
+                "class_id": classroomID,
+                "teachers": values.teacherID
         }),
         }),
         onSuccess: async (_, values) => {
@@ -65,7 +66,7 @@ const AddTeacher = () => {
         onError: (error) => {
         toast({
             variant: "destructive",
-            title: `Failed to add Teacher: ${error.message || "Unknown error"}`,
+            title: `You are not the owner of this Classroom`,
         });
         router.refresh();
         },
