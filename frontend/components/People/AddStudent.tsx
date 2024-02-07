@@ -45,31 +45,33 @@ const AddStudent = () => {
 
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
-        mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch('http://localhost:8000/api/classroom/add-student/',{
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            credentials: 'include',
-            body: JSON.stringify({
-                "class_id": classroomID,
-                "students": values.studentID
-        }),
-        }),
-        onSuccess: async (_, values) => {
-        queryClient.invalidateQueries({queryKey: ['students']})
-        toast({
-            title: `${values.studentID} Added`,
-            description: `Successfully added ${values.studentID} to the Classroom`,
-        });
-        await form.reset();
-        },
-        onError: (error) => {
-        toast({
-            variant: "destructive",
-            title: `You are not the owner of this Classroom`,
-        });
-        router.refresh();
-        },
+        mutationFn: async (values: z.infer<typeof formSchema>) => {
+            const resp = await fetch('http://localhost:8000/api/classroom/add-student/', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                credentials: 'include',
+                body: JSON.stringify({
+                    "class_id": classroomID,
+                    "students": values.studentID
+                }),
+            });
+    
+            if (resp.ok) {
+                queryClient.invalidateQueries({queryKey: ['students']});
+                toast({
+                    title: `${values.studentID} Added`,
+                    description: `Successfully added ${values.studentID} to the Classroom`,
+                });
+                await form.reset();
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: `Something went wrong`,
+                    description: 'You might not be the owner of this Classroom or the Student might not exist'
+                });
+                await form.reset();
+            }
+        }
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
