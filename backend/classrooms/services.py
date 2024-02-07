@@ -1,6 +1,7 @@
 import dataclasses
 from typing import TYPE_CHECKING
 from .models import Classroom
+from users.models import Staff
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 from rest_framework import response, exceptions, status
 from django.http import Http404
@@ -52,6 +53,14 @@ def create_classroom(classroom_dc: "ClassroomCreateDataClass") -> "ClassroomCrea
     )
     instance.save()
     return ClassroomCreateDataClass.from_instance(instance)
+
+# Delete Classroom
+def delete_classroom(user: "Staff",class_id: str) -> None:
+    classroom = get_object_or_404(Classroom, class_id=class_id)
+    if user.uid != classroom.staff.profile_uid:
+        raise exceptions.PermissionDenied("You're not the owner of this sale")
+    print(user.uid)
+    classroom.delete()
     
 # Retrieve Individual Classroom
 def get_classroom(class_id: str) -> "ClassroomDataClass":

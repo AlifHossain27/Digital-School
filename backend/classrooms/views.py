@@ -14,6 +14,13 @@ class CreateClassroom(views.APIView):
         data = serializer.validated_data
         serializer.instance = services.create_classroom(classroom_dc = data)
         return response.Response(data=serializer.data)
+    
+class DeleteClassroom(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsStaff]
+    def delete(self, request, class_id):
+        services.delete_classroom(user= request.user, class_id=class_id)
+        return response.Response(status = status.HTTP_204_NO_CONTENT)
 
 # Retrieve Individual Classroom View
 class RetrieveClassroom(views.APIView):

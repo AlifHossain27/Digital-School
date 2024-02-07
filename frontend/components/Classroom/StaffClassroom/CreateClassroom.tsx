@@ -51,7 +51,7 @@ const CreateClassroom = () => {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          staff_profile_id: uid,
+          staff: uid,
           name: values.classroom,
         }),
       }),

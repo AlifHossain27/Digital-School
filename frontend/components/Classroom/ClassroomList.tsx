@@ -37,13 +37,13 @@ interface Teacher {
 
 const ClassroomList = () => {
     const dispatcher = useDispatch<AppDispatch>()
-    const user_type = useAppSelector((state) => state.authReducer.value.userType)
+    const userType = useAppSelector((state) => state.authReducer.value.userType)
     const uid = useAppSelector((state) => state.uidReducer.value.userID)
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const resp = await fetch(`http://localhost:8000/api/classroom/${user_type}/${uid}/`, {
+            const resp = await fetch(`http://localhost:8000/api/classroom/${userType}/${uid}/`, {
               method: "GET",
               credentials: 'include',
             });

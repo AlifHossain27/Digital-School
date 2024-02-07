@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import CreateClassroom from '@/components/Classroom/StaffClassroom/CreateClassroom'
 import DeleteClassroom from './DeleteClassroom'
 import { useQuery } from '@tanstack/react-query';
-import getClassroom from '@/actions/getClassroom'
+import { getClassroom } from '@/actions/classroom'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
 import { SetClassroom } from '@/redux/features/classroom-slice';
@@ -38,11 +38,15 @@ interface Teacher {
     students: Student[];
   }
 
+type StaffData = {
+  userType: string;
+  uid: string;
+}
 
-const StaffClassroomList = () => {
+const StaffClassroomList = ( {userType,uid}: StaffData ) => {
   const dispatcher = useDispatch<AppDispatch>()
   const {data: classrooms} = useQuery({
-    queryFn: () => getClassroom(),
+    queryFn: () => getClassroom(userType, uid),
     queryKey: ['classrooms']
   })
   return (

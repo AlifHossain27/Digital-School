@@ -13,7 +13,8 @@ import {
 const queryClient = new QueryClient()
 const page = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const user_type = useAppSelector((state) => state.authReducer.value.userType);
+  const userType = useAppSelector((state) => state.authReducer.value.userType);
+  const uid = useAppSelector((state) => state.uidReducer.value.userID);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +37,9 @@ const page = () => {
         </div>
       ) : (
         <div className='pt-6'>
-          {user_type === 'staff' ? 
+          {userType === 'staff' ? 
           <QueryClientProvider client={queryClient}>
-            <StaffClassroomList />
+            <StaffClassroomList userType= {userType} uid= {uid} />
           </QueryClientProvider> : <ClassroomList />}
         </div>
       )}
