@@ -5,12 +5,18 @@ import { useAppSelector } from '@/redux/store';
 import { getStudents } from '@/actions/classroom'
 import AddStudent from './AddStudent';
 import { ImSpinner2 } from "react-icons/im";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 interface Student {
     student_profile_id: string;
     full_name: string;
     father_name: string;
     mother_name: string;
+    profile_picture: string;
 }
 
 const StudentList = () => {
@@ -46,8 +52,12 @@ const StudentList = () => {
         )}
         {students?.map((student: Student) => {
             return (
-        <div className='py-4 text-xl pl-4' key={student.student_profile_id}>
-            <h1>{student.full_name}</h1>
+        <div className='py-4 text-xl pl-4 flex flex-row gap-6' key={student.student_profile_id}>
+          <Avatar>
+                <AvatarImage src={student.profile_picture} alt="@profile" />
+                <AvatarFallback>Profile</AvatarFallback>
+            </Avatar>
+            <h1 className='pt-2'>{student.full_name}</h1>
         </div>
             )
         })}

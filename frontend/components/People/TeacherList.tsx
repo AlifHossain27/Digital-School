@@ -6,6 +6,11 @@ import { useAppSelector } from '@/redux/store';
 import { getTeachers } from '@/actions/classroom'
 import AddTeacher from '@/components/People/AddTeacher';
 import { ImSpinner2 } from "react-icons/im";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 interface Teacher {
     teacher_profile_id: string;
@@ -47,8 +52,12 @@ const TeacherList = () => {
         )}
         {teachers?.map((teacher:Teacher) => {
             return (
-        <div className='py-4 text-xl pl-4' key={teacher.teacher_profile_id}>
-            <h1>{teacher.full_name}</h1>
+        <div className='py-4 text-xl pl-4 flex flex-row gap-6' key={teacher.teacher_profile_id}>
+            <Avatar>
+                <AvatarImage src={teacher.profile_picture} alt="@profile" />
+                <AvatarFallback>Profile</AvatarFallback>
+            </Avatar>
+            <h1 className='pt-2'>{teacher.full_name}</h1>
         </div>
             )
         })}

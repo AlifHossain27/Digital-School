@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import TeacherProfileSerializer, StudentProfileSerializer, ClassroomSerializer, ClassroomCreateSerializer, AddRemoveTeacherSerializer
+from .serializers import TeacherProfileSerializer, StudentProfileSerializer, ClassroomSerializer, ClassroomCreateSerializer, AddRemoveTeacherSerializer, AddRemoveStudentSerializer
 from . import services
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
@@ -85,11 +85,11 @@ class AddStudent(views.APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsStaff]
     def post(self, request):
-        serializer = AddRemoveTeacherSerializer(data=request.data)
+        serializer = AddRemoveStudentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         class_id = serializer.validated_data['class_id']
         student = serializer.validated_data['students']
-        serializer.instance = services.add_student_to_classroom(class_id=class_id, profile_uid= student)
+        serializer.instance = services.add_student_to_classroom(user=request.user, class_id=class_id, profile_uid= student)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
     
 # Remove Student from Classroom View
@@ -97,7 +97,7 @@ class RemoveStudent(views.APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsStaff]
     def post(self, request):
-        serializer = AddRemoveTeacherSerializer(data=request.data)
+        serializer = AddRemoveStudentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         class_id = serializer.validated_data['class_id']
         student = serializer.validated_data['students']

@@ -46,7 +46,7 @@ const AddStudent = () => {
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch('http://localhost:8000/api/classroom/student/',{
+        fetch('http://localhost:8000/api/classroom/add-student/',{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
