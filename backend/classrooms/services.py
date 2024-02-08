@@ -126,7 +126,7 @@ def add_student_to_classroom(user: "Staff", class_id: str, profile_uid: str) -> 
     return ClassroomDataClass.from_instance(classroom_model= classroom)
 
 # Remove Student from Classroom
-def remove_student_to_classroom(class_id: str, profile_uid: str) -> "ClassroomDataClass":
+def remove_student_from_classroom(class_id: str, profile_uid: str) -> "ClassroomDataClass":
     classroom = get_object_or_404(Classroom, class_id=class_id)
     student= get_object_or_404(StudentProfile, profile_uid=profile_uid)
     classroom.students.remove(student)
