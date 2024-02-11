@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "users",
     "profiles",
     "classrooms",
+    "classworks",
 ]
 
 MIDDLEWARE = [

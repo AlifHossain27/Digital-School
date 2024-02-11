@@ -59,7 +59,6 @@ def delete_classroom(user: "Staff",class_id: str) -> None:
     classroom = get_object_or_404(Classroom, class_id=class_id)
     if user.uid != classroom.staff.profile_uid:
         raise exceptions.PermissionDenied("You're not the owner of this Classroom")
-    print(user.uid)
     classroom.delete()
     
 # Retrieve Individual Classroom
