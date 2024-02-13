@@ -23,3 +23,12 @@ class ListClassworks(views.APIView):
         classworks = services.classwork_list(class_id=class_id)
         serializer = ClassworkSerializer(classworks, many=True)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
+    
+# Retrieve Update Delete Classwork
+class RetrieveUpdateDeleteClasswork(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsTeacher | IsStudent]
+    def get(self, request, classwork_id):
+        classwork = services.get_classwork(classwork_id=classwork_id)
+        serializer = ClassworkSerializer(classwork)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)

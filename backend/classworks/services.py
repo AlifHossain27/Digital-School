@@ -80,3 +80,8 @@ def classwork_list(class_id: str) -> ClassworkDataClass:
     classworks = Classwork.objects.filter(classroom_id= classroom_id)
 
     return [ClassworkDataClass.from_instance(classwork) for classwork in classworks]
+
+# Retrieve Classwork
+def get_classwork(classwork_id: str) -> ClassworkDataClass:
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    return ClassworkDataClass.from_instance(classwork)

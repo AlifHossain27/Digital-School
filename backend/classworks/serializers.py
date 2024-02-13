@@ -13,13 +13,13 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ClassworkSerializer(serializers.Serializer):
+    classwork_id = serializers.CharField(read_only=True)
     title = serializers.CharField(read_only=True)
     description = serializers.CharField(read_only=True)
     due_date = serializers.DateTimeField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
     classroom = serializers.CharField(read_only=True)
     students = StudentProfileSerializer(many=True, read_only=True)
-    classwork_id = serializers.CharField(read_only=True)
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
