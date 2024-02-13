@@ -38,3 +38,6 @@ class RetrieveUpdateDeleteClasswork(views.APIView):
         data = serializer.validated_data
         serializer.instance = services.update_classwork(user= request.user, classwork_id=classwork_id, classwork_dc=data)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+    def delete(self, request, classwork_id):
+        data = services.delete_classwork(user= request.user, classwork_id=classwork_id)
+        return response.Response(data=data, status=status.HTTP_200_OK)

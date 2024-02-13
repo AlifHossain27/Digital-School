@@ -102,4 +102,12 @@ def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateCla
     classwork.save()
     return CreateClassworkDataClass.from_instance(classwork)
 
+# Delete Classwork
+def delete_classwork(user: "TeacherProfile", classwork_id: str):
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    teacher = get_object_or_404(TeacherProfile, profile_uid= user.uid)
+    if teacher != classwork.teacher:
+        raise exceptions.PermissionDenied("You're not in the Classroom")
+    classwork.delete()
+    return f"Successfully deleted classwork {classwork.title}"
     
