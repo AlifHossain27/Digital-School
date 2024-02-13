@@ -32,3 +32,9 @@ class RetrieveUpdateDeleteClasswork(views.APIView):
         classwork = services.get_classwork(classwork_id=classwork_id)
         serializer = ClassworkSerializer(classwork)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
+    def put(self, request, classwork_id):
+        serializer = CreateClassworkSerializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        serializer.instance = services.update_classwork(user= request.user, classwork_id=classwork_id, classwork_dc=data)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)

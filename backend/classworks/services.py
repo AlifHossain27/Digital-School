@@ -85,3 +85,21 @@ def classwork_list(class_id: str) -> ClassworkDataClass:
 def get_classwork(classwork_id: str) -> ClassworkDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     return ClassworkDataClass.from_instance(classwork)
+
+# Update Classwork
+def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateClassworkDataClass") -> CreateClassworkDataClass:
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    teacher = get_object_or_404(TeacherProfile, profile_uid= user.uid)
+    if teacher != classwork.teacher:
+        raise exceptions.PermissionDenied("You're not in the Classroom")
+    
+    classwork.title = classwork_dc.title
+    classwork.description = classwork_dc.description
+    classwork.due_date = classwork_dc.due_date
+    classwork.teacher = teacher
+    classwork.classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
+    classwork.classwork_id = classwork_dc.classwork_id
+    classwork.save()
+    return CreateClassworkDataClass.from_instance(classwork)
+
+    
