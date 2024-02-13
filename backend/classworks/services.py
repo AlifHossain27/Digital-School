@@ -1,6 +1,6 @@
 import dataclasses
 from typing import TYPE_CHECKING
-from .models import Classwork
+from .models import Classwork, ClassworkSubmission
 from users.models import Staff, Teacher, Student
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 from classrooms.models import Classroom
@@ -33,9 +33,9 @@ class ClassworkDataClass:
             id = classwork_model.id
         )
     
-# Create Classwork Dataclass
+# Create Update Classwork Dataclass
 @dataclasses.dataclass
-class CreateClassworkDataClass:
+class CreateUpdateClassworkDataClass:
     title: str
     description: str
     due_date: str
@@ -55,9 +55,28 @@ class CreateClassworkDataClass:
             classwork_id = classwork_model.classwork_id,
             id = classwork_model.id
         )
+    
+# Create Update Classwork Submission Dataclass
+@dataclasses.dataclass
+class CreateUpdateClassworkSubmissionDataClass:
+    classwork: str
+    student: str = None
+    submission_text: str = None
+    attachment: any = None
+    id: int = None
+
+    @classmethod
+    def from_instance(cls, classwork_submission_model: "ClassworkSubmission"):
+        return cls(
+            classwork = classwork_submission_model.classwork,
+            student = classwork_submission_model.student,
+            submission_text = classwork_submission_model.submission_text,
+            attachment = classwork_submission_model.attachment,
+            id = classwork_submission_model.id
+        )
 
 # Create Classwork
-def create_classwork(user: "Teacher", classwork_dc: "CreateClassworkDataClass") -> "CreateClassworkDataClass":
+def create_classwork(user: "Teacher", classwork_dc: "CreateUpdateClassworkDataClass") -> "CreateUpdateClassworkDataClass":
     classroom_model = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
     teacher_model = get_object_or_404(TeacherProfile, profile_uid = user.uid)
     if teacher_model not in classroom_model.teachers.all():
@@ -72,7 +91,7 @@ def create_classwork(user: "Teacher", classwork_dc: "CreateClassworkDataClass") 
         classwork_id = classwork_dc.classwork_id
     )
     instance.save()
-    return CreateClassworkDataClass.from_instance(instance)
+    return CreateUpdateClassworkDataClass.from_instance(instance)
 
 # List Classwork
 def classwork_list(class_id: str) -> ClassworkDataClass:
@@ -87,7 +106,7 @@ def get_classwork(classwork_id: str) -> ClassworkDataClass:
     return ClassworkDataClass.from_instance(classwork)
 
 # Update Classwork
-def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateClassworkDataClass") -> CreateClassworkDataClass:
+def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateUpdateClassworkDataClass") -> CreateUpdateClassworkDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     teacher = get_object_or_404(TeacherProfile, profile_uid= user.uid)
     if teacher != classwork.teacher:
@@ -100,7 +119,7 @@ def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateCla
     classwork.classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
     classwork.classwork_id = classwork_dc.classwork_id
     classwork.save()
-    return CreateClassworkDataClass.from_instance(classwork)
+    return CreateUpdateClassworkDataClass.from_instance(classwork)
 
 # Delete Classwork
 def delete_classwork(user: "TeacherProfile", classwork_id: str):
@@ -110,4 +129,20 @@ def delete_classwork(user: "TeacherProfile", classwork_id: str):
         raise exceptions.PermissionDenied("You're not in the Classroom")
     classwork.delete()
     return f"Successfully deleted classwork {classwork.title}"
+
+# Create Classwork Submission
+def create_classwork_submission(user: "StudentProfile", classwork_id: str, classwork_submission_dc: "CreateUpdateClassworkSubmissionDataClass") ->  CreateUpdateClassworkSubmissionDataClass:
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    classroom = get_object_or_404(Classroom, class_id=classwork.classroom.class_id)
+    student = get_object_or_404(StudentProfile, profile_uid=user.uid)
+    if student not in classroom.students.all():
+        raise exceptions.PermissionDenied("You're not in the Classroom")
     
+    instance = ClassworkSubmission(
+        classwork = classwork,
+        student = student,
+        submission_text = classwork_submission_dc.submission_text,
+        attachment = classwork_submission_dc.attachment,
+    )
+    instance.save()
+    return CreateUpdateClassworkSubmissionDataClass.from_instance(instance)

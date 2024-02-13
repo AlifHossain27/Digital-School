@@ -38,5 +38,12 @@ class ClassworkSubmission(models.Model):
     attachment = models.FileField(upload_to=classwork_submission_file_path, null=True, blank=True, verbose_name="File Upload")
     submission_text = models.TextField(blank=True, null=True, verbose_name="Submission Text")
 
+    def save(self, *args, **kwargs):
+        if not self.submission_id:
+            current_time = timezone.now()
+            unique_number = self.__class__.objects.count() + 1
+            self.submission_id = f"SUBMISSION-{current_time.strftime('%Y')}-{unique_number:04d}"
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.student} - {self.classwork.title} Submission"
