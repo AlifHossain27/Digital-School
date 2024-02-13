@@ -8,6 +8,7 @@ from rest_framework import response, exceptions, status
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
+# Classwork Dataclass
 @dataclasses.dataclass
 class ClassworkDataClass:
     title: str
@@ -32,6 +33,7 @@ class ClassworkDataClass:
             id = classwork_model.id
         )
     
+# Create Classwork Dataclass
 @dataclasses.dataclass
 class CreateClassworkDataClass:
     title: str
@@ -54,6 +56,7 @@ class CreateClassworkDataClass:
             id = classwork_model.id
         )
 
+# Create Classwork
 def create_classwork(user: "Teacher", classwork_dc: "CreateClassworkDataClass") -> "CreateClassworkDataClass":
     classroom_model = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
     teacher_model = get_object_or_404(TeacherProfile, profile_uid = user.uid)
@@ -70,3 +73,10 @@ def create_classwork(user: "Teacher", classwork_dc: "CreateClassworkDataClass") 
     )
     instance.save()
     return CreateClassworkDataClass.from_instance(instance)
+
+# List Classwork
+def classwork_list(class_id: str) -> ClassworkDataClass:
+    classroom_id = get_object_or_404(Classroom, class_id= class_id)
+    classworks = Classwork.objects.filter(classroom_id= classroom_id)
+
+    return [ClassworkDataClass.from_instance(classwork) for classwork in classworks]

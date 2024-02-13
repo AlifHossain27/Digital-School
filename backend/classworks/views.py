@@ -14,3 +14,12 @@ class CreateClasswork(views.APIView):
         data = serializer.validated_data
         serializer.instance = services.create_classwork(user= request.user,classwork_dc = data)
         return response.Response(data=serializer.data)
+
+# List all the classworks in the Classroom
+class ListClassworks(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsAdministrator | IsStaff | IsTeacher | IsStudent]
+    def get(self, request, class_id):
+        classworks = services.classwork_list(class_id=class_id)
+        serializer = ClassworkSerializer(classworks, many=True)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
