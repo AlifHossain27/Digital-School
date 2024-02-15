@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, CreateUpdateClassworkSubmissionSerializer
+from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer
 from . import services
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
@@ -50,5 +50,14 @@ class CreateClassworkSubmission(views.APIView):
         serializer = CreateUpdateClassworkSubmissionSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        submission = services.create_classwork_submission(user=request.user, classwork_id=classwork_id, classwork_submission_dc=data)
+        serializer.instance = services.create_classwork_submission(user=request.user, classwork_id=classwork_id, classwork_submission_dc=data)
         return response.Response(data=serializer.data)
+    
+# Retrieve Classwork Submissions List
+class RetrieveClassworkSubmissionsList(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsTeacher | IsStudent]
+    def get(self, request, classwork_id, class_id):
+        submission = services.get_classwork_submission_list(user=request.user, classroom_id=class_id, classwork_id=classwork_id)
+        serializer = ClassworkSubmissionSerializer(submission, many=True)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
-from .services import CreateUpdateClassworkDataClass, ClassworkDataClass, CreateUpdateClassworkSubmissionDataClass
+from .services import CreateUpdateClassworkDataClass, ClassworkDataClass, CreateUpdateClassworkSubmissionDataClass, ClassworkSubmissionDataClass
 
 # Teacher Serializer
 class TeacherProfileSerializer(serializers.ModelSerializer):
@@ -41,6 +41,24 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
         data = super().to_internal_value(data)
         return CreateUpdateClassworkDataClass(**data)
     
+# Classwork Submission Serializer
+class ClassworkSubmissionSerializer(serializers.Serializer):
+    classwork = serializers.CharField()
+    student = StudentProfileSerializer()
+    submission_text = serializers.CharField()
+    attachment = serializers.FileField()
+    attachment_name = serializers.SerializerMethodField()
+    attachment_size = serializers.SerializerMethodField()
+
+    def get_attachment_name(self, obj):
+        return obj.attachment.name if obj.attachment else None
+
+    def get_attachment_size(self, obj):
+        return obj.attachment.size if obj.attachment else None
+
+    def to_internal_value(self, data):
+        data = super().to_internal_value(data)
+        return ClassworkSubmissionDataClass(**data)
 # Create Update Classwork Submission Serializer
 class CreateUpdateClassworkSubmissionSerializer(serializers.Serializer):
     classwork = serializers.CharField(required=False)

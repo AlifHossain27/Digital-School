@@ -56,6 +56,26 @@ class CreateUpdateClassworkDataClass:
             id = classwork_model.id
         )
     
+# Classwork Submission Dataclass
+@dataclasses.dataclass
+class ClassworkSubmissionDataClass:
+    classwork: str
+    student: str = None
+    submission_text: str = None
+    attachment: any = None
+    attachment_name: str = None
+    attachment_size: str = None
+    id: int = None
+
+    @classmethod
+    def from_instance(cls, classwork_submission_model: "ClassworkSubmission"):
+        return cls(
+            classwork = classwork_submission_model.classwork,
+            student = classwork_submission_model.student,
+            submission_text = classwork_submission_model.submission_text,
+            attachment = classwork_submission_model.attachment,
+            id = classwork_submission_model.id
+        )
 # Create Update Classwork Submission Dataclass
 @dataclasses.dataclass
 class CreateUpdateClassworkSubmissionDataClass:
@@ -146,3 +166,19 @@ def create_classwork_submission(user: "StudentProfile", classwork_id: str, class
     )
     instance.save()
     return CreateUpdateClassworkSubmissionDataClass.from_instance(instance)
+
+# Classwork Submissions List
+def get_classwork_submission_list(user ,classroom_id: str, classwork_id: str) -> ClassworkSubmissionDataClass:
+    classroom = get_object_or_404(Classroom, class_id=classroom_id)
+    if user.uid.startswith('S-'):
+        submittor = get_object_or_404(StudentProfile, profile_uid=user.uid)
+        if submittor not in classroom.students.all():
+            raise exceptions.PermissionDenied("You're not in the Classroom")
+    if user.uid.startswith('T-'):
+        submittor = get_object_or_404(TeacherProfile, profile_uid=user.uid)
+        if submittor not in classroom.teachers.all():
+            raise exceptions.PermissionDenied("You're not in the Classroom")
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    submissions = ClassworkSubmission.objects.filter(classwork_id=classwork)
+    
+    return [ClassworkSubmissionDataClass.from_instance(submission) for submission in submissions]
