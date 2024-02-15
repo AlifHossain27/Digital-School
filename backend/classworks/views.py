@@ -61,3 +61,19 @@ class RetrieveClassworkSubmissionsList(views.APIView):
         submission = services.get_classwork_submission_list(user=request.user, classroom_id=class_id, classwork_id=classwork_id)
         serializer = ClassworkSubmissionSerializer(submission, many=True)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+# Retrieve Classwork Submission
+class RetrieveClassworkSubmission(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsStudent]
+    def get(self, request, classwork_id, class_id):
+        submission = services.get_classwork_submission(user=request.user, classroom_id=class_id, classwork_id=classwork_id)
+        serializer = ClassworkSubmissionSerializer(submission, many=True)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+class UpdateDeleteClassworkSubmission(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsStudent]
+    def delete(self, request, submission_id):
+        data = services.delete_classwork_submission(user=request.user, submission_id=submission_id)
+        return response.Response(data=data, status=status.HTTP_200_OK)

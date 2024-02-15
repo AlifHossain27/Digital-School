@@ -182,3 +182,28 @@ def get_classwork_submission_list(user ,classroom_id: str, classwork_id: str) ->
     submissions = ClassworkSubmission.objects.filter(classwork_id=classwork)
     
     return [ClassworkSubmissionDataClass.from_instance(submission) for submission in submissions]
+
+# Classwork Submission
+def get_classwork_submission(user ,classroom_id: str, classwork_id: str) -> ClassworkSubmissionDataClass:
+    classroom = get_object_or_404(Classroom, class_id=classroom_id)
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    if user.uid.startswith('S-'):
+        submittor = get_object_or_404(StudentProfile, profile_uid=user.uid)
+        if submittor not in classroom.students.all():
+            raise exceptions.PermissionDenied("You're not in the Classroom")
+        submissions = ClassworkSubmission.objects.filter(classwork_id=classwork, student=submittor)
+    if user.uid.startswith('T-'):
+        raise exceptions.PermissionDenied("You're not allowed")
+        
+    return [ClassworkSubmissionDataClass.from_instance(submission) for submission in submissions]
+
+def delete_classwork_submission(user ,submission_id: str):
+    submission = get_object_or_404(ClassworkSubmission, submission_id=submission_id)
+    if user.uid.startswith('S-'):
+        submittor = get_object_or_404(StudentProfile, profile_uid=user.uid)
+        if submittor != submission.student:
+            raise exceptions.PermissionDenied("You're not allowed")
+        submission.delete()
+    if user.uid.startswith('T-'):
+        raise exceptions.PermissionDenied("You're not allowed")
+    return f"Successfully deleted classwork submission"
