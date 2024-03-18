@@ -41,7 +41,7 @@ const formSchema = z.object({
 })
 
 type ClassworkData = {
-    classworkID: number,
+    classworkID: string,
     classworkTitle: string,
     classworkDescription: string,
     classworkDueDate: any
@@ -50,6 +50,7 @@ type ClassworkData = {
 const EditClasswork = ({classworkID, classworkTitle, classworkDescription, classworkDueDate}: ClassworkData) => {
     const { toast } = useToast()
     const router = useRouter()
+    const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
     const uid = useAppSelector((state) => state.uidReducer.value.userID)
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -64,16 +65,17 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch(`http://localhost:8000/api/assignment/${classworkID}/`,{
+        fetch(`http://localhost:8000/api/classwork/${classworkID}/`,{
             method: 'PUT',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
-            "teacher_profile_id": uid,
+            "classwork_id": classworkID,
+            "classroom": classroomID,
             "title": values.title,
             "description": values.description,
             "due_date": values.due_date
-            ? format(new Date(values.due_date), "yyyy-MM-dd")
+            ? format(new Date(values.due_date), "yyyy-MM-dd HH:mm:ss.SSSSSS")
             : null
         }),
         }),
