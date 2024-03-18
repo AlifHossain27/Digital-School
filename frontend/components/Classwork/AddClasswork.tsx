@@ -57,18 +57,17 @@ const AddClasswork = () => {
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch(`http://localhost:8000/api/assignment/create/`,{
+        fetch(`http://localhost:8000/api/classwork/create/`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
             body: JSON.stringify({
-            "teacher_profile_id": uid,
             "title": values.title,
             "description": values.description,
             "due_date": values.due_date
-            ? format(new Date(values.due_date), "yyyy-MM-dd")
+            ? format(new Date(values.due_date), "yyyy-MM-dd HH:mm:ss.SSSSSS")
             : null,
-            "class_id": classroomID
+            "classroom": classroomID
         }),
         }),
         onSuccess: async (_, values) => {
@@ -87,7 +86,7 @@ const AddClasswork = () => {
         router.refresh();
         },
     });
-    
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             await mutate(values);

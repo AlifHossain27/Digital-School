@@ -5,12 +5,12 @@ type InitialState = {
 }
 
 type ClassworkState = {
-    classworkID: number;
+    classworkID: string;
 }
 
 const initialState = {
     value: {    
-        classworkID: 0
+        classworkID: ''
     } as ClassworkState
 } as InitialState
 
@@ -21,7 +21,7 @@ export const classroom = createSlice({
         ResetClasswork: () => {
             return initialState
         },
-        SetClasswork: (state, action: PayloadAction<number>) => {
+        SetClasswork: (state, action: PayloadAction<string>) => {
             return {
                 value: {
                     classworkID: action.payload,
