@@ -108,7 +108,7 @@ def create_classwork(user: "Teacher", classwork_dc: "CreateUpdateClassworkDataCl
         due_date = classwork_dc.due_date,
         teacher = get_object_or_404(TeacherProfile, profile_uid = user.uid),
         classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom),
-        classwork_id = classwork_dc.classwork_id
+        classwork_id = Classwork.objects.create_classwork_id()
     )
     instance.save()
     return CreateUpdateClassworkDataClass.from_instance(instance)
@@ -137,7 +137,7 @@ def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateUpd
     classwork.due_date = classwork_dc.due_date
     classwork.teacher = teacher
     classwork.classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
-    classwork.classwork_id = classwork_dc.classwork_id
+    classwork.classwork_id = classwork.classwork_id
     classwork.save()
     return CreateUpdateClassworkDataClass.from_instance(classwork)
 

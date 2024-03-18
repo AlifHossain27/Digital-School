@@ -3,6 +3,14 @@ from django.utils import timezone
 from profiles.models import TeacherProfile, StudentProfile
 from classrooms.models import Classroom
 
+
+class ClassworkManager(models.Manager):
+    def create_classwork_id(self, **extra_fields):
+        current_time = timezone.now()
+        unique_number = Classwork.objects.count() + 1
+        classwork_id = f"CLASSWORK-{current_time.strftime('%Y')}-{unique_number:04d}"
+        return classwork_id
+    
 # Classwork Model
 class Classwork(models.Model):
     classwork_id = models.CharField(max_length=20,unique=True,verbose_name="Classwork")
@@ -13,13 +21,8 @@ class Classwork(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, verbose_name="Classroom", related_name="classworks")
     students = models.ManyToManyField(StudentProfile, verbose_name="Assigned Students", related_name="classworks")
 
-    def save(self, *args, **kwargs):
-        if not self.classwork_id:
-            current_time = timezone.now()
-            unique_number = self.__class__.objects.count() + 1
-            self.classwork_id = f"CLASSWORK-{current_time.strftime('%Y')}-{unique_number:04d}"
-        super().save(*args, **kwargs)
-
+    objects = ClassworkManager()
+    
     def __str__(self):
         return self.title
     

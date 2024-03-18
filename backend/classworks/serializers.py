@@ -35,7 +35,7 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
     due_date = serializers.DateTimeField()
     teacher = serializers.CharField(read_only=True)
     classroom = serializers.CharField()
-    classwork_id = serializers.CharField(required=False)
+    classwork_id = serializers.CharField(read_only=True)
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
