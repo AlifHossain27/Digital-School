@@ -12,7 +12,7 @@ import { useToast } from "@/components/ui/use-toast"
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
 
 type ClassworkData = {
-    classworkID: number,
+    classworkID: string,
     classworkTitle: string
 }
 
@@ -21,7 +21,7 @@ const DeleteClasswork = ({classworkID, classworkTitle}: ClassworkData) => {
     const queryClient = useQueryClient()
 
     const { mutate } = useMutation({
-        mutationFn: async () => fetch(`http://localhost:8000/api/assignment/${classworkID}/`,{
+        mutationFn: async () => fetch(`http://localhost:8000/api/classwork/${classworkID}/`,{
           method: "DELETE",
           credentials: "include"
         }),
