@@ -51,7 +51,6 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
     const { toast } = useToast()
     const router = useRouter()
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-    const uid = useAppSelector((state) => state.uidReducer.value.userID)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -105,16 +104,18 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
     }
 
   return (
+    
     <Dialog>
-    <DialogTrigger asChild>
-        <Button className="rounded-full">Update Classwork</Button>
+    <DialogTrigger asChild onClick={(e) => e.stopPropagation()}> 
+        <Button variant='ghost' className="w-[10rem] text-center rounded-none">Update</Button>
     </DialogTrigger>
-    <DialogContent>
+    <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
         <DialogTitle>Create A New Classwork</DialogTitle>
         </DialogHeader>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">
+            {/*<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">*/}
                 <FormField
                 control={form.control}
                 name="title"
@@ -180,13 +181,14 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
                     </FormItem>
                 )}
                 />
-                <DialogClose asChild>
+                <DialogClose asChild onClick={(e) => e.stopPropagation()}>
                         <Button className='text-center w-full h-12 text-lg' type="submit" >Update</Button>
                 </DialogClose>
             </form>
         </Form>
     </DialogContent>
     </Dialog>
+
   )
 }
 
