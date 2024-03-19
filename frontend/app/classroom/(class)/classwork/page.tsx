@@ -20,17 +20,17 @@ const page = () => {
       <div></div>
     }
   return (
-    <div className='xl:px-48 lg:px-32 md:px-24 sm:container pt-8'>
+    <div className='xl:px-48 lg:px-32 md:px-24 sm:container pt-6'>
       <Suspense fallback = {
               <div className='pt-20 flex justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>
               </div>
         }>
-      <div className='pt-6'>
+      <div className='pt-4'>
         {addBtn}
       </div>
 
-      <div className='pt-6'>
+      <div className='pt-4'>
         <ClassworkList/>
       </div>
       </Suspense>

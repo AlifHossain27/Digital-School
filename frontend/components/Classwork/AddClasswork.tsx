@@ -32,6 +32,7 @@ import { useAppSelector } from '@/redux/store';
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
 import { Input } from "@/components/ui/input"
 import { Button } from "../ui/button"
+import { Plus } from "lucide-react"
 
 const formSchema = z.object({
     title: z.string(),
@@ -43,7 +44,6 @@ const formSchema = z.object({
 const AddClasswork = () => {
     const { toast } = useToast()
     const router = useRouter()
-    const uid = useAppSelector((state) => state.uidReducer.value.userID)
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -97,7 +97,7 @@ const AddClasswork = () => {
   return (
     <Dialog>
     <DialogTrigger asChild>
-        <Button className="rounded-full h-12">Create New Classwork</Button>
+        <Button className="rounded-full h-12 w-28 gap-2 shadow-md"> <Plus /> Create</Button>
     </DialogTrigger>
     <DialogContent>
         <DialogHeader>
