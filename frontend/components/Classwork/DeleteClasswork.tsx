@@ -50,17 +50,17 @@ const DeleteClasswork = ({classworkID, classworkTitle}: ClassworkData) => {
       }
   return (
     <Dialog>
-        <DialogTrigger asChild>
-            <Button variant="destructive" className="rounded-full">Delete Classwork</Button>
+        <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
+            <Button variant="ghost" className="w-[10rem] text-center rounded-none">Delete</Button>
         </DialogTrigger>
         <DialogContent>
             <DialogHeader>
                 <DialogTitle>Are you sure you want to Delete this Classroom?</DialogTitle>
             </DialogHeader>
             <DialogDescription className='text-xl'>Classwork Title: {classworkTitle}</DialogDescription>
-            <DialogClose asChild>
-            <Button variant="destructive" className='w-full' type="submit" onClick={deleteClasswork}>Delete</Button>
-        </DialogClose>
+            <DialogClose asChild onClick={(e) => e.stopPropagation()}>
+              <Button variant="destructive" className='w-full' type="submit" onClick={deleteClasswork}>Delete</Button>
+            </DialogClose>
         </DialogContent>
         </Dialog>
   )
