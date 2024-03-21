@@ -30,7 +30,6 @@ interface Classwork {
     due_date: string;
     teacher: string;
     classroom: string;
-    students: string;
 }
 
 const ClassworkList = () => {

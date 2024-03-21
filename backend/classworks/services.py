@@ -16,7 +16,6 @@ class ClassworkDataClass:
     due_date: str
     teacher: str
     classroom: str
-    students: str = None
     classwork_id: str = None
     id: int = None
 
@@ -28,7 +27,6 @@ class ClassworkDataClass:
             due_date = classwork_model.due_date,
             teacher = classwork_model.teacher,
             classroom = classwork_model.classroom,
-            students = classwork_model.students,
             classwork_id = classwork_model.classwork_id,
             id = classwork_model.id
         )
@@ -61,7 +59,7 @@ class CreateUpdateClassworkDataClass:
 class ClassworkSubmissionDataClass:
     classwork: str
     student: str = None
-    submission_text: str = None
+    turn_in: bool = False
     attachment: any = None
     attachment_name: str = None
     attachment_size: str = None
@@ -72,7 +70,7 @@ class ClassworkSubmissionDataClass:
         return cls(
             classwork = classwork_submission_model.classwork,
             student = classwork_submission_model.student,
-            submission_text = classwork_submission_model.submission_text,
+            turn_in = classwork_submission_model.turn_in,
             attachment = classwork_submission_model.attachment,
             id = classwork_submission_model.id
         )
@@ -81,7 +79,7 @@ class ClassworkSubmissionDataClass:
 class CreateUpdateClassworkSubmissionDataClass:
     classwork: str
     student: str = None
-    submission_text: str = None
+    turn_in: bool = False
     attachment: any = None
     id: int = None
 
@@ -90,7 +88,7 @@ class CreateUpdateClassworkSubmissionDataClass:
         return cls(
             classwork = classwork_submission_model.classwork,
             student = classwork_submission_model.student,
-            submission_text = classwork_submission_model.submission_text,
+            turn_in = classwork_submission_model.turn_in,
             attachment = classwork_submission_model.attachment,
             id = classwork_submission_model.id
         )
@@ -161,7 +159,7 @@ def create_classwork_submission(user: "StudentProfile", classwork_id: str, class
     instance = ClassworkSubmission(
         classwork = classwork,
         student = student,
-        submission_text = classwork_submission_dc.submission_text,
+        turn_in = classwork_submission_dc.turn_in,
         attachment = classwork_submission_dc.attachment,
     )
     instance.save()

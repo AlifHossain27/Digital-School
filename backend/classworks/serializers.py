@@ -22,7 +22,6 @@ class ClassworkSerializer(serializers.Serializer):
     due_date = serializers.DateTimeField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
     classroom = serializers.CharField(read_only=True)
-    students = StudentProfileSerializer(many=True, read_only=True)
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
@@ -45,7 +44,7 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
 class ClassworkSubmissionSerializer(serializers.Serializer):
     classwork = serializers.CharField()
     student = StudentProfileSerializer()
-    submission_text = serializers.CharField()
+    turn_in = serializers.BooleanField()
     attachment = serializers.FileField()
     attachment_name = serializers.SerializerMethodField()
     attachment_size = serializers.SerializerMethodField()
@@ -61,10 +60,10 @@ class ClassworkSubmissionSerializer(serializers.Serializer):
         return ClassworkSubmissionDataClass(**data)
 # Create Update Classwork Submission Serializer
 class CreateUpdateClassworkSubmissionSerializer(serializers.Serializer):
-    classwork = serializers.CharField(required=False)
-    student = serializers.CharField(required=False)
-    submission_text = serializers.CharField(required=False)
-    attachment = serializers.FileField(required=False)
+    classwork = serializers.CharField()
+    student = serializers.CharField()
+    turn_in = serializers.BooleanField()
+    attachment = serializers.FileField()
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
