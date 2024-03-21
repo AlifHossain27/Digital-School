@@ -22,6 +22,7 @@ import Link from "next/link";
 import { FaEllipsisV } from "react-icons/fa"
 import { SetClasswork } from "@/redux/features/classwork-slice";
 import { ImSpinner2 } from "react-icons/im";
+import { TbClipboardText } from "react-icons/tb";
 
 interface Classwork {
     classwork_id: string;
@@ -55,7 +56,12 @@ const ClassworkList = () => {
             <Accordion type="single" collapsible className="" key={classwork.classwork_id}>
                 <AccordionItem value={`item-${i}`}>
                 <AccordionTrigger className="text-[18px] data-[state=open]:border-b px-4">
-                    <div>{classwork.title}</div>
+                    <div className="flex gap-2">
+                        <div className='bg-[#1967D2] h-12 w-12 rounded-full pt-3 pl-3'>
+                            <TbClipboardText size={24} color='#FFFFFF' />
+                        </div>
+                        <h1 className="pt-3">{classwork.title}</h1>
+                    </div>
                     { userType==="teacher" && (
                         <div className="relative rounded-full hover:bg-accent h-12 w-12">
                             <DropdownMenu>
