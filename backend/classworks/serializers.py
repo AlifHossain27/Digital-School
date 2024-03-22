@@ -61,7 +61,7 @@ class ClassworkSubmissionSerializer(serializers.Serializer):
 # Create Update Classwork Submission Serializer
 class CreateUpdateClassworkSubmissionSerializer(serializers.Serializer):
     classwork = serializers.CharField()
-    student = serializers.CharField()
+    student = serializers.CharField(read_only=True)
     turn_in = serializers.BooleanField()
     attachment = serializers.FileField()
 

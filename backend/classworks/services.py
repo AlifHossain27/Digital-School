@@ -161,6 +161,7 @@ def create_classwork_submission(user: "StudentProfile", classwork_id: str, class
         student = student,
         turn_in = classwork_submission_dc.turn_in,
         attachment = classwork_submission_dc.attachment,
+        submission_id = ClassworkSubmission.objects.create_submission_id()
     )
     instance.save()
     return CreateUpdateClassworkSubmissionDataClass.from_instance(instance)
