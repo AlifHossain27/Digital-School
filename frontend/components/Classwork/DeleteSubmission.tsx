@@ -1,7 +1,6 @@
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogClose,
     DialogHeader,
     DialogTitle,
@@ -10,20 +9,17 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash } from 'lucide-react'
 
 type SubmissionData = {
-    classworkID: number,
-    uid: string,
-    submissionID: number,
+    submissionID: string,
 }
 
-const DeleteSubmission = ({classworkID, uid, submissionID}:SubmissionData) => {
+const DeleteClassworkSubmission = ({submissionID}:SubmissionData) => {
     const { toast } = useToast()
     const queryClient = useQueryClient()
 
     const { mutate } = useMutation({
-        mutationFn: async () => fetch(`http://localhost:8000/api/assignment/submission/student/${uid}/${classworkID}/${submissionID}/`,{
+        mutationFn: async () => fetch(`http://localhost:8000/api/classwork/submission/${submissionID}/`,{
           method: "DELETE",
           credentials: "include"
         }),
@@ -52,8 +48,8 @@ const DeleteSubmission = ({classworkID, uid, submissionID}:SubmissionData) => {
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button variant="destructive" className="rounded-full">
-                <Trash/>
+            <Button variant="destructive" className="w-full">
+                Unsubmit
             </Button>
         </DialogTrigger>
         <DialogContent>
@@ -68,4 +64,4 @@ const DeleteSubmission = ({classworkID, uid, submissionID}:SubmissionData) => {
   )
 }
 
-export default DeleteSubmission
+export default DeleteClassworkSubmission

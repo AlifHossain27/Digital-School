@@ -42,6 +42,7 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
     
 # Classwork Submission Serializer
 class ClassworkSubmissionSerializer(serializers.Serializer):
+    submission_id = serializers.CharField(read_only=True)
     classwork = serializers.CharField()
     student = StudentProfileSerializer()
     turn_in = serializers.BooleanField()

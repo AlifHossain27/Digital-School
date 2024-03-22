@@ -21,12 +21,13 @@ import { Plus, File, X } from 'lucide-react'
 import { ImSpinner2 } from "react-icons/im";
 import path from 'path'
 import { getClassworkSubmissionDetails } from '@/actions/classwork'
+import DeleteClassworkSubmission from './DeleteSubmission'
 
 interface Submission {
+    submission_id: string,
     classwork: number,
     turn_in: boolean,
     attachment: string,
-    submission_text: string,
     attachment_name: string,
     attachment_size: number
 }
@@ -173,14 +174,16 @@ const ClassworkSubmission = () => {
                                     </FormItem>
                                 )}
                             />
+                            <div className='py-3'>
                             <Button type="submit" className="w-full">Mark as done</Button>
+                            </div>
                         </form>
                     </Form>
                         
                 </div>
             ) : (
                 submissions?.map((submission: Submission, i: number) => {
-                    const { attachment, attachment_name, attachment_size, turn_in } = submission;
+                    const { submission_id, attachment_name, attachment_size, turn_in } = submission;
                     const filename = attachment_name ? path.basename(attachment_name) : "NoFileName";
                     return (
                         <div key={i}>
@@ -188,7 +191,7 @@ const ClassworkSubmission = () => {
                                 <h1 className='text-[22px]'>Your Work</h1>
                                 { turn_in ? <h1 className='py-2 text-green-600 text-[14px]'> Turned in</h1> : <h1 className='py-1 text-yellow-500'>Due</h1>}
                             </div>
-                            <div className='py-5'>
+                            <div className='py-3'>
                             { turn_in && (
                                 <div className='flex border rounded-lg bg-secondary w-auto'>
                                     <div className='border-r py-3 px-3'>
@@ -200,6 +203,9 @@ const ClassworkSubmission = () => {
                                     </div>
                                 </div>
                             )}
+                            <div className='pt-3'>
+                                <DeleteClassworkSubmission submissionID={submission_id}/>
+                            </div>
                             </div>
                         </div>
                     );

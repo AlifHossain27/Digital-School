@@ -63,6 +63,7 @@ class ClassworkSubmissionDataClass:
     attachment: any = None
     attachment_name: str = None
     attachment_size: str = None
+    submission_id: str = None
     id: int = None
 
     @classmethod
@@ -72,6 +73,7 @@ class ClassworkSubmissionDataClass:
             student = classwork_submission_model.student,
             turn_in = classwork_submission_model.turn_in,
             attachment = classwork_submission_model.attachment,
+            submission_id = classwork_submission_model.submission_id,
             id = classwork_submission_model.id
         )
 # Create Update Classwork Submission Dataclass
