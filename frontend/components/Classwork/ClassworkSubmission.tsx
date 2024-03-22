@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation"
 import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input"
 import { Plus, File, X } from 'lucide-react'
+import { ImSpinner2 } from "react-icons/im";
 import path from 'path'
 import { getClassworkSubmissionDetails } from '@/actions/classwork'
 
@@ -99,76 +100,82 @@ const ClassworkSubmission = () => {
         }
     };
 
-    const {data: submissions} = useQuery({
+    const {data: submissions, isLoading} = useQuery({
         queryFn: () => getClassworkSubmissionDetails(classworkID,classroomID),
         queryKey: ['submissions']
       })
+
   return (
     <div className='h-auto border rounded-lg px-5 py-5'>
+        { isLoading && (
+            <div className='flex justify-center'>
+                <ImSpinner2 className= "animate-spin" size= "50"/>
+            </div>
+        )}
 
         {submissions && submissions.length === 0 ? (
                 <div>
                     <div className='flex justify-between'>
-                                <h1 className='text-[22px]'>Your Work</h1>
-                                <h1 className='py-2 text-yellow-500 text-[14px]'>Pending</h1>
-                            </div>
+                        <h1 className='text-[22px]'>Your Work</h1>
+                        <h1 className='py-2 text-yellow-500 text-[14px]'>Pending</h1>
+                    </div>
 
-                            { fileUploaded && (
-                                <div className='flex border rounded-lg bg-secondary w-auto'>
-                                    <div className='border-r py-3 px-3'>
-                                        <File size={54} />
-                                    </div>
-                                    <div className='flex flex-col justify-center px-2'>
-                                        <h1 className='text-[16px]'>{fileName}</h1>
-                                        <h1 className='text-[12px] text-[#5F6368]'>{fileSize}</h1>
-                                    </div>
-                                    <div className='border-l pt-6 px-2 cursor-pointer hover:bg-red-600 rounded-r-lg' onClick={() => {
-                                        setFileUploaded(false);
-                                    }}>
-                                        <X />
-                                    </div>
-                                </div>
-                            )}
-                            <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)}>
-                                    <FormField
-                                        control={form.control}
-                                        name="attachment"
-                                        render={({ field }) => (
-                                            <FormItem className='py-2'>
-                                                <FormLabel>
-                                                    <div className='flex flex-row justify-center items-center w-full bg-secondary text-center h-10 rounded hover:border'>
-                                                        <Plus />
-                                                        Add File
-                                                    </div>
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="file"
-                                                        accept=".pdf"
-                                                        {...field}
-                                                        onChange={(e) => {
-                                                            field.onChange(e.target.files);
-                                                            if (!e.target.files || e.target.files.length === 0) {
-                                                                form.setValue('attachment', []);
-                                                            } else {
-                                                                const attachmentName = e.target.files[0]?.name;
-                                                                const attachmentSize = e.target.files[0]?.size;
-                                                                setFileName(attachmentName);
-                                                                setFileSize(attachmentSize);
-                                                                setFileUploaded(true);
-                                                            }
-                                                        }}
-                                                        value={undefined}
-                                                        className="hidden"
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <Button type="submit" className="w-full">Mark as done</Button>
-                                </form>
-                            </Form>
+                    { fileUploaded && (
+                        <div className='flex border rounded-lg bg-secondary w-auto'>
+                            <div className='border-r py-3 px-3'>
+                                <File size={54} />
+                            </div>
+                            <div className='flex flex-col justify-center px-2'>
+                                <h1 className='text-[16px]'>{fileName}</h1>
+                                <h1 className='text-[12px] text-[#5F6368]'>{fileSize}</h1>
+                            </div>
+                            <div className='border-l pt-6 px-2 cursor-pointer hover:bg-red-600 rounded-r-lg' onClick={() => {
+                                setFileUploaded(false);
+                            }}>
+                                <X />
+                            </div>
+                        </div>
+                    )}
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <FormField
+                                control={form.control}
+                                name="attachment"
+                                render={({ field }) => (
+                                    <FormItem className='py-2'>
+                                        <FormLabel>
+                                            <div className='flex flex-row justify-center items-center w-full bg-secondary text-center h-10 rounded hover:border'>
+                                                <Plus />
+                                                Add File
+                                            </div>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="file"
+                                                accept=".pdf"
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.files);
+                                                    if (!e.target.files || e.target.files.length === 0) {
+                                                        form.setValue('attachment', []);
+                                                    } else {
+                                                        const attachmentName = e.target.files[0]?.name;
+                                                        const attachmentSize = e.target.files[0]?.size;
+                                                        setFileName(attachmentName);
+                                                        setFileSize(attachmentSize);
+                                                        setFileUploaded(true);
+                                                    }
+                                                }}
+                                                value={undefined}
+                                                className="hidden"
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full">Mark as done</Button>
+                        </form>
+                    </Form>
                         
                 </div>
             ) : (
