@@ -1,91 +1,22 @@
-'use client'
 import React from 'react'
-import { useAppSelector } from '@/redux/store';
-import { useQuery } from '@tanstack/react-query';
-import getClassworkDetail from '@/actions/getClassworkDetail'
-import AddSubmission from '@/components/Classwork/AddSubmission';
-import StudentSubmissionList from '@/components/Classwork/StudentSubmissionList';
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { ImSpinner2 } from "react-icons/im";
+import ClassworkDetails from '@/components/Classwork/ClassworkDetails'
+import ClassworkSubmission from '@/components/Classwork/ClassworkSubmission'
 
-interface Teacher {
-  teacher_profile_id: string;
-}
 
-interface Classwork {
-  id: number;
-  teacher: Teacher;
-  title: string;
-  description: string;
-  due_date: any;
-  classroom: number;
-  students: any[];
-}
-
-const getDaySuffix = (day: number): string => {
-  if (day >= 11 && day <= 13) {
-    return 'th';
-  }
-const lastDigit = day % 10;
-  switch (lastDigit) {
-    case 1:
-      return 'st';
-    case 2:
-      return 'nd';
-    case 3:
-      return 'rd';
-    default:
-      return 'th';
-  }
-};
-
-const page = () => {
-  const classworkID = useAppSelector((state) => state.classworkReducer.value.classworkID)
-  const uid = useAppSelector((state) => state.uidReducer.value.userID)
-  const {data: classwork, isLoading} = useQuery<Classwork>({
-    queryFn: () => getClassworkDetail(classworkID),
-    queryKey: ['classwork']
-  })
-  
-  const formattedDueDate = classwork?.due_date
-    ? new Date(classwork.due_date).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })
-    : '';
-
-  const daySuffix = classwork?.due_date
-    ? getDaySuffix(new Date(classwork.due_date).getDate())
-    : '';
-
-  if (isLoading) {
-    return (
-      <div className='pt-20 flex justify-center'>
-        <ImSpinner2 className= "animate-spin" size= "50"/>
-      </div>
-    )
-  }
+const ClassworkViewPage = () => {
   return (
-    <div className='pt-4 flex flex-col w-auto'>
-      <ScrollArea className="h-[300px] sm:h-[300px] md:h-[350px] lg:h-[450px] xl:h-[550px] w-full">
-        <div className='border px-8 py-6 rounded-lg'>
-          <div className='text-4xl'>
-            {classwork?.title}
-          </div>
-          <div className='text-sm pb-2 font-mono'>
-            Due Date: {formattedDueDate.replace(/\b\d{1,2}\b/, `$&${daySuffix}`)}
-          </div>
-          <div className='pt-4'>
-            <h1 className='text-xl'>{classwork?.description}</h1>
-          </div>
+    <div className='container mx-auto pt-5'>
+      <div className='grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-1 gap-4'>
+        <div className='col-span-2'>
+          <ClassworkDetails/>
         </div>
-        <StudentSubmissionList/>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-      <AddSubmission classworkID= {classworkID} uid={uid}/>
+        <div className='container col-span-1'>
+          <ClassworkSubmission/>
+          <h1>private comment</h1>
+        </div>
+      </div>
     </div>
   )
 }
 
-export default page
+export default ClassworkViewPage
