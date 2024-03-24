@@ -107,7 +107,7 @@ const ClassworkSubmission = () => {
       })
 
   return (
-    <div className='h-auto border rounded-lg px-5 py-5'>
+    <div className='h-auto border rounded-lg shadow-lg px-5 py-5'>
         { isLoading && (
             <div className='flex justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>

@@ -32,7 +32,7 @@ const page = () => {
       </div>
       <Separator />
       {isLoading ? (
-        <div className='pt-20'>
+        <div className='pt-20 flex justify-center'>
           <ImSpinner2 className="animate-spin" size="50" />
         </div>
       ) : (

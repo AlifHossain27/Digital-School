@@ -115,7 +115,6 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
         </DialogHeader>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">
-            {/*<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">*/}
                 <FormField
                 control={form.control}
                 name="title"

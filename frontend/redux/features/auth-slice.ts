@@ -9,12 +9,12 @@ type AuthState = {
     userType: string;
 }
 
-const initialState = {
+const initialState: InitialState = {
     value: {
         isAuthenticated: false,
         userType: ""
-    } as AuthState
-} as InitialState
+    }
+};
 
 export const auth = createSlice({
     name: 'auth',
