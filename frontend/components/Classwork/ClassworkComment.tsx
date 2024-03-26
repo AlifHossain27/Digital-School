@@ -14,7 +14,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
-import { SendHorizontal } from 'lucide-react'
+import { SendHorizontal, UsersRound } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ImSpinner2 } from "react-icons/im";
 import {
@@ -37,7 +37,7 @@ type Comment = {
     created_at: string,
     classwork_id: number,
     student: Author,
-    teacher: Author,
+    teacher: Author
 }
 
 const formSchema = z.object({
@@ -95,7 +95,7 @@ const ClassworkComment = () => {
 
     };
 
-    const {data: comments, isLoading} = useQuery<Comment>({
+    const {data: comments, isLoading} = useQuery({
         queryFn: () => getPublicComments(classworkID),
         queryKey: ['comments']
     })
@@ -107,10 +107,14 @@ const ClassworkComment = () => {
         </div>
         )
     }
-
+    const commentCount = comments?.length
   return (
     <div className='container mx-5 py-5'>
-        <h1 className='text-[14px] text-[#5F6368]'>Class Comment</h1>
+        <div className='text-[14px] text-[#5F6368] flex gap-1'>
+            <UsersRound />
+            <h1 className='pt-1'>{commentCount}</h1>
+            <h1 className='pt-1'>Class Comment</h1>
+        </div>
             <div className='py-2'>
             { comments?.map((comment: Comment) => {
                 const user_type = comment.user_type
