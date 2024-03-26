@@ -1,6 +1,6 @@
 import dataclasses
 from typing import TYPE_CHECKING
-from .models import Classwork, ClassworkSubmission, ClassworkPublicComment
+from .models import Classwork, ClassworkSubmission, ClassworkPublicComment, ClassworkPrivateComment
 from users.models import Staff, Teacher, Student
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 from classrooms.models import Classroom
@@ -95,9 +95,9 @@ class CreateUpdateClassworkSubmissionDataClass:
             id = classwork_submission_model.id
         )
     
-# Classwork Public Comment
+# Classwork Comment
 @dataclasses.dataclass
-class PublicCommentDataClass:
+class CommentDataClass:
     text: str
     user_type: str = None
     classwork: str = None
@@ -233,7 +233,7 @@ def delete_classwork_submission(user ,submission_id: str):
     return f"Successfully deleted classwork submission"
 
 # Create Public Comment
-def create_public_comment(user, classwork_id: str, public_comment_dc: "PublicCommentDataClass") -> "PublicCommentDataClass":
+def create_public_comment(user, classwork_id: str, public_comment_dc: "CommentDataClass") -> "CommentDataClass":
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     if user.uid.startswith('S-'):
         author = get_object_or_404(StudentProfile, profile_uid=user.uid)
@@ -254,11 +254,46 @@ def create_public_comment(user, classwork_id: str, public_comment_dc: "PublicCom
         )
         instance.save()
     
-    return PublicCommentDataClass.from_instance(instance)
+    return CommentDataClass.from_instance(instance)
 
 # Retrieve all Public Comment
-def get_public_comments(classwork_id: str) -> "PublicCommentDataClass":
+def get_public_comments(classwork_id: str) -> "CommentDataClass":
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     public_comments = ClassworkPublicComment.objects.filter(classwork_id=classwork)
 
-    return [PublicCommentDataClass.from_instance(public_comment) for public_comment in public_comments]
+    return [CommentDataClass.from_instance(public_comment) for public_comment in public_comments]
+
+# Create Private Comment
+def create_private_comment(user, classwork_id: str, private_comment_dc: "CommentDataClass") -> "CommentDataClass":
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    if user.uid.startswith('S-'):
+        author = get_object_or_404(StudentProfile, profile_uid=user.uid)
+        instance = ClassworkPrivateComment(
+            classwork = classwork,
+            student = author,
+            user_type = "student",
+            text = private_comment_dc.text
+        )
+        instance.save()
+    if user.uid.startswith('T-'):
+        author = get_object_or_404(TeacherProfile, profile_uid=user.uid)
+        instance = ClassworkPublicComment(
+            classwork = classwork,
+            teacher = author,
+            user_type = "teacher",
+            text = private_comment_dc.text
+        )
+        instance.save()
+    
+    return CommentDataClass.from_instance(instance)
+
+# Retrieve all Private Comment
+def get_private_comments(user,classwork_id: str) -> "CommentDataClass":
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    if user.uid.startswith('T-'):
+        private_comments = ClassworkPrivateComment.objects.filter(classwork_id=classwork)
+    if user.uid.startswith('S-'):
+        student= get_object_or_404(StudentProfile, profile_uid=user.uid)
+        private_comments = ClassworkPrivateComment.objects.filter(classwork_id=classwork, student=student)
+
+    return [CommentDataClass.from_instance(private_comment) for private_comment in private_comments]
