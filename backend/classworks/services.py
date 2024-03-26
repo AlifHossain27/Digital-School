@@ -1,6 +1,6 @@
 import dataclasses
 from typing import TYPE_CHECKING
-from .models import Classwork, ClassworkSubmission
+from .models import Classwork, ClassworkSubmission, ClassworkPublicComment
 from users.models import Staff, Teacher, Student
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 from classrooms.models import Classroom
@@ -94,7 +94,30 @@ class CreateUpdateClassworkSubmissionDataClass:
             attachment = classwork_submission_model.attachment,
             id = classwork_submission_model.id
         )
+    
+# Classwork Public Comment
+@dataclasses.dataclass
+class PublicCommentDataClass:
+    text: str
+    user_type: str = None
+    classwork: str = None
+    teacher: str = None
+    student: str = None
+    created_at: str = None
+    id: int = None
 
+    @classmethod
+    def from_instance(cls, classwork_public_comment_model: "ClassworkPublicComment"):
+        return cls(
+            classwork = classwork_public_comment_model.classwork,
+            teacher = classwork_public_comment_model.teacher,
+            student = classwork_public_comment_model.student,
+            user_type = classwork_public_comment_model.user_type,
+            text = classwork_public_comment_model.text,
+            created_at = classwork_public_comment_model.created_at,
+            id = classwork_public_comment_model.id
+        )
+    
 # Create Classwork
 def create_classwork(user: "Teacher", classwork_dc: "CreateUpdateClassworkDataClass") -> "CreateUpdateClassworkDataClass":
     classroom_model = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
@@ -208,3 +231,34 @@ def delete_classwork_submission(user ,submission_id: str):
     if user.uid.startswith('T-'):
         raise exceptions.PermissionDenied("You're not allowed")
     return f"Successfully deleted classwork submission"
+
+# Create Public Comment
+def create_public_comment(user, classwork_id: str, public_comment_dc: "PublicCommentDataClass") -> "PublicCommentDataClass":
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    if user.uid.startswith('S-'):
+        author = get_object_or_404(StudentProfile, profile_uid=user.uid)
+        instance = ClassworkPublicComment(
+            classwork = classwork,
+            student = author,
+            user_type = "student",
+            text = public_comment_dc.text
+        )
+        instance.save()
+    if user.uid.startswith('T-'):
+        author = get_object_or_404(TeacherProfile, profile_uid=user.uid)
+        instance = ClassworkPublicComment(
+            classwork = classwork,
+            teacher = author,
+            user_type = "teacher",
+            text = public_comment_dc.text
+        )
+        instance.save()
+    
+    return PublicCommentDataClass.from_instance(instance)
+
+# Retrieve all Public Comment
+def get_public_comments(classwork_id: str) -> "PublicCommentDataClass":
+    classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
+    public_comments = ClassworkPublicComment.objects.filter(classwork_id=classwork)
+
+    return [PublicCommentDataClass.from_instance(public_comment) for public_comment in public_comments]

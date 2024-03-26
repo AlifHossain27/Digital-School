@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer
+from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, ClassworkPublicCommentSerializer
 from . import services
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
@@ -70,10 +70,27 @@ class RetrieveClassworkSubmission(views.APIView):
         submission = services.get_classwork_submission(user=request.user, classroom_id=class_id, classwork_id=classwork_id)
         serializer = ClassworkSubmissionSerializer(submission, many=True)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
-    
+
+# Update Delete Classwork Submission
 class UpdateDeleteClassworkSubmission(views.APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsStudent]
     def delete(self, request, submission_id):
         data = services.delete_classwork_submission(user=request.user, submission_id=submission_id)
         return response.Response(data=data, status=status.HTTP_200_OK)
+    
+# Create Retrieve Classwork Public Comment
+class CreateRetrieveClassworkPublicComment(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsTeacher | IsStudent]
+    def post(self, request, classwork_id):
+        serializer = ClassworkPublicCommentSerializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        serializer.instance = services.create_public_comment(user= request.user, classwork_id= classwork_id, public_comment_dc= data)
+        return response.Response(data=serializer.data)
+    
+    def get(self, request, classwork_id):
+        comments = services.get_public_comments(classwork_id= classwork_id)
+        serializer = ClassworkPublicCommentSerializer(comments, many=True)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
