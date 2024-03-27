@@ -28,7 +28,7 @@ class ClassworkSerializer(serializers.Serializer):
     description = serializers.CharField(read_only=True)
     due_date = serializers.DateTimeField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
-    classroom = ClassroomSerializer()
+    classroom = ClassroomSerializer(read_only=True)
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
@@ -50,8 +50,8 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
 # Classwork Submission Serializer
 class ClassworkSubmissionSerializer(serializers.Serializer):
     submission_id = serializers.CharField(read_only=True)
-    classwork = ClassworkSerializer()
-    student = StudentProfileSerializer()
+    classwork = ClassroomSerializer(read_only=True)
+    student = StudentProfileSerializer(read_only=True)
     turn_in = serializers.BooleanField()
     attachment = serializers.FileField()
     attachment_name = serializers.SerializerMethodField()
