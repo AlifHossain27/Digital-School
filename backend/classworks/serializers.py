@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from classrooms.models import Classroom
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
 from .services import CreateUpdateClassworkDataClass, ClassworkDataClass, CreateUpdateClassworkSubmissionDataClass, ClassworkSubmissionDataClass, CommentDataClass
 
@@ -14,6 +15,12 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         model = StudentProfile
         fields = '__all__'
 
+# Classroom Serializer
+class ClassroomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classroom
+        fields = '__all__'
+
 # Classwork Serializer
 class ClassworkSerializer(serializers.Serializer):
     classwork_id = serializers.CharField(read_only=True)
@@ -21,7 +28,7 @@ class ClassworkSerializer(serializers.Serializer):
     description = serializers.CharField(read_only=True)
     due_date = serializers.DateTimeField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
-    classroom = serializers.CharField(read_only=True)
+    classroom = ClassroomSerializer()
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
@@ -43,7 +50,7 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
 # Classwork Submission Serializer
 class ClassworkSubmissionSerializer(serializers.Serializer):
     submission_id = serializers.CharField(read_only=True)
-    classwork = serializers.CharField()
+    classwork = ClassworkSerializer()
     student = StudentProfileSerializer()
     turn_in = serializers.BooleanField()
     attachment = serializers.FileField()

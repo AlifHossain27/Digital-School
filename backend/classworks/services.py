@@ -2,7 +2,7 @@ import dataclasses
 from typing import TYPE_CHECKING
 from .models import Classwork, ClassworkSubmission, ClassworkPublicComment, ClassworkPrivateComment
 from users.models import Staff, Teacher, Student
-from profiles.models import StaffProfile, TeacherProfile, StudentProfile
+from profiles.models import TeacherProfile, StudentProfile
 from classrooms.models import Classroom
 from rest_framework import response, exceptions, status
 from django.http import Http404
@@ -119,7 +119,7 @@ class CommentDataClass:
         )
     
 # Create Classwork
-def create_classwork(user: "Teacher", classwork_dc: "CreateUpdateClassworkDataClass") -> "CreateUpdateClassworkDataClass":
+def create_classwork(user: "TeacherProfile", classwork_dc: "CreateUpdateClassworkDataClass") -> "CreateUpdateClassworkDataClass":
     classroom_model = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
     teacher_model = get_object_or_404(TeacherProfile, profile_uid = user.uid)
     if teacher_model not in classroom_model.teachers.all():
@@ -149,7 +149,7 @@ def get_classwork(classwork_id: str) -> ClassworkDataClass:
     return ClassworkDataClass.from_instance(classwork)
 
 # Update Classwork
-def update_classwork(user: "Teacher",classwork_id: str, classwork_dc: "CreateUpdateClassworkDataClass") -> CreateUpdateClassworkDataClass:
+def update_classwork(user: "TeacherProfile",classwork_id: str, classwork_dc: "CreateUpdateClassworkDataClass") -> CreateUpdateClassworkDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     teacher = get_object_or_404(TeacherProfile, profile_uid= user.uid)
     if teacher != classwork.teacher:
@@ -288,7 +288,7 @@ def create_private_comment(user, classwork_id: str, private_comment_dc: "Comment
     return CommentDataClass.from_instance(instance)
 
 # Retrieve all Private Comment
-def get_private_comments(user,classwork_id: str) -> "CommentDataClass":
+def get_private_comments(user, classwork_id: str) -> "CommentDataClass":
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     if user.uid.startswith('T-'):
         private_comments = ClassworkPrivateComment.objects.filter(classwork_id=classwork)
