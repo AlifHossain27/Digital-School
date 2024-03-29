@@ -44,7 +44,6 @@ const ClassworkSubmissionList = () => {
         queryFn: () => getClassworkSubmission(classworkID, classroomID),
         queryKey: ['submissionList']
       })
-    console.log(submissionList)
     const submissionCount = submissionList?.length
     let classworkTitle
     submissionList?.map((submission:Submission) =>{

@@ -75,6 +75,7 @@ class CreateUpdateClassworkSubmissionSerializer(serializers.Serializer):
     
 # Classwork Comment
 class ClassworkCommentSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     classwork = serializers.CharField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
     student = StudentProfileSerializer(read_only=True)
