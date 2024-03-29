@@ -15,11 +15,6 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         model = StudentProfile
         fields = '__all__'
 
-# Classroom Serializer
-class ClassroomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Classroom
-        fields = '__all__'
 
 # Classwork Serializer
 class ClassworkSerializer(serializers.Serializer):
@@ -28,7 +23,7 @@ class ClassworkSerializer(serializers.Serializer):
     description = serializers.CharField(read_only=True)
     due_date = serializers.DateTimeField(read_only=True)
     teacher = TeacherProfileSerializer(read_only=True)
-    classroom = ClassroomSerializer(read_only=True)
+    classroom = serializers.CharField(read_only=True)
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
@@ -50,12 +45,12 @@ class CreateUpdateClassworkSerializer(serializers.Serializer):
 # Classwork Submission Serializer
 class ClassworkSubmissionSerializer(serializers.Serializer):
     submission_id = serializers.CharField(read_only=True)
-    classwork = ClassroomSerializer(read_only=True)
+    classwork = serializers.CharField(read_only=True)
     student = StudentProfileSerializer(read_only=True)
-    turn_in = serializers.BooleanField()
-    attachment = serializers.FileField()
-    attachment_name = serializers.SerializerMethodField()
-    attachment_size = serializers.SerializerMethodField()
+    turn_in = serializers.BooleanField(read_only=True)
+    attachment = serializers.FileField(read_only=True)
+    attachment_name = serializers.SerializerMethodField(read_only=True)
+    attachment_size = serializers.SerializerMethodField(read_only=True)
 
     def get_attachment_name(self, obj):
         return obj.attachment.name if obj.attachment else None

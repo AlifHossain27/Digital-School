@@ -221,6 +221,10 @@ def get_classwork_submission(user ,classroom_id: str, classwork_id: str) -> Clas
         
     return [ClassworkSubmissionDataClass.from_instance(submission) for submission in submissions]
 
+def get_submission_data(submission_id: str) -> ClassworkSubmissionDataClass:
+    submission = get_object_or_404(ClassworkSubmission, submission_id=submission_id)
+    return ClassworkSubmissionDataClass.from_instance(submission)
+
 def delete_classwork_submission(user ,submission_id: str):
     submission = get_object_or_404(ClassworkSubmission, submission_id=submission_id)
     if user.uid.startswith('S-'):

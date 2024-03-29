@@ -1,8 +1,10 @@
 from rest_framework import views, response, status
 from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, ClassworkCommentSerializer
 from . import services
+from .models import ClassworkSubmission
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
 from users.authentication import Authentication
+from django.shortcuts import get_object_or_404
 
 # Create Classwork View
 class CreateClasswork(views.APIView):
@@ -74,7 +76,12 @@ class RetrieveClassworkSubmission(views.APIView):
 # Update Delete Classwork Submission
 class UpdateDeleteClassworkSubmission(views.APIView):
     authentication_classes = [Authentication]
-    permission_classes = [IsStudent]
+    permission_classes = [IsStudent| IsTeacher]
+    def get(self, request, submission_id):
+        submission = services.get_submission_data(submission_id=submission_id)
+        serializer = ClassworkSubmissionSerializer(submission)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
     def delete(self, request, submission_id):
         data = services.delete_classwork_submission(user=request.user, submission_id=submission_id)
         return response.Response(data=data, status=status.HTTP_200_OK)

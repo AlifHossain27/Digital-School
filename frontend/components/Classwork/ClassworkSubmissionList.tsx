@@ -18,17 +18,13 @@ interface Student {
 }
 
 interface Classwork {
-    classwork_id: string;
-    title: string;
-    description: string;
-    due_date: any;
-    classroom: Classroom;
+  classwork_id: string;
+  title: string;
+  description: string;
+  due_date: any;
+  classroom: string;
 }
 
-interface Classroom {
-    class_id: string;
-    students: Student;
-}
 
 interface Submission {
   submission_id: string;
@@ -48,12 +44,11 @@ const ClassworkSubmissionList = () => {
         queryFn: () => getClassworkSubmission(classworkID, classroomID),
         queryKey: ['submissionList']
       })
+    console.log(submissionList)
     const submissionCount = submissionList?.length
     let classworkTitle
-    let studentCount
     submissionList?.map((submission:Submission) =>{
-        classworkTitle = submission.classwork.title
-        studentCount = submission.classwork.classroom.students?.length
+        classworkTitle = submission.classwork
     })
   return (
     <div className='container'>
@@ -70,16 +65,12 @@ const ClassworkSubmissionList = () => {
                     <h1 className='text-[36px] text-center'>{submissionCount}</h1>
                     <h1 className='text-[14px]'>Turned In</h1>
                 </div>
-                <div className='border-l border-r px-5'>
-                    <h1 className='text-[36px] text-center'>{studentCount}</h1>
-                    <h1 className='text-[14px]'>Students</h1>
-                </div>
             </div>
             <h1 className='py-5'>All Submissions</h1>
             <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5'>
             {submissionList?.map((submission: Submission) => {
               return (
-                <Link href={`submission/view/${submission.submission_id}/`}>
+                <Link href={`submission/${submission.submission_id}/`}>
                 <div key={submission.submission_id} className='border rounded-md h-auto py-4 px-4'>
                     <div className='flex gap-2 hover:cursor-pointer'>
                     <Avatar>
