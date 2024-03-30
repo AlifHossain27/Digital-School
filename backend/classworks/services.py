@@ -117,6 +117,29 @@ class CommentDataClass:
             created_at = classwork_public_comment_model.created_at,
             id = classwork_public_comment_model.id
         )
+
+# Classwork Private Comment
+@dataclasses.dataclass
+class PrivateCommentDataClass:
+    text: str = None
+    reply: str = None
+    classwork: str = None
+    teacher: str = None
+    student: str = None
+    created_at: str = None
+    id: int = None
+
+    @classmethod
+    def from_instance(cls, classwork_private_comment_model: "ClassworkPrivateComment"):
+        return cls(
+            classwork = classwork_private_comment_model.classwork,
+            teacher = classwork_private_comment_model.teacher,
+            student = classwork_private_comment_model.student,
+            text = classwork_private_comment_model.text,
+            reply = classwork_private_comment_model.reply,
+            created_at = classwork_private_comment_model.created_at,
+            id = classwork_private_comment_model.id
+        )
     
 # Create Classwork
 def create_classwork(user: "TeacherProfile", classwork_dc: "CreateUpdateClassworkDataClass") -> "CreateUpdateClassworkDataClass":
@@ -268,32 +291,28 @@ def get_public_comments(classwork_id: str) -> "CommentDataClass":
     return [CommentDataClass.from_instance(public_comment) for public_comment in public_comments]
 
 # Create Private Comment
-def create_private_comment(user, classwork_id: str, private_comment_dc: "CommentDataClass") -> "CommentDataClass":
+def create_private_comment(user: str, classwork_id: str, private_comment_dc: "PrivateCommentDataClass") -> PrivateCommentDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
-    if user.uid.startswith('S-'):
-        author = get_object_or_404(StudentProfile, profile_uid=user.uid)
-        instance = ClassworkPrivateComment(
-            classwork = classwork,
-            student = author,
-            user_type = "student",
-            text = private_comment_dc.text
-        )
-        instance.save()
-    if user.uid.startswith('T-'):
-        author = get_object_or_404(TeacherProfile, profile_uid=user.uid)
-        instance = ClassworkPublicComment(
-            classwork = classwork,
-            teacher = author,
-            user_type = "teacher",
-            text = private_comment_dc.text
-        )
-        instance.save()
-    
-    return CommentDataClass.from_instance(instance)
+    author = get_object_or_404(StudentProfile, profile_uid=user)
+    instance = ClassworkPrivateComment(
+        classwork = classwork,
+        student = author,
+        text = private_comment_dc.text
+    )
+    instance.save()
+    return PrivateCommentDataClass.from_instance(instance)
 
 # Retrieve all Private Comment
-def get_private_comments(user: str, classwork_id: str) -> CommentDataClass:
+def get_private_comments(user: str, classwork_id: str) -> PrivateCommentDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
     student = get_object_or_404(StudentProfile, profile_uid=user)
     private_comments = ClassworkPrivateComment.objects.filter(classwork=classwork, student=student)
-    return [CommentDataClass.from_instance(private_comment) for private_comment in private_comments]
+    return [PrivateCommentDataClass.from_instance(private_comment) for private_comment in private_comments]
+
+# Update Private Comment
+def update_private_comment(user, comment_id: int, private_comment_dc: "PrivateCommentDataClass") -> PrivateCommentDataClass:
+    instance = get_object_or_404(ClassworkPrivateComment, id=comment_id)
+    instance.teacher = get_object_or_404(TeacherProfile, profile_uid=user.uid)
+    instance.reply = private_comment_dc.reply
+    instance.save()
+    return PrivateCommentDataClass.from_instance(instance)

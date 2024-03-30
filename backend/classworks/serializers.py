@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from classrooms.models import Classroom
 from profiles.models import StaffProfile, TeacherProfile, StudentProfile
-from .services import CreateUpdateClassworkDataClass, ClassworkDataClass, CreateUpdateClassworkSubmissionDataClass, ClassworkSubmissionDataClass, CommentDataClass
+from .services import CreateUpdateClassworkDataClass, ClassworkDataClass, CreateUpdateClassworkSubmissionDataClass, ClassworkSubmissionDataClass, CommentDataClass, PrivateCommentDataClass
 
 # Teacher Serializer
 class TeacherProfileSerializer(serializers.ModelSerializer):
@@ -86,4 +86,18 @@ class ClassworkCommentSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
         return CommentDataClass(**data)
+    
+# Classwork Private Comment
+class ClassworkPrivateCommentSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    classwork = serializers.CharField(read_only=True)
+    teacher = TeacherProfileSerializer(read_only=True)
+    student = StudentProfileSerializer(read_only=True)
+    text = serializers.CharField(required=False)
+    reply = serializers.CharField(required=False)
+    created_at = serializers.CharField(read_only=True)
+
+    def to_internal_value(self, data):
+        data = super().to_internal_value(data)
+        return PrivateCommentDataClass(**data)
     

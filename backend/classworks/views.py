@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, ClassworkCommentSerializer
+from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, ClassworkCommentSerializer, ClassworkPrivateCommentSerializer
 from . import services
 from .models import ClassworkSubmission
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
@@ -106,14 +106,31 @@ class CreateRetrieveClassworkPublicComment(views.APIView):
 class CreateRetrieveClassworkPrivateComment(views.APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsTeacher | IsStudent]
-    def post(self, request, classwork_id):
-        serializer = ClassworkCommentSerializer(data = request.data)
+    def post(self, request, classwork_id, profile_uid):
+        serializer = ClassworkPrivateCommentSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        serializer.instance = services.create_private_comment(user= request.user, classwork_id= classwork_id, private_comment_dc= data)
+        serializer.instance = services.create_private_comment(user= profile_uid, classwork_id= classwork_id, private_comment_dc= data)
         return response.Response(data=serializer.data)
     
     def get(self, request, classwork_id, profile_uid):
         comments = services.get_private_comments(user= profile_uid, classwork_id= classwork_id)
-        serializer = ClassworkCommentSerializer(comments, many=True)
+        serializer = ClassworkPrivateCommentSerializer(comments, many=True)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    
+class UpdateClassworkPrivateComment(views.APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsTeacher]  # Only teachers can update comments
+
+    def patch(self, request, comment_id):
+        serializer = ClassworkPrivateCommentSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            services.update_private_comment(
+                user= request.user,
+                comment_id=comment_id,
+                private_comment_dc=data
+            )
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
+        return response.Response(serializer.errors, status=400)

@@ -66,6 +66,6 @@ class ClassworkPrivateComment(models.Model):
     classwork = models.ForeignKey(Classwork, on_delete=models.CASCADE, verbose_name="Classwork", related_name="private_comments")
     teacher = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Assigned Teacher", related_name="private_comments")
     student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Student", related_name="private_comments")
-    user_type = models.CharField(max_length=50, blank=True, verbose_name='User Type')
     text = models.TextField(verbose_name="Text")
+    reply = models.TextField(verbose_name="Reply", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created_at")
