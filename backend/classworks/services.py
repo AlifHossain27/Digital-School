@@ -292,12 +292,8 @@ def create_private_comment(user, classwork_id: str, private_comment_dc: "Comment
     return CommentDataClass.from_instance(instance)
 
 # Retrieve all Private Comment
-def get_private_comments(user, classwork_id: str) -> "CommentDataClass":
+def get_private_comments(user: str, classwork_id: str) -> CommentDataClass:
     classwork = get_object_or_404(Classwork, classwork_id=classwork_id)
-    if user.uid.startswith('T-'):
-        private_comments = ClassworkPrivateComment.objects.filter(classwork_id=classwork)
-    if user.uid.startswith('S-'):
-        student= get_object_or_404(StudentProfile, profile_uid=user.uid)
-        private_comments = ClassworkPrivateComment.objects.filter(classwork_id=classwork, student=student)
-
+    student = get_object_or_404(StudentProfile, profile_uid=user)
+    private_comments = ClassworkPrivateComment.objects.filter(classwork=classwork, student=student)
     return [CommentDataClass.from_instance(private_comment) for private_comment in private_comments]

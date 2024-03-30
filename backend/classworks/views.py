@@ -113,7 +113,7 @@ class CreateRetrieveClassworkPrivateComment(views.APIView):
         serializer.instance = services.create_private_comment(user= request.user, classwork_id= classwork_id, private_comment_dc= data)
         return response.Response(data=serializer.data)
     
-    def get(self, request, classwork_id):
-        comments = services.get_private_comments(user= request.user, classwork_id= classwork_id)
+    def get(self, request, classwork_id, profile_uid):
+        comments = services.get_private_comments(user= profile_uid, classwork_id= classwork_id)
         serializer = ClassworkCommentSerializer(comments, many=True)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)

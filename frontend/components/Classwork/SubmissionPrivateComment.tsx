@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form"
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { getPrivateComments } from '@/actions/classwork'
 import { ImSpinner2 } from "react-icons/im";
 import { SendHorizontal } from 'lucide-react'
@@ -46,6 +47,8 @@ const formSchema = z.object({
 
 const SubmissionPrivateComment = () => {
     const classworkID = useAppSelector((state)=> state.classworkReducer.value.classworkID)
+    const searchParams = useSearchParams()
+    const studentID:string = searchParams.get('studentID')
     const [ reply, setReply ] = useState(false)
     const [ replyId, setReplyId ] = useState(0)
 
@@ -57,7 +60,7 @@ const SubmissionPrivateComment = () => {
       });
 
     const {data: comments, isLoading} = useQuery({
-        queryFn: () => getPrivateComments(classworkID),
+        queryFn: () => getPrivateComments(classworkID, studentID),
         queryKey: ['private-comments']
       })
     
@@ -76,6 +79,7 @@ const SubmissionPrivateComment = () => {
   return (
     <div className='flex flex-col justify-between border rounded-md h-full'>
         <div className='flex flex-col px-2 py-2'>
+            <div className='px-2 py-4 border-b'>Private comments:</div>
             { comments?.map((comment: Comment) => {
                 const user_type = comment.user_type
                 return (
@@ -98,7 +102,7 @@ const SubmissionPrivateComment = () => {
                             <Reply onClick={() => {
                                 setReply(true)
                                 setReplyId(comment.id)
-                            }} />
+                            }} className='hover:cursor-pointer' />
                             
                         </div> : 
                         <div>

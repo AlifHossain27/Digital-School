@@ -70,9 +70,9 @@ export async function getPublicComments(classworkID: string) {
     return data
 }
 
-export async function getPrivateComments(classworkID: string) {
+export async function getPrivateComments(classworkID: string, UID: string) {
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const resp = await fetch(`http://localhost:8000/api/classwork/${classworkID}/private-comment/`, {
+    const resp = await fetch(`http://localhost:8000/api/classwork/${classworkID}/${UID}/private-comment/`, {
         credentials: 'include',
     });
     if (!resp.ok) {

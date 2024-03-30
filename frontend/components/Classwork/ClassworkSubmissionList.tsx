@@ -69,7 +69,12 @@ const ClassworkSubmissionList = () => {
             <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5'>
             {submissionList?.map((submission: Submission) => {
               return (
-                <Link href={`submission/${submission.submission_id}/`}>
+                <Link href={{
+                  pathname: `submission/${submission.submission_id}/`,
+                  query: {
+                    studentID: submission.student.profile_uid
+                  }
+                }}>
                 <div key={submission.submission_id} className='border rounded-md h-auto py-4 px-4'>
                     <div className='flex gap-2 hover:cursor-pointer'>
                     <Avatar>

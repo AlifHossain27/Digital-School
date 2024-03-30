@@ -50,6 +50,7 @@ const ClassworkPrivateComment = () => {
   const { toast } = useToast()
   const router = useRouter()
   const classworkID = useAppSelector((state)=> state.classworkReducer.value.classworkID)
+  const uid = useAppSelector((state) => state.uidReducer.value.userID)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -96,7 +97,7 @@ const ClassworkPrivateComment = () => {
     };
 
   const {data: comments, isLoading} = useQuery({
-    queryFn: () => getPrivateComments(classworkID),
+    queryFn: () => getPrivateComments(classworkID, uid),
     queryKey: ['private-comments']
   })
 
