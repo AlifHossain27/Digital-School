@@ -110,49 +110,47 @@ const SubmissionPrivateComment = () => {
     <div className='flex flex-col justify-between border rounded-md h-full'>
         <div className='flex flex-col px-2 py-2'>
             <div className='px-2 py-4 border-b'>Private comments:</div>
-            { comments?.map((comment: Comment) => {
-                return (
-                    <div key={comment.id} className='flex gap-4 px-2 py-2'>
-                        
-                        <div className='flex flex-col w-full'>
-                            <div className='flex justify-between'>
-                                <div className='flex gap-4'>
+                {comments?.map((comment: Comment) => {
+                    return (
+                        <div key={comment.id} className='flex gap-4 px-2 py-2'>
+                            
+                            <div className='flex flex-col w-full'>
+                                <div className='flex justify-between'>
+                                    <div className='flex gap-4'>
+                                        <Avatar>
+                                            <AvatarImage src={comment.student.profile_picture} alt="@profile" />
+                                            <AvatarFallback>Profile</AvatarFallback>
+                                        </Avatar>
+                                        <div className='flex flex-col'>
+                                            <div className='flex gap-4'>
+                                                <h1 className='text-[15px]'>{comment.student.full_name}</h1>
+                                                <h1 className='text-[12px] text-[#5F6368]'>{new Date(comment?.created_at).toLocaleString('default', { month: 'long', day: 'numeric' })}</h1>
+                                            </div>
+                                            <h1 className='text-[13px]'>{comment.text}</h1>
+                                        </div>
+                                    </div>
+                                    <Reply onClick={() => {
+                                        setReply(true)
+                                        setCommentID(comment.id)
+                                    }} className='hover:cursor-pointer' />
+                                </div>
+                                { comment?.teacher && (
+                                    <div className='flex gap-4 px-4 py-4'>
+                                    <CornerDownRight size='32' />
                                     <Avatar>
                                         <AvatarImage src={comment.student.profile_picture} alt="@profile" />
                                         <AvatarFallback>Profile</AvatarFallback>
                                     </Avatar>
                                     <div className='flex flex-col'>
-                                        <div className='flex gap-4'>
-                                            <h1 className='text-[15px]'>{comment.student.full_name}</h1>
-                                            <h1 className='text-[12px] text-[#5F6368]'>{new Date(comment?.created_at).toLocaleString('default', { month: 'long', day: 'numeric' })}</h1>
-                                        </div>
-                                        <h1 className='text-[13px]'>{comment.text}</h1>
+                                        <h1 className='text-[15px]'>{comment?.teacher.full_name || "No Reply"}</h1>
+                                        <h1 className='text-[13px]'>{comment?.reply}</h1>
                                     </div>
                                 </div>
-                                <Reply onClick={() => {
-                                    setReply(true)
-                                    setCommentID(comment.id)
-                                }} className='hover:cursor-pointer' />
+                                )}
                             </div>
-                            { comment?.teacher && (
-                                <div className='flex gap-4 px-4 py-4'>
-                                <CornerDownRight size='32' />
-                                <Avatar>
-                                    <AvatarImage src={comment.student.profile_picture} alt="@profile" />
-                                    <AvatarFallback>Profile</AvatarFallback>
-                                </Avatar>
-                                <div className='flex flex-col'>
-                                    <h1 className='text-[15px]'>{comment?.teacher.full_name || "No Reply"}</h1>
-                                    <h1 className='text-[13px]'>{comment?.reply}</h1>
-                                </div>
-                            </div>
-                            )}
-                            
-                        </div>
-                        
-                    </div> 
-                )
-            })}
+                        </div> 
+                    )
+                })}
         </div>
         { reply && (
             <div className='px-4 py-4'>

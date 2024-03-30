@@ -14,7 +14,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
-import { SendHorizontal, UsersRound } from 'lucide-react'
+import { SendHorizontal, UsersRound, CornerDownRight } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ImSpinner2 } from "react-icons/im";
 import {
@@ -32,8 +32,8 @@ interface Author {
 }
 type Comment = {
     id: number,
-    user_type: string,
     text: string,
+    reply: string,
     created_at: string,
     classwork_id: number,
     student: Author,
@@ -119,9 +119,8 @@ const ClassworkPrivateComment = () => {
         </div>
         <div className='py-2'>
             { comments?.map((comment: Comment) => {
-                const user_type = comment.user_type
                 return (
-                    <div key={comment.id} className='flex gap-4 py-2'>
+                    <div key={comment.id} className='flex flex-col gap-4 py-2'>
                         
                         <div className='flex gap-4'>
                             <Avatar>
@@ -136,6 +135,19 @@ const ClassworkPrivateComment = () => {
                                 <h1 className='text-[13px]'>{comment.text}</h1>
                             </div>
                         </div>
+                        { comment?.teacher && (
+                            <div className='flex gap-4 px-4 '>
+                                <CornerDownRight size='32' />
+                                <Avatar>
+                                    <AvatarImage src={comment.student.profile_picture} alt="@profile" />
+                                    <AvatarFallback>Profile</AvatarFallback>
+                                </Avatar>
+                                <div className='flex flex-col'>
+                                    <h1 className='text-[15px]'>{comment?.teacher.full_name || "No Reply"}</h1>
+                                    <h1 className='text-[13px]'>{comment?.reply}</h1>
+                                </div>
+                            </div>
+                        )}
                         
                     </div> 
                 )
