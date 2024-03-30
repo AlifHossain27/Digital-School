@@ -62,7 +62,7 @@ const ClassworkPrivateComment = () => {
   const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: (values: z.infer<typeof formSchema>) =>
-        fetch(`http://localhost:8000/api/classwork/${classworkID}/private-comment/`,{
+        fetch(`http://localhost:8000/api/classwork/${classworkID}/${uid}/private-comment/`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             credentials: 'include',
@@ -71,23 +71,22 @@ const ClassworkPrivateComment = () => {
         }),
         }),
         onSuccess: async (_, values) => {
-        queryClient.invalidateQueries({queryKey: ['private-comments']})
-        toast({
-            title: "You Commented to the Classwork"
-        });
-        await form.reset();
+            queryClient.invalidateQueries({queryKey: ['private-comments']})
+            toast({
+                title: "You Commented to the Classwork"
+            });
+            await form.reset();
         },
         onError: (error) => {
-        toast({
-            variant: "destructive",
-            title: "Failed to Comment",
-        });
-        router.refresh();
+            toast({
+                variant: "destructive",
+                title: "Failed to Comment",
+            });
+            router.refresh();
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
         try {
             await mutate(values);
           } catch (error) {
@@ -123,7 +122,7 @@ const ClassworkPrivateComment = () => {
                 const user_type = comment.user_type
                 return (
                     <div key={comment.id} className='flex gap-4 py-2'>
-                        { user_type === "student" ? 
+                        
                         <div className='flex gap-4'>
                             <Avatar>
                                 <AvatarImage src={comment.student.profile_picture} alt="@profile" />
@@ -136,11 +135,8 @@ const ClassworkPrivateComment = () => {
                                 </div>
                                 <h1 className='text-[13px]'>{comment.text}</h1>
                             </div>
-                            
-                        </div> : 
-                        <div>
-
-                        </div>}
+                        </div>
+                        
                     </div> 
                 )
             })}

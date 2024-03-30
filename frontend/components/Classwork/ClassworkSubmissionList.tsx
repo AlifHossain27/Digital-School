@@ -65,28 +65,33 @@ const ClassworkSubmissionList = () => {
                     <h1 className='text-[14px]'>Turned In</h1>
                 </div>
             </div>
-            <h1 className='py-5'>All Submissions</h1>
+            <h1 className='py-2 border-b border-accent'>All Submissions</h1>
             <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5'>
-            {submissionList?.map((submission: Submission) => {
-              return (
-                <Link href={{
-                  pathname: `submission/${submission.submission_id}/`,
-                  query: {
-                    studentID: submission.student.profile_uid
-                  }
-                }}>
-                <div key={submission.submission_id} className='border rounded-md h-auto py-4 px-4'>
-                    <div className='flex gap-2 hover:cursor-pointer'>
-                    <Avatar>
-                        <AvatarImage src={submission.student.profile_picture} alt="@profile" />
-                        <AvatarFallback>Profile</AvatarFallback>
-                    </Avatar>
-                  <h1 className='pt-1'>{submission.student.full_name}</h1>
+            {submissionList && submissionList.length === 0 ? (
+              <h1 className='text-[12px] py-5 px-2'>No Submissions</h1>
+            ) : (
+              submissionList?.map((submission: Submission) => {
+                return (
+                  <Link href={{
+                    pathname: `submission/${submission.submission_id}/`,
+                    query: {
+                      studentID: submission.student.profile_uid
+                    }
+                  }} className='py-5'>
+                  <div key={submission.submission_id} className='border rounded-md h-auto py-4 px-4'>
+                      <div className='flex gap-2 hover:cursor-pointer'>
+                      <Avatar>
+                          <AvatarImage src={submission.student.profile_picture} alt="@profile" />
+                          <AvatarFallback>Profile</AvatarFallback>
+                      </Avatar>
+                    <h1 className='pt-1'>{submission.student.full_name}</h1>
+                    </div>
                   </div>
-                </div>
-                </Link>
-              )
-            })}
+                  </Link>
+                )
+              })
+            )}
+            
           </div>
               </div>
         )}
