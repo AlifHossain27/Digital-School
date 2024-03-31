@@ -50,7 +50,7 @@ const CreateExam = () => {
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) =>
-      fetch("http://localhost:8000/api/classroom/exam/create/", {
+      fetch("http://localhost:8000/api/exam/create/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

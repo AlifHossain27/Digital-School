@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
-import getExam from '@/actions/getExam';
+import { getExam } from '@/actions/exam';
 import PreviewDialogBtn from './PreviewDialogBtn';
 import SaveFormBtn from './SaveFormBtn';
 import PublishFormBtn from './PublishFormBtn';

@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppSelector } from '@/redux/store'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
-import getExams from '@/actions/getExams'
+import { getExams } from '@/actions/exam'
 import Link from "next/link";
 import { formatDistance } from 'date-fns'
 import { FaWpforms } from 'react-icons/fa'

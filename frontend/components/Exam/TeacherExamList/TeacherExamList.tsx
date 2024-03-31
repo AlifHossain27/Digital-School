@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppSelector } from '@/redux/store'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
-import getExams from '@/actions/getExams'
+import { getExams } from '@/actions/exam'
 import CreateExam from './CreateExam'
 import Link from "next/link";
 import { Badge } from '@/components/ui/badge'
