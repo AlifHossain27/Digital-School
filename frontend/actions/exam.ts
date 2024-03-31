@@ -21,3 +21,19 @@ export async function getExams(classroomID:string) {
     const data = await resp.json();
     return data
 }
+
+export default async function updateExam(examID:number, content:string) {
+    const resp = await fetch(`http://localhost:8000/api/exam/${examID}/`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+            "content": content
+        })
+    });
+    if (!resp.ok) {
+        window.location.replace('/classroom');
+    }
+    const data = await resp.json();
+    return data
+}

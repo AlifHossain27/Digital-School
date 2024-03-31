@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import React, { useTransition } from 'react'
 import { HiSaveAs } from 'react-icons/hi'
 import useDesigner from './Hooks/useDesigner'
-import updateExam from '@/actions/updateExam'
+import updateExam from '@/actions/exam'
 import { useToast } from "@/components/ui/use-toast"
 import { FaSpinner } from 'react-icons/fa'
 
