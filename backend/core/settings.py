@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "profiles",
     "classrooms",
     "classworks",
+    "exams",
 ]
 
 MIDDLEWARE = [
