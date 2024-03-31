@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
 import { FaSpinner } from 'react-icons/fa'
 import { MdOutlinePublish } from 'react-icons/md'
-import publishExam from '@/actions/examPublish'
+import { publishExam } from '@/actions/exam'
 
 const PublishFormBtn = ({examID}: {examID:number}) => {
   const [loading, startTransition] = useTransition();
