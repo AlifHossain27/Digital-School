@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
+from users.permissions import IsTeacher, IsStudent
 from users.authentication import Authentication
 from .models import Exam, ExamSubmission
 from classrooms.models import Classroom
@@ -61,29 +61,18 @@ class ExamPublishView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-
+# Exam Submission View
 class ExamSubmissionView(APIView):
-    def get(self, request, exam_id, *args, **kwargs):
-        # Get the exam instance or return a 404 response if not found
-        exam = get_object_or_404(Exam, id=exam_id)
+    authentication_classes = [Authentication]
+    permission_classes = [ IsTeacher | IsStudent]
+    def get(self, request, exam_id):
+        submission = services.get_submission(exam_id=exam_id)
+        serializer = ExamSubmissionSerializer(submission, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-        # Get all exam submissions for the specified exam
-        submissions = ExamSubmission.objects.filter(exam=exam)
-        
-        # Serialize the submissions and return the response
-        serializer = ExamSubmissionSerializer(submissions, many=True)
-        return Response(serializer.data)
-    def post(self, request, exam_id, *args, **kwargs):
-        # Get the exam instance or return a 404 response if not found
-        exam = get_object_or_404(Exam, id=exam_id)
-
-        # Validate and save the submitted content
+    def post(self, request, exam_id):
         serializer = ExamSubmissionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(exam=exam)
-            # Update the submissions count in the related exam
-            exam.submissions += 1
-            exam.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        serializer.instance = services.submit_exam(user=request.user, exam_id=exam_id, exam_submission_dc=data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
