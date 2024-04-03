@@ -1,6 +1,6 @@
 
 import { useQuery } from '@tanstack/react-query'
-import getExamSubmissions from '@/actions/getExamSubmissions'
+import { getExamSubmissions } from '@/actions/exam';
 import { ElementsType, FormElementInstance } from '../ExamForm/FormElements'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format, formatDistance } from "date-fns";

@@ -2,7 +2,7 @@
 import React from 'react'
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
-import getExam from '@/actions/getExam';
+import { getExam } from '@/actions/exam';
 import { ImSpinner2 } from 'react-icons/im'
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
