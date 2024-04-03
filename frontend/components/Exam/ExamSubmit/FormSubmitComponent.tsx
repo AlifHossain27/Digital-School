@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { HiCursorClick } from 'react-icons/hi';
 import { useToast } from '@/components/ui/use-toast';
 import { ImSpinner2 } from 'react-icons/im';
-import submitExam from '@/actions/examSubmit';
+import { submitExam } from '@/actions/exam';
 
 const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; examID: number }) => {
   const { toast } = useToast();
@@ -99,7 +99,7 @@ const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; 
               disabled={pending}
             >
               { !pending && 
-                <div>
+                <div className='flex'>
                   <HiCursorClick className='mr-2'/>
                   Submit
                 </div> }
