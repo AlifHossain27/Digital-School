@@ -15,19 +15,20 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import useDesigner from "../Hooks/useDesigner"
-import { LuHeading1 } from "react-icons/lu"
+import { BsTextParagraph } from "react-icons/bs"
+import { Textarea } from "@/components/ui/textarea"
 
-const type:ElementsType = "TitleField"
+const type:ElementsType = "ParagraphField"
 
 const extraAttributes = {
-    title: "Title Field",
+    text: "Paragraph Field",
 }
 
 const propertiesSchema = z.object({
-    title: z.string(),
+    text: z.string(),
 })
 
-export const TitleFieldFormElement: FormElement = {
+export const ParagraphFieldFormElement: FormElement = {
     type,
     construct: (id: string) => ({
         id,
@@ -35,8 +36,8 @@ export const TitleFieldFormElement: FormElement = {
         extraAttributes,
     }),
     designerBtnElement: {
-       icon: LuHeading1,
-       label: "Title Field",
+       icon: BsTextParagraph,
+       label: "Paragraph Field",
     },
     designerComponent: DesignerComponent,
     formComponent: FormComponent,
@@ -55,13 +56,13 @@ function DesignerComponent({
     elementInstance
 }: { elementInstance: FormElementInstance }){
     const element = elementInstance as CustomInstance
-    const { title } = element.extraAttributes
+    const { text } = element.extraAttributes
     return (
         <div className="flex flex-col gap-2 w-full">
             <Label className="text-muted-foreground">
-                Title Field
+                Paragraph Field
             </Label>
-            <p className="text-xl">{title}</p>
+            <p>{text}</p>
         </div>
     )
 }
@@ -73,9 +74,9 @@ function FormComponent({
     }){
     const element = elementInstance as CustomInstance
 
-    const { title } = element.extraAttributes
+    const { text } = element.extraAttributes
     return (
-        <h1 className="text-xl">{title}</h1>
+        <p>{text}</p>
     )
 }
 
@@ -88,7 +89,7 @@ function PropertiesConponent({
         resolver: zodResolver(propertiesSchema),
         mode: 'onBlur',
         defaultValues: {
-            title: element.extraAttributes.title,
+            text: element.extraAttributes.text,
         }
     })
 
@@ -97,11 +98,11 @@ function PropertiesConponent({
     }, [element, form])
 
     function applyChanges(values: propertiesFormSchemaType){
-        const { title } = values
+        const { text } = values
         updateElement(element.id, {
             ...element,
             extraAttributes: {
-                title
+                text
             }
         })
     }
@@ -116,12 +117,13 @@ function PropertiesConponent({
             className="space-y-3">
                 <FormField
                 control={form.control}
-                name="title"
+                name="text"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>Text</FormLabel>
                         <FormControl>
-                            <Input {...field}
+                            <Textarea {...field}
+                            rows={5}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") e.currentTarget.blur()
                             }}/>

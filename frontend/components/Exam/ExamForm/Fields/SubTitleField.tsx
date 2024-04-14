@@ -61,7 +61,7 @@ function DesignerComponent({
             <Label className="text-muted-foreground">
                 Sub Title Field
             </Label>
-            <p className="text-lg">{title}</p>
+            <h1 className="text-lg">{title}</h1>
         </div>
     )
 }
