@@ -15,19 +15,19 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import useDesigner from "../Hooks/useDesigner"
-import { LuHeading1 } from "react-icons/lu"
+import { LuHeading2 } from "react-icons/lu"
 
-const type:ElementsType = "TitleField"
+const type:ElementsType = "SubTitleField"
 
 const extraAttributes = {
-    title: "Title Field",
+    title: "Sub Title Field",
 }
 
 const propertiesSchema = z.object({
     title: z.string(),
 })
 
-export const TitleFieldFormElement: FormElement = {
+export const SubTitleFieldFormElement: FormElement = {
     type,
     construct: (id: string) => ({
         id,
@@ -35,8 +35,8 @@ export const TitleFieldFormElement: FormElement = {
         extraAttributes,
     }),
     designerBtnElement: {
-       icon: LuHeading1,
-       label: "Title Field",
+       icon: LuHeading2,
+       label: "Sub Title Field",
     },
     designerComponent: DesignerComponent,
     formComponent: FormComponent,
@@ -59,9 +59,9 @@ function DesignerComponent({
     return (
         <div className="flex flex-col gap-2 w-full">
             <Label className="text-muted-foreground">
-                Title Field
+                Sub Title Field
             </Label>
-            <p className="text-xl">{title}</p>
+            <p className="text-lg">{title}</p>
         </div>
     )
 }
@@ -75,7 +75,7 @@ function FormComponent({
 
     const { title } = element.extraAttributes
     return (
-        <p className="text-xl">{title}</p>
+        <p className="text-lg">{title}</p>
     )
 }
 
@@ -119,7 +119,7 @@ function PropertiesConponent({
                 name="title"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>Sub Title</FormLabel>
                         <FormControl>
                             <Input {...field}
                             onKeyDown={(e) => {
