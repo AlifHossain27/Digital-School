@@ -25,6 +25,7 @@ const FormElementsSidebar = () => {
           <SidebarBtnElement formElement={FormElements.TextField} />
           <SidebarBtnElement formElement={FormElements.NumberField} />
           <SidebarBtnElement formElement={FormElements.TextAreaField} />
+          <SidebarBtnElement formElement={FormElements.DateField} />
         </div>
         
     </div>
