@@ -9,14 +9,13 @@ import {
 } from "@/components/ui/form"
 import { ElementsType, FormElement, FormElementInstance } from "../FormElements"
 import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import useDesigner from "../Hooks/useDesigner"
 import { BsTextParagraph } from "react-icons/bs"
-import { Textarea } from "@/components/ui/textarea"
 
 const type:ElementsType = "ParagraphField"
 
