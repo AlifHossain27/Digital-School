@@ -237,7 +237,7 @@ function PropertiesConponent({
                         <div className="space-y-0.5">
                         <FormLabel>Required</FormLabel>
                         <FormDescription>
-                            The PlaceHolder of the Field
+                            Do you want this field to be required?
                         </FormDescription>
                         </div>
                         <FormControl>
