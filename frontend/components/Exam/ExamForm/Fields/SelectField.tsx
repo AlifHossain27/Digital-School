@@ -29,7 +29,7 @@ import { toast } from "@/components/ui/use-toast"
 const type:ElementsType = "SelectField"
 
 const extraAttributes = {
-    label: "Text Field",
+    label: "Select Field",
     helperText: "Helper Text",
     required: false,
     placeHolder: "Value Here...",

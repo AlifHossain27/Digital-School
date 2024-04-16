@@ -26,8 +26,8 @@ interface Exam {
 }
 
 const FormBuilder = () => {
-    const { setElements } = useDesigner()
-    const [ ready, setReady ] = useState(false)
+    const { setElements, setSelectedElement } = useDesigner()
+    const [ isReady, setIsReady ] = useState(false)
     const examID = useAppSelector((state) => state.examReducer.value.examID)
     const {data: exam, isLoading} = useQuery<Exam>({
         queryFn: () => getExam(examID),
@@ -48,16 +48,18 @@ const FormBuilder = () => {
     const sensors = useSensors(mouseSensor, touchSensor)
   
     useEffect(() => {
+        if (isReady) return;
         const examContent = `${exam?.content ?? '[]'}`;
         const elements = JSON.parse(examContent);
         setElements(elements);
-
-        const readyTimeout = setTimeout(() => setReady(true), 1500);
+        setSelectedElement(null)
+        setIsReady(true)
+        const readyTimeout = setTimeout(() => setIsReady(true), 1500);
 
         return () => clearTimeout(readyTimeout);
-    }, [exam, setElements]);
+    }, [exam, setElements, isReady, setSelectedElement]);
 
-    if (isLoading || !ready) {
+    if (isLoading || !isReady) {
         return (
             <div className='pt-20 flex justify-center'>
                 <ImSpinner2 className="animate-spin" size="50" />
