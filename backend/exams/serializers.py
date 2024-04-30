@@ -28,6 +28,7 @@ class ExamPublishSerializer(serializers.ModelSerializer):
 
 
 class ExamSubmissionSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     student = StudentProfileSerializer(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     exam = ExamSerializer(read_only=True)

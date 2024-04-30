@@ -1,11 +1,22 @@
-
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import { useQuery } from '@tanstack/react-query'
 import { getExamSubmissions } from '@/actions/exam';
-import { ElementsType, FormElementInstance } from '../ExamForm/FormElements'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { format, formatDistance } from "date-fns";
+import { ArrowRight } from "lucide-react";
 import { ImSpinner2 } from "react-icons/im";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
+
+interface Student {
+  profile_uid: string,
+  full_name: string,
+  profile_picture: string
+}
 
 interface Exam {
   id: number,
@@ -20,8 +31,9 @@ interface Exam {
   submissions: number
 }
 
-interface Submission {
+interface ExamSubmission {
   id: number,
+  student: Student,
   exam: Exam,
   content: string,
   created_at: string,
@@ -49,13 +61,27 @@ const SubmissionsTable = ({examID}: {examID: number}) => {
               <TableRow>
                 <TableHead className='text-muted-foreground text-right uppercase'>Exam</TableHead>
                 <TableHead className='text-muted-foreground text-right uppercase'>Submitted at</TableHead>
+                <TableHead className='text-muted-foreground text-right uppercase'>Submission</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-                  {submissions?.map((submission: Submission) => (
+                  {submissions?.map((submission: ExamSubmission) => (
                     <TableRow key={submission.id}>
-                      <TableCell>{submission.exam.name}</TableCell>
-                      <TableCell className='text-right'>{submission.created_at}</TableCell>
+                      <TableCell className="flex gap-4">
+                        <Avatar>
+                            <AvatarImage src={submission.student.profile_picture} alt="@profile" />
+                            <AvatarFallback>Profile</AvatarFallback>
+                        </Avatar>
+                        <h1 className="pt-2">{submission.student.full_name}</h1>
+                      </TableCell>
+                      <TableCell className="text-right">{new Date(submission.created_at).toLocaleString('default', { month: 'long', day: 'numeric' })}</TableCell>
+                      <TableCell className="text-right">
+                        <Button>
+                          <Link href={`/classroom/exam/submissions/${submission.id}`}>
+                            <ArrowRight/>
+                          </Link>
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
             </TableBody>
