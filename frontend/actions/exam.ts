@@ -80,3 +80,14 @@ export async function getExamSubmissions(examID:number) {
     const data = await resp.json();
     return data
 }
+
+export async function getExamSubmission(examID:number, submissionId:number) {
+    const resp = await fetch(`http://localhost:8000/api/exam/${examID}/submission/${submissionId}/`, {
+        credentials: 'include'
+    });
+    if (!resp.ok) {
+        window.location.replace('/classroom');
+    }
+    const data = await resp.json();
+    return data
+}

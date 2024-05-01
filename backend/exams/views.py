@@ -62,11 +62,11 @@ class ExamPublishView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 # Exam Submission View
-class ExamSubmissionView(APIView):
+class ExamSubmissionsView(APIView):
     authentication_classes = [Authentication]
     permission_classes = [ IsTeacher | IsStudent]
     def get(self, request, exam_id):
-        submission = services.get_submission(exam_id=exam_id)
+        submission = services.get_submissions(exam_id=exam_id)
         serializer = ExamSubmissionSerializer(submission, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -75,4 +75,12 @@ class ExamSubmissionView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         serializer.instance = services.submit_exam(user=request.user, exam_id=exam_id, exam_submission_dc=data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+class ExamSubmissionView(APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [ IsTeacher ]
+    def get(self, request, exam_id, id):
+        submission = services.get_submission(exam_id=exam_id, id=id)
+        serializer = ExamSubmissionSerializer(submission)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -37,7 +37,12 @@ def submit_exam(user: "StudentProfile", exam_id: int, exam_submission_dc: "ExamS
     exam.save()
     return ExamSubmissionDataClass.from_instance(instance)
 
-def get_submission(exam_id: int) -> ExamSubmissionDataClass:
+def get_submissions(exam_id: int) -> ExamSubmissionDataClass:
     exam = get_object_or_404(Exam, id=exam_id)
     submissions = ExamSubmission.objects.filter(exam=exam)
     return [ExamSubmissionDataClass.from_instance(submission) for submission in submissions]
+
+
+def get_submission(exam_id: int, id: int) -> ExamSubmissionDataClass:
+    submission = get_object_or_404(ExamSubmission, exam_id=exam_id, id=id)
+    return ExamSubmissionDataClass.from_instance(submission)
