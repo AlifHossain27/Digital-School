@@ -1,5 +1,10 @@
 'use client'
-import React from 'react'
+import { 
+    Card, 
+    CardContent, 
+    CardHeader, 
+    CardTitle
+} from '@/components/ui/card';
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
 import { getExam } from '@/actions/exam';
@@ -7,12 +12,35 @@ import { ImSpinner2 } from 'react-icons/im'
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import SubmissionsTable from './SubmissionsTable';
+import { FaWpforms } from 'react-icons/fa';
+import { HiCursorClick } from 'react-icons/hi';
+import { User } from 'lucide-react';
 
+interface Teacher {
+    teacher_profile_id: string;
+    full_name: string;
+    email: string;
+    contact_info: string;
+  }
+  
+interface Student {
+    student_profile_id: string;
+    full_name: string;
+    father_name: string;
+    mother_name: string;
+}
+
+interface Classroom {
+    class_id: string;
+    name: string;
+    teachers: Teacher[];
+    students: Student[];
+}
 
 interface Exam {
     id: number,
     teacher: string,
-    classroom: string,
+    classroom: Classroom,
     created_at: string,
     published: boolean,
     name: string,
@@ -36,6 +64,9 @@ const Submissions = () => {
             </div>
         )
     }
+    const students = exam?.classroom.students;
+    const submissionRate = (exam?.submissions! / students?.length!) * 100
+
   return (
     <div>
         <div className='py-4 border-b border-muted'>
@@ -46,8 +77,37 @@ const Submissions = () => {
                 </Button>
             </div>
         </div>
-        <div className='w-full pt-8 gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 container'>
-
+        <div className='w-full pt-8 gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 container'>
+            <Card className='shadow-md shadow-blue-600'>
+                <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                    <CardTitle className='text-sm font-medium text-muted-foreground'>Total Submissions</CardTitle>
+                    <FaWpforms className='text-blue-600'size={20}/>
+                </CardHeader>
+                <CardContent>
+                <div className='text-2xl font-bold'>{exam?.submissions}</div>
+                    <p className='text-xs text-muted-foreground pt-1'>All time exam submissions</p>
+                </CardContent>
+            </Card>
+            <Card className='shadow-md shadow-yellow-600'>
+                <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                    <CardTitle className='text-sm font-medium text-muted-foreground'>Total Students</CardTitle>
+                    <User className='text-yellow-600'/>
+                </CardHeader>
+                <CardContent>
+                    <div className='text-2xl font-bold'>{students?.length}</div>
+                    <p className='text-xs text-muted-foreground pt-1'>Total students in the classroom</p>
+                </CardContent>
+            </Card>
+            <Card className='shadow-md shadow-green-600'>
+                <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                    <CardTitle className='text-sm font-medium text-muted-foreground'>Submission Rate</CardTitle>
+                    <HiCursorClick className='text-green-600' size={20}/>
+                </CardHeader>
+                <CardContent>
+                    <div className='text-2xl font-bold'>{submissionRate} %</div>
+                    <p className='text-xs text-muted-foreground pt-1'>Rate of exam submission</p>
+                </CardContent>
+            </Card>
         </div>
         <div className='container pt-10'>
             <SubmissionsTable examID={examID}/>

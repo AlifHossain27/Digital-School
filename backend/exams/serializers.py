@@ -2,6 +2,12 @@ from rest_framework import serializers
 from .models import Exam, ExamSubmission
 from .services import ExamSubmissionDataClass
 from profiles.models import TeacherProfile, StudentProfile
+from classrooms.models import Classroom
+
+class ClassroomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classroom
+        fields = '__all__'
 
 class StudentProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +16,7 @@ class StudentProfileSerializer(serializers.ModelSerializer):
 
 class ExamSerializer(serializers.ModelSerializer):
     teacher = serializers.CharField(source='teacher.profile_uid')
-    classroom = serializers.CharField(source='classroom.class_id')
+    classroom = ClassroomSerializer(read_only=True)
     class Meta:
         model = Exam
         fields = '__all__'
