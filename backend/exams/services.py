@@ -27,6 +27,9 @@ class ExamSubmissionDataClass:
 def submit_exam(user: "StudentProfile", exam_id: int, exam_submission_dc: "ExamSubmissionDataClass") -> ExamSubmissionDataClass:
     exam = get_object_or_404(Exam, id=exam_id)
     student = get_object_or_404(StudentProfile, profile_uid=user.uid)
+    existing_submission = ExamSubmission.objects.filter(student=student, exam=exam).first()
+    if existing_submission:
+        raise exceptions.ValidationError("You have already submitted the exam.")
     instance = ExamSubmission(
         student = student,
         exam = exam,

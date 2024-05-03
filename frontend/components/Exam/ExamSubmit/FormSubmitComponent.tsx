@@ -50,17 +50,21 @@ const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; 
 
     try {
       const jsonContent = JSON.stringify(formValues.current)
-      await submitExam(examID, jsonContent)
-      setSubmitted(true)
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong",
-        variant: "destructive"
-      })
+      const resp = await submitExam(examID, jsonContent)
+      if (!resp.ok){
+        const data = await resp.json()
+        toast({
+          title: data,
+          variant: "destructive"
+        })
+        
+      }
+      else{
+        setSubmitted(true)
+      }
+    } catch(error) {
+      console.log(error)
     }
-
-    console.log(formValues.current)
   }
 
   if (submitted) {

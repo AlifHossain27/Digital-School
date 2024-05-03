@@ -63,11 +63,7 @@ export async function submitExam(examID:number, content:string) {
             "content": content
         })
     });
-    if (!resp.ok) {
-        window.location.replace('/classroom');
-    }
-    const data = await resp.json();
-    return data
+    return resp
 }
 
 export async function getExamSubmissions(examID:number) {
