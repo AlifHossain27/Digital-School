@@ -78,6 +78,7 @@ export async function getExamSubmissions(examID:number) {
 }
 
 export async function getExamSubmission(examID:number, submissionId:number) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
     const resp = await fetch(`http://localhost:8000/api/exam/${examID}/submission/${submissionId}/`, {
         credentials: 'include'
     });

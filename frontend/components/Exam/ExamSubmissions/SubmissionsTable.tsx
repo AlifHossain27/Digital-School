@@ -41,7 +41,7 @@ interface ExamSubmission {
 
 
 const SubmissionsTable = ({examID}: {examID: number}) => {
-  const {data: submissions, isLoading} = useQuery({
+  const {data: submissions, isLoading} = useQuery<ExamSubmission[] | undefined>({
     queryFn: () => getExamSubmissions(examID),
     queryKey: ['submission']
   })
@@ -76,11 +76,11 @@ const SubmissionsTable = ({examID}: {examID: number}) => {
                       </TableCell>
                       <TableCell className="text-right">{new Date(submission.created_at).toLocaleString('default', { month: 'long', day: 'numeric' })}</TableCell>
                       <TableCell className="text-right">
-                        <Button>
-                          <Link href={`/classroom/exam/submissions/${submission.id}`}>
+                        <Link href={`/classroom/exam/submissions/${submission.id}`}>
+                          <Button>
                             <ArrowRight/>
-                          </Link>
-                        </Button>
+                            </Button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}
