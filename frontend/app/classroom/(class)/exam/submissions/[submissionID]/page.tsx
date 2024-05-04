@@ -8,12 +8,6 @@ import { ChevronLeft } from 'lucide-react';
 import { FormElementInstance } from '@/components/Exam/ExamForm/FormElements';
 import ExamViewComponent from '@/components/Exam/ExamSubmissions/ExamViewComponent';
 import Link from 'next/link';
-
-interface Student {
-  profile_uid: string,
-  full_name: string,
-  profile_picture: string
-}
   
 interface Exam {
   id: number,

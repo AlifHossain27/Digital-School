@@ -32,11 +32,10 @@ interface Student {
     created_at: string,
   }
 
-const FormSubmitComponent = ({examID,content,submissionID}: {content: FormElementInstance[]; examID: number; submissionID: string}) => {
-    const [ renderKey, setRenderKey ] = useState(new Date().getTime());
+const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementInstance[]; examID: number; submissionID: string}) => {
     const {data: submittedData, isLoading} = useQuery<ExamSubmission>({
         queryFn: () => getExamSubmission(examID, Number(submissionID)),
-        queryKey: ['submission-data']
+        queryKey: ['submission-data', submissionID]
     })
 
     if (isLoading) {
@@ -52,7 +51,7 @@ const FormSubmitComponent = ({examID,content,submissionID}: {content: FormElemen
 
     return (
         <div className='flex justify-center w-full h-full items-center p-8'>
-            <div key={renderKey} className='max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto shadow-xl shadow-blue-700 rounded opacity-80 cursor-not-allowed pointer-events-none'>
+            <div className='max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto shadow-xl shadow-blue-700 rounded opacity-80 cursor-not-allowed pointer-events-none'>
                 {
                     content.map((element) => {
                         const FormElement = FormElements[element.type].formComponent;
@@ -68,4 +67,4 @@ const FormSubmitComponent = ({examID,content,submissionID}: {content: FormElemen
     )
 }
 
-export default FormSubmitComponent
+export default ExamViewComponent
