@@ -50,6 +50,11 @@ const ClassworkList = () => {
         {isLoading && (<div className='pt-20 flex justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>
             </div>)}
+        {classworks?.length === 0 && (
+            <div className="flex w-full items-center justify-center">
+                <h1 className="pt-5">No Classwork</h1>
+            </div>
+        )}
         <div className="flex flex-col gap-4 pt-4">
         {classworks?.map((classwork: Classwork,i: number) => {
             return (

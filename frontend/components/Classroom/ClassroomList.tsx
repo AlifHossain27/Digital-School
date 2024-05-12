@@ -59,6 +59,11 @@ const ClassroomList = () => {
     }, []);
   return (
     <div>
+      {classrooms?.length === 0 && (
+        <div className='flex w-full items-center justify-center'>
+          <h1 className='pt-5'>No Classroom</h1>
+        </div>
+      )}
         <div className='grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 pt-6 pb-8'>
             {classrooms.map((classroom, i) => (
               <Link href={`classroom/home`} key={i}>

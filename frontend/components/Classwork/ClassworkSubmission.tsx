@@ -78,7 +78,7 @@ const ClassworkSubmission = () => {
             }
         },
         onSuccess: async (_, values) => {
-            queryClient.invalidateQueries({queryKey: ['submissions']})
+            queryClient.invalidateQueries({queryKey: ['classwork-submission']})
             toast({
                 title: `Added Submission`,
             });
@@ -103,7 +103,7 @@ const ClassworkSubmission = () => {
 
     const {data: submissions, isLoading} = useQuery({
         queryFn: () => getClassworkSubmissionDetails(classworkID,classroomID),
-        queryKey: ['submissions']
+        queryKey: ['classwork-submission']
       })
 
   return (
@@ -126,9 +126,9 @@ const ClassworkSubmission = () => {
                             <div className='border-r py-3 px-3'>
                                 <File size={54} />
                             </div>
-                            <div className='flex flex-col justify-center px-2'>
-                                <h1 className='text-[16px]'>{fileName}</h1>
-                                <h1 className='text-[12px] text-[#5F6368]'>{fileSize}</h1>
+                            <div className='flex flex-col justify-center px-2 min-w-0'>
+                                <h1 className='text-[16px] font-semibold truncate min-w-0'>{fileName}</h1>
+                                <h1 className='text-[12px] text-[#5F6368] font-semibold truncate'>{(fileSize/1048576).toFixed(2)} MB</h1>
                             </div>
                             <div className='border-l pt-6 px-2 cursor-pointer hover:bg-red-600 rounded-r-lg' onClick={() => {
                                 setFileUploaded(false);
@@ -197,9 +197,9 @@ const ClassworkSubmission = () => {
                                     <div className='border-r py-3 px-3'>
                                         <File size={54} />
                                     </div>
-                                    <div className='flex flex-col justify-center px-2'>
-                                        <h1 className='text-[16px]'>{filename}</h1>
-                                        <h1 className='text-[12px] text-[#5F6368]'>{attachment_size}</h1>
+                                    <div className='flex flex-col justify-center px-2 min-w-0'>
+                                        <h1 className='text-[16px] font-semibold truncate'>{filename}</h1>
+                                        <h1 className='text-[12px] text-[#5F6368] font-semibold truncate'>{(attachment_size/1048576).toFixed(2)} MB</h1>
                                     </div>
                                 </div>
                             )}

@@ -51,7 +51,7 @@ const SubmissionPrivateComment = () => {
     const classworkID = useAppSelector((state)=> state.classworkReducer.value.classworkID)
     const uid = useAppSelector((state)=> state.uidReducer.value.userID)
     const searchParams = useSearchParams()
-    const studentID:string = searchParams.get('studentID')
+    const studentID = searchParams.get('studentID')
     const [ reply, setReply ] = useState(false)
     const [ commentID, setCommentID ] = useState(0)
     
@@ -95,7 +95,7 @@ const SubmissionPrivateComment = () => {
     };
 
     const {data: comments, isLoading} = useQuery({
-        queryFn: () => getPrivateComments(classworkID, studentID),
+        queryFn: () => getPrivateComments(classworkID, studentID!),
         queryKey: ['private-comments']
       })
     

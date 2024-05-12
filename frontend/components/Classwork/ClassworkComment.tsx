@@ -70,7 +70,7 @@ const ClassworkComment = () => {
         }),
         }),
         onSuccess: async (_, values) => {
-        queryClient.invalidateQueries({queryKey: ['comments']})
+        queryClient.invalidateQueries({queryKey: ['public-comments']})
         toast({
             title: "You Commented to the Classwork"
         });
@@ -97,7 +97,7 @@ const ClassworkComment = () => {
 
     const {data: comments, isLoading} = useQuery({
         queryFn: () => getPublicComments(classworkID),
-        queryKey: ['comments']
+        queryKey: ['public-comments']
     })
 
     if (isLoading) {

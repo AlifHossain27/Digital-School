@@ -24,7 +24,7 @@ const DeleteClassworkSubmission = ({submissionID}:SubmissionData) => {
           credentials: "include"
         }),
         onSuccess: () => {
-          queryClient.invalidateQueries({queryKey: ['submissions']})
+          queryClient.invalidateQueries({queryKey: ['classwork-submission']})
           toast({
             title: "Submission deleted",
           })

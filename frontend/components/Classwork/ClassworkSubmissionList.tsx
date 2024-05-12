@@ -42,7 +42,7 @@ const ClassworkSubmissionList = () => {
     const classworkID = useAppSelector((state) => state.classworkReducer.value.classworkID)
     const {data: submissionList, isLoading} = useQuery({
         queryFn: () => getClassworkSubmission(classworkID, classroomID),
-        queryKey: ['submissionList']
+        queryKey: ['classwork-submissions']
       })
     const submissionCount = submissionList?.length
     let classworkTitle
