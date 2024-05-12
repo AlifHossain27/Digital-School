@@ -55,7 +55,7 @@ const Submissions = () => {
     const examID = useAppSelector((state) => state.examReducer.value.examID)
     const {data: exam, isLoading} = useQuery<Exam>({
         queryFn: () => getExam(examID),
-        queryKey: ['submissions']
+        queryKey: ['exam']
       })
     if (isLoading) {
         return (
@@ -104,7 +104,7 @@ const Submissions = () => {
                     <HiCursorClick className='text-green-600' size={20}/>
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{submissionRate} %</div>
+                    <div className='text-2xl font-bold'>{submissionRate.toFixed(2)} %</div>
                     <p className='text-xs text-muted-foreground pt-1'>Rate of exam submission</p>
                 </CardContent>
             </Card>

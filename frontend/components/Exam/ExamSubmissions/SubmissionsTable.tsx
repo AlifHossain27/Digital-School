@@ -43,7 +43,7 @@ interface ExamSubmission {
 const SubmissionsTable = ({examID}: {examID: number}) => {
   const {data: submissions, isLoading} = useQuery<ExamSubmission[] | undefined>({
     queryFn: () => getExamSubmissions(examID),
-    queryKey: ['submission']
+    queryKey: ['exam-submissions']
   })
 
   if (isLoading) {
@@ -86,6 +86,11 @@ const SubmissionsTable = ({examID}: {examID: number}) => {
                   ))}
             </TableBody>
           </Table>
+          {submissions?.length === 0 && (
+                <div className="flex w-full items-center justify-center">
+                  <h1 className="pt-5 pb-5">No Submissions</h1>
+                </div>
+              )}
         </div>
     </div>
   )

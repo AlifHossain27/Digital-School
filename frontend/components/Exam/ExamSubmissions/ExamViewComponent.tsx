@@ -35,7 +35,7 @@ interface Student {
 const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementInstance[]; examID: number; submissionID: string}) => {
     const {data: submittedData, isLoading} = useQuery<ExamSubmission>({
         queryFn: () => getExamSubmission(examID, Number(submissionID)),
-        queryKey: ['submission-data', submissionID]
+        queryKey: ['exam-submission', submissionID]
     })
 
     if (isLoading) {

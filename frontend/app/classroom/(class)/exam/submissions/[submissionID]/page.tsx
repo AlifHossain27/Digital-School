@@ -27,7 +27,7 @@ const ExamSubmissionView = ( { params }: { params: { submissionID: string}} ) =>
     const examID = useAppSelector((state) => state.examReducer.value.examID)
     const {data: exam , isLoading} = useQuery<Exam>({
       queryFn: () => getExam(examID),
-      queryKey: ['exam-data'],
+      queryKey: ['exam'],
     })
     if (isLoading) {
         return (
