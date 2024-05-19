@@ -25,7 +25,7 @@ const type:ElementsType = "NumberField"
 
 const extraAttributes = {
     label: "Number Field",
-    helperText: "Helper Text",
+    helperText: "0",
     required: false,
     placeHolder: "0",
 }
@@ -80,7 +80,7 @@ function DesignerComponent({
             </Label>
             <Input readOnly disabled type="number" placeholder={ placeHolder } />
             { helperText && (
-                <p className="text-muted-foreground text-[0.8rem]">{ helperText }</p>
+                <p className="text-muted-foreground text-[0.8rem]">{ helperText } points</p>
             )}
         </div>
     )
@@ -126,7 +126,7 @@ function FormComponent({
             value={value}
             />
             { helperText && (
-                <p className={cn('text-muted-foreground text-[0.8rem]', error && 'text-red-500')}>{ helperText }</p>
+                <p className={cn('text-muted-foreground text-[0.8rem]', error && 'text-red-500')}>{ helperText } points</p>
             )}
         </div>
     )
@@ -183,7 +183,8 @@ function PropertiesConponent({
                             <Input {...field}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") e.currentTarget.blur()
-                            }}/>
+                            }}
+                            autoComplete='off'/>
                         </FormControl>
                         <FormDescription>
                             The label of the Field. <br/> It will be displayed above the Field
@@ -202,7 +203,8 @@ function PropertiesConponent({
                             <Input {...field}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") e.currentTarget.blur()
-                            }}/>
+                            }}
+                            autoComplete='off'/>
                         </FormControl>
                         <FormDescription>
                             The PlaceHolder of the Field
@@ -216,15 +218,17 @@ function PropertiesConponent({
                 name="helperText"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Helper Text</FormLabel>
+                        <FormLabel>Points</FormLabel>
                         <FormControl>
                             <Input {...field}
+                            type="number"
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") e.currentTarget.blur()
-                            }}/>
+                            }}
+                            autoComplete='off'/>
                         </FormControl>
                         <FormDescription>
-                            The Helper Text of the Field <br/> It will be displayed below the Field
+                            The Points for this Field
                         </FormDescription>
                         <FormMessage/>
                     </FormItem>
