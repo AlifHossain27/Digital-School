@@ -10,7 +10,7 @@ import StudentList from '@/components/People/StudentList';
 const page = () => {
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
   return (
-    <div className='xl:px-48 lg:px-32 md:px-24 sm:container pt-8'>
+    <div className='xl:px-48 lg:px-32 md:px-24 container pt-8'>
       <Suspense fallback = {
               <div className='pt-20 flex justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>
