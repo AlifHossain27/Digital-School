@@ -102,10 +102,10 @@ const Navbar = () => {
         await router.push('/')
       }
   return (
-        <nav className='sticky top-0 flex flex-row justify-between px-6 items-start py-4 w-full border-b-2 border-secondary bg-background'>
+        <nav className='h-16 sticky top-0 flex flex-row justify-between px-6 items-start py-2 w-full border-b-2 border-secondary bg-background'>
             <section>
                 <Link href="/">
-                    <h1 className='text-2xl font-mono w-auto'>Digital School</h1>
+                    <h1 className='sm:text-xl md:text-2xl lg:text-2xl py-2 font-mono w-auto'>Digital School</h1>
                 </Link>
             </section>
             <section className='flex items-center gap-4'>
@@ -119,13 +119,13 @@ const Navbar = () => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="rounded-none border-none">
-                        <DropdownMenuItem onClick={() => setTheme("light")}>
+                        <DropdownMenuItem onClick={() => setTheme("light")} className='rounded-none'>
                             Light
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("dark")}>
+                        <DropdownMenuItem onClick={() => setTheme("dark")} className='rounded-none'>
                             Dark
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("system")}>
+                        <DropdownMenuItem onClick={() => setTheme("system")} className='rounded-none'>
                             System
                         </DropdownMenuItem>
                     </DropdownMenuContent>
