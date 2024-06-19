@@ -38,7 +38,7 @@ const SubmissionViewPage = ( { params }: { params: { submissionID: string}} ) =>
         queryKey: ['submission']
       })
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-full w-full'>
       { isLoading && (
             <div className='flex justify-center'>
                 <ImSpinner2 className= "animate-spin" size= "50"/>
@@ -51,12 +51,12 @@ const SubmissionViewPage = ( { params }: { params: { submissionID: string}} ) =>
         
         <h1 className='text-[24px]'>{submission?.classwork}</h1>
       </div>
-      <div className='grid grid-cols-3'>
+      <div className='grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1'>
           <div className='col-span-2'>
               <iframe src={submission?.attachment} className='px-4 py-4 w-full h-[740px]'></iframe>
           </div>
           
-          <div className='px-2'>
+          <div className='px-4 py-4 w-screen md:w-full lg:w-full'>
             <SubmissionPrivateComment/>
           </div>
       </div>

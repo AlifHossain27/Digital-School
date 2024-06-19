@@ -35,7 +35,7 @@ export default function RootLayout({
             <Sidebar/>
             <div className='flex flex-col w-full'>
               <Navbar/>
-              <div className='absolute top-16 left-0 w-screen  md:relative lg:relative md:top-0 lg:top-0'>
+              <div className='absolute top-16 left-0 w-screen md:relative lg:relative md:top-0 lg:top-0 md:w-full lg:w-full'>
                 {children}
               </div>
               <Toaster />

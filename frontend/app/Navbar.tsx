@@ -102,7 +102,7 @@ const Navbar = () => {
         await router.push('/')
       }
   return (
-        <nav className='h-16 sticky top-0 flex flex-row justify-between px-6 items-start py-2 w-full border-b-2 border-secondary bg-background'>
+        <nav className='sticky top-0 h-16 flex flex-row justify-between px-6 items-start py-2 w-full border-b-2 border-secondary bg-background'>
             <section>
                 <Link href="/">
                     <h1 className='sm:text-xl md:text-2xl lg:text-2xl py-2 font-mono w-auto'>Digital School</h1>
