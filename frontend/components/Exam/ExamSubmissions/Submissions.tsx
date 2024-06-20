@@ -7,10 +7,11 @@ import {
 } from '@/components/ui/card';
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
-import { getExam } from '@/actions/exam';
+import { getExam, unpublishExam } from '@/actions/exam';
 import { ImSpinner2 } from 'react-icons/im'
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation'
+import { useToast } from "@/components/ui/use-toast"
 import SubmissionsTable from './SubmissionsTable';
 import { FaWpforms } from 'react-icons/fa';
 import { HiCursorClick } from 'react-icons/hi';
@@ -52,6 +53,8 @@ interface Exam {
 
 
 const Submissions = () => {
+    const { toast } = useToast()
+    const router = useRouter()
     const examID = useAppSelector((state) => state.examReducer.value.examID)
     const {data: exam, isLoading} = useQuery<Exam>({
         queryFn: () => getExam(examID),
@@ -67,13 +70,30 @@ const Submissions = () => {
     const students = exam?.classroom.students;
     const submissionRate = (exam?.submissions! / students?.length!) * 100
 
+    async function unpublishForm() {
+        try {
+          await unpublishExam(examID)
+          toast({
+            title: "Success",
+            description: "Your Exam is now Published",
+          });
+          router.push("/classroom/exam/")
+        } catch (error) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Something went wrong"
+          });
+        }
+      }
+
   return (
     <div>
         <div className='py-4 border-b border-muted'>
             <div className='flex justify-between container'>
                 <h1 className='text-4xl font-bold truncate'>{exam?.name}</h1>
-                <Button asChild className='w-[200px]'>
-                    <Link href={'/classroom/exam/attend'}>Visit</Link>
+                <Button className='w-[200px]' onClick={unpublishForm}>
+                    Unpublish Exam
                 </Button>
             </div>
         </div>

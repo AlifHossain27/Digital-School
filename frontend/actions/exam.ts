@@ -54,6 +54,22 @@ export async function publishExam(examID:number) {
     return data
 }
 
+export async function unpublishExam(examID:number) {
+    const resp = await fetch(`http://localhost:8000/api/exam/${examID}/publish/`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+            "published": false
+        })
+    });
+    if (!resp.ok) {
+        window.location.replace('/classroom');
+    }
+    const data = await resp.json();
+    return data
+}
+
 export async function submitExam(examID:number, content:string) {
     const resp = await fetch(`http://localhost:8000/api/exam/${examID}/submission/`, {
         method: 'POST',
