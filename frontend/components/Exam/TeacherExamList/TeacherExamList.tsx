@@ -17,7 +17,6 @@ import CreateExam from './CreateExam'
 import Link from "next/link";
 import { Badge } from '@/components/ui/badge'
 import { formatDistance } from 'date-fns'
-import { LuView } from 'react-icons/lu'
 import { FaWpforms } from 'react-icons/fa'
 import { BiRightArrowAlt } from 'react-icons/bi'
 import { FaEdit } from 'react-icons/fa'
@@ -34,7 +33,6 @@ interface Exam {
     name: string,
     description: string,
     content: string,
-    visits: number,
     submissions: number
 }
 
@@ -71,8 +69,6 @@ const TeacherExamList = () => {
                   {
                     !exam.published && (
                       <span className='flex items-center gap-2'>
-                        <LuView className='text-muted-foreground'/>
-                        <span>{exam.visits.toLocaleString()}</span>
                         <FaWpforms className='text-muted-foreground'/>
                         <span>{exam.submissions.toLocaleString()}</span>
                       </span>

@@ -28,7 +28,6 @@ interface Exam {
     name: string,
     description: string,
     content: string,
-    visits: number,
     submissions: number
 }
 

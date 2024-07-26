@@ -25,13 +25,11 @@ const type:ElementsType = "CheckboxField"
 
 const extraAttributes = {
     label: "Checkbox Field",
-    helperText: "Helper Text",
     required: false,
 }
 
 const propertiesSchema = z.object({
     label: z.string(),
-    helperText: z.string().max(200),
     required: z.boolean().default(false),
 })
 
@@ -69,7 +67,7 @@ function DesignerComponent({
     elementInstance
 }: { elementInstance: FormElementInstance }){
     const element = elementInstance as CustomInstance
-    const { label, required, helperText } = element.extraAttributes
+    const { label, required } = element.extraAttributes
     const id = `checkbox-${element.id}`
     return (
         <div className="flex items-top space-x-2">
@@ -79,9 +77,6 @@ function DesignerComponent({
                     { label }
                     { required && "*" }
                 </Label>
-                { helperText && (
-                    <p className="text-muted-foreground text-[0.8rem]">{ helperText }</p>
-                )}
             </div>
         </div>
     )
@@ -105,7 +100,7 @@ function FormComponent({
         setError(isInvalid === true);
     }, [isInvalid]);
 
-    const { label, required, placeHolder, helperText } = element.extraAttributes
+    const { label, required } = element.extraAttributes
     const id = `checkbox-${element.id}`
     return (
         <div className="flex items-top space-x-2">
@@ -133,11 +128,6 @@ function FormComponent({
                     { label }
                     { required && "*" }
                 </Label>
-                { helperText && (
-                    <p className={cn("text-muted-foreground text-[0.8rem]", 
-                    error && "text-red-500"
-                    )}>{ helperText }</p>
-                )}
             </div>
         </div>
     )
@@ -153,7 +143,6 @@ function PropertiesConponent({
         mode: 'onBlur',
         defaultValues: {
             label: element.extraAttributes.label,
-            helperText: element.extraAttributes.helperText,
             required: element.extraAttributes.required,
         }
     })
@@ -163,12 +152,11 @@ function PropertiesConponent({
     }, [element, form])
 
     function applyChanges(values: propertiesFormSchemaType){
-        const { label, helperText, required } = values
+        const { label, required } = values
         updateElement(element.id, {
             ...element,
             extraAttributes: {
                 label,
-                helperText,
                 required
             }
         })
@@ -196,25 +184,6 @@ function PropertiesConponent({
                         </FormControl>
                         <FormDescription>
                             The label of the Field. <br/> It will be displayed above the Field
-                        </FormDescription>
-                        <FormMessage/>
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="helperText"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Helper Text</FormLabel>
-                        <FormControl>
-                            <Input {...field}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") e.currentTarget.blur()
-                            }}/>
-                        </FormControl>
-                        <FormDescription>
-                            The Helper Text of the Field <br/> It will be displayed below the Field
                         </FormDescription>
                         <FormMessage/>
                     </FormItem>

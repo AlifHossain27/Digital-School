@@ -24,7 +24,7 @@ class ExamSerializer(serializers.ModelSerializer):
 class ExamUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
-        fields = ['content']
+        fields = ['content', 'totalPoints']
         
 class ExamPublishSerializer(serializers.ModelSerializer):
     class Meta:

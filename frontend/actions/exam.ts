@@ -22,13 +22,14 @@ export async function getExams(classroomID:string) {
     return data
 }
 
-export async function updateExam(examID:number, content:string) {
+export async function updateExam(examID:number, content:string, totalPoints:number) {
     const resp = await fetch(`http://localhost:8000/api/exam/${examID}/`, {
         method: 'PUT',
         headers: {'Content-Type':'application/json'},
         credentials: 'include',
         body: JSON.stringify({
-            "content": content
+            "content": content,
+            "totalPoints": totalPoints
         })
     });
     if (!resp.ok) {

@@ -10,10 +10,17 @@ const SaveFormBtn = ({examID}: {examID: number}) => {
   const { elements } = useDesigner()
   const [ loading, startTransition ] = useTransition()
   const { toast } = useToast()
+  let totalPoints = 0
+  const points = elements.map(e => {
+    if (e?.extraAttributes?.helperText) {
+      totalPoints += Number(e?.extraAttributes?.helperText)
+    }
+  })
+  console.log(totalPoints)
   const updateFormContent = async () => {
     try {
       const JsonElements = JSON.stringify(elements)
-      await updateExam(examID, JsonElements)
+      await updateExam(examID, JsonElements, totalPoints)
       toast({
         title: "Success",
         description: "Your Exam has been saved",

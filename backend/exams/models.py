@@ -10,8 +10,7 @@ class Exam(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(default= "", verbose_name="Description")
     content = models.TextField(default= "[]", verbose_name="Content")
-
-    visits = models.IntegerField(default=0, verbose_name="Visits")
+    totalPoints = models.IntegerField(default=0, verbose_name="Total Points")
     submissions = models.IntegerField(default=0, verbose_name="Submissions")
 
 
