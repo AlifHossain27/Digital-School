@@ -107,6 +107,11 @@ const SubmissionPrivateComment = () => {
         )
     }
   return (
+    <div>
+        {comments.length === 0 ? (
+        <div className='px-2 py-2'>
+            No private comment
+        </div>) : (
     <div className='flex flex-col justify-between border rounded-md h-full'>
         <div className='flex flex-col px-2 py-2'>
             <div className='px-2 py-4 border-b'>Private comments:</div>
@@ -174,6 +179,8 @@ const SubmissionPrivateComment = () => {
         </Form>
             </div>
         )}
+    </div>
+    )}
     </div>
   )
 }
