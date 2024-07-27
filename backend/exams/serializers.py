@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Exam, ExamSubmission
+from .models import Exam, ExamSubmission, ExamSummary
 from .services import ExamSubmissionDataClass
 from profiles.models import TeacherProfile, StudentProfile
 from classrooms.models import Classroom
@@ -43,3 +43,8 @@ class ExamSubmissionSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
         return ExamSubmissionDataClass(**data)
+    
+class ExamSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamSummary
+        fields = '__all__'

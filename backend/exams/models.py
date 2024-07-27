@@ -19,3 +19,7 @@ class ExamSubmission(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, verbose_name="Exam")
     content = models.TextField(verbose_name="Content")
+
+class ExamSummary(models.Model):
+    submission = models.ForeignKey(ExamSubmission, on_delete=models.CASCADE, verbose_name="ExamSubmission")
+    obtained_points = models.TextField(default="[]", verbose_name="Obtained Points")

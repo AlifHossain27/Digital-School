@@ -4,11 +4,11 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from users.permissions import IsTeacher, IsStudent
 from users.authentication import Authentication
-from .models import Exam, ExamSubmission
+from .models import Exam, ExamSubmission, ExamSummary
 from classrooms.models import Classroom
 from profiles.models import TeacherProfile
 from . import services
-from .serializers import ExamSerializer, ExamUpdateSerializer, ExamPublishSerializer, ExamSubmissionSerializer
+from .serializers import ExamSerializer, ExamUpdateSerializer, ExamPublishSerializer, ExamSubmissionSerializer, ExamSummarySerializer
 
 class ExamCreateView(APIView):
     authentication_classes = [Authentication]
@@ -84,3 +84,26 @@ class ExamSubmissionView(APIView):
         submission = services.get_submission(exam_id=exam_id, id=id)
         serializer = ExamSubmissionSerializer(submission)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+class ExamSummaryView(APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [ IsTeacher  | IsStudent]
+    def post(self, request):
+        serializer = ExamSummarySerializer(data=request.data)
+        if serializer.is_valid():
+            submission_id = request.data.get('submission')
+            submission = get_object_or_404(ExamSubmission, id=submission_id)
+            obtained_points = request.data.get('obtained_points')
+            serializer.save(submission=submission, obtained_points=obtained_points)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request, submission_id):
+        summary = get_object_or_404(ExamSummary, submission_id=submission_id)
+        serializer = ExamSummarySerializer(summary, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

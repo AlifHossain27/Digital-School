@@ -105,3 +105,29 @@ export async function getExamSubmission(examID:number, submissionId:number) {
     const data = await resp.json();
     return data
 }
+
+export async function addExamSubmissionMarks(submissionId:number) {
+    const resp = await fetch(`http://localhost:8000/api/exam/summary/`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+            "submission": submissionId,
+            "obtained_points": "[0]"
+        })
+    });
+    return resp
+}
+
+export async function updateExamSubmissionMarks(submissionId:number, obtainedMarks:Number[]) {
+    const resp = await fetch(`http://localhost:8000/api/exam/summary/${submissionId}/`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+            "submission": submissionId,
+            "obtained_points": JSON.stringify(obtainedMarks)
+        })
+    });
+    return resp
+}

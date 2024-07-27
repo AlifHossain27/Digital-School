@@ -1,9 +1,11 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { getExamSubmission } from '@/actions/exam';
+import { getExamSubmission, updateExamSubmissionMarks } from '@/actions/exam';
+import { useToast } from "@/components/ui/use-toast"
 import { ImSpinner2 } from "react-icons/im";
 import { FormElementInstance, FormElements } from '../ExamForm/FormElements'
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -40,6 +42,8 @@ interface Student {
 }
 
 const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementInstance[]; examID: number; submissionID: string}) => {
+    const { toast } = useToast()
+    const router =  useRouter()
     const {data: submittedData, isLoading} = useQuery<ExamSubmission>({
         queryFn: () => getExamSubmission(examID, Number(submissionID)),
         queryKey: ['exam-submission', submissionID]
@@ -59,6 +63,7 @@ const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementI
     const submissionContent = JSON.parse(submissionData) as FormElementInstance[]
 
     let assignedMarks: String[] = []
+    let obtainedMarks: Number[] = []
     let hasHelperText = false
     
     const handleMarkChange = (index: number, value: number) => {
@@ -77,7 +82,26 @@ const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementI
     };
 
     const totalMarksObtained = marks.reduce((acc, curr) => acc + curr.value, 0);
-    
+    const updateObtainedMarks = marks.map(e => {
+        obtainedMarks.push(Number(e.value))
+    })
+
+    const handleSubmit = async () => {
+        try {
+            await updateExamSubmissionMarks(Number(submissionID), obtainedMarks)
+            toast({
+                title: "Success",
+                description: "The submission has been graded",
+              });
+            router.back()
+        } catch {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Something went wrong"
+              });
+        }
+    }
     return (
         <div className='flex flex-col gap-8 justify-center w-full h-full items-center p-8'>
             <div className='max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto shadow-lg shadow-blue-700 rounded opacity-80'>
@@ -124,7 +148,7 @@ const ExamViewComponent = ({examID,content,submissionID}: {content: FormElementI
             {hasHelperText && (
                 <div className='flex justify-between max-w-[620px] bg-background w-full p-8 shadow-xl shadow-green-700 rounded opacity-80'>
                     <h1 className='pt-2'>Total Marks Obtained: {totalMarksObtained} / {assignedMarks.map(Number).reduce((acc, curr) => acc + curr, 0)}</h1>
-                    <Button className='bg-green-600 h-10 rounded-none'>Submit Marks</Button>
+                    <Button className='bg-green-600 h-10 rounded-none' onClick={handleSubmit}>Submit Marks</Button>
                 </div>
             )}
         </div>

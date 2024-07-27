@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { HiCursorClick } from 'react-icons/hi';
 import { useToast } from '@/components/ui/use-toast';
 import { ImSpinner2 } from 'react-icons/im';
-import { submitExam } from '@/actions/exam';
+import { submitExam, addExamSubmissionMarks } from '@/actions/exam';
 
 const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; examID: number }) => {
   const { toast } = useToast();
@@ -51,8 +51,8 @@ const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; 
     try {
       const jsonContent = JSON.stringify(formValues.current)
       const resp = await submitExam(examID, jsonContent)
+      const data = await resp.json()
       if (!resp.ok){
-        const data = await resp.json()
         toast({
           title: data,
           variant: "destructive"
@@ -61,6 +61,9 @@ const FormSubmitComponent = ({examID,content}: {content: FormElementInstance[]; 
       }
       else{
         setSubmitted(true)
+        console.log(data.id)
+        console.log(data["id"])
+        await addExamSubmissionMarks(data.id)
       }
     } catch(error) {
       console.log(error)
