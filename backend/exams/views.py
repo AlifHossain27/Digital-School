@@ -6,7 +6,7 @@ from users.permissions import IsTeacher, IsStudent
 from users.authentication import Authentication
 from .models import Exam, ExamSubmission, ExamSummary
 from classrooms.models import Classroom
-from profiles.models import TeacherProfile
+from profiles.models import TeacherProfile, StudentProfile
 from . import services
 from .serializers import ExamSerializer, ExamUpdateSerializer, ExamPublishSerializer, ExamSubmissionSerializer, ExamSummarySerializer
 
@@ -88,6 +88,13 @@ class ExamSubmissionView(APIView):
 class ExamSummaryView(APIView):
     authentication_classes = [Authentication]
     permission_classes = [ IsTeacher  | IsStudent]
+    def get(self, request, exam_id, student_id):
+        student_id = get_object_or_404(StudentProfile, profile_uid=student_id)
+        submission = get_object_or_404(ExamSubmission, exam_id=exam_id, student_id=student_id)
+        summary = get_object_or_404(ExamSummary, submission_id=submission)
+        serializer = ExamSummarySerializer(summary)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request):
         serializer = ExamSummarySerializer(data=request.data)
         if serializer.is_valid():

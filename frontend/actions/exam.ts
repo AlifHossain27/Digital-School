@@ -106,6 +106,14 @@ export async function getExamSubmission(examID:number, submissionId:number) {
     return data
 }
 
+
+export async function getExamSubmissionMarks(examId:number, uid:string) {
+    const resp = await fetch(`http://localhost:8000/api/exam/${examId}/summary/${uid}/`, {
+        credentials: 'include',
+    });
+    return resp
+}
+
 export async function addExamSubmissionMarks(submissionId:number) {
     const resp = await fetch(`http://localhost:8000/api/exam/summary/`, {
         method: 'POST',
