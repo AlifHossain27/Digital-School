@@ -110,7 +110,7 @@ const ClassworkPrivateComment = () => {
   const commentCount = comments?.length
 
   return (
-    <div className='pt-5'>
+    <div className='py-5'>
       <div className='h-auto border rounded-lg shadow-lg px-5 py-5'>
       <div className='text-[14px] text-[#5F6368] flex gap-1'>
             <UsersRound />

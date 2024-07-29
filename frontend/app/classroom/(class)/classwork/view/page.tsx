@@ -3,6 +3,7 @@ import ClassworkDetails from '@/components/Classwork/ClassworkDetails'
 import ClassworkSubmission from '@/components/Classwork/ClassworkSubmission'
 import ClassworkComment from '@/components/Classwork/ClassworkComment'
 import ClassworkPrivateComment from '@/components/Classwork/ClassworkPrivateComment'
+import ClassworkGrade from '@/components/Classwork/ClassworkGrade'
 
 
 const ClassworkViewPage = () => {
@@ -15,6 +16,7 @@ const ClassworkViewPage = () => {
         </div>
         <div className='container col-span-1'>
           <ClassworkSubmission/>
+          <ClassworkGrade/>
           <ClassworkPrivateComment/>
         </div>
       </div>

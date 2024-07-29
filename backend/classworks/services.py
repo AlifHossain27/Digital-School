@@ -101,6 +101,19 @@ class CreateUpdateClassworkSubmissionDataClass:
             id = classwork_submission_model.id
         )
     
+# Classwork Submission Grade
+@dataclasses.dataclass
+class UpdateClassworkSubmissionGradeDataClass:
+    obtained_points: int
+    id: int = None
+    
+    @classmethod
+    def from_instance(cls, classwork_submission_model: "ClassworkSubmission"):
+        return cls(
+            obtained_points = classwork_submission_model.obtained_points,
+            id = classwork_submission_model.id
+        )
+    
 # Classwork Comment
 @dataclasses.dataclass
 class CommentDataClass:
@@ -266,6 +279,13 @@ def delete_classwork_submission(user ,submission_id: str):
     if user.uid.startswith('T-'):
         raise exceptions.PermissionDenied("You're not allowed")
     return f"Successfully deleted classwork submission"
+
+# Update Classwork Submission Grade
+def update_grade(submission_id: str, grade_dc: "UpdateClassworkSubmissionGradeDataClass") -> "UpdateClassworkSubmissionGradeDataClass":
+    submission = get_object_or_404(ClassworkSubmission, submission_id=submission_id)
+    submission.obtained_points = grade_dc.obtained_points
+    submission.save()
+    return UpdateClassworkSubmissionGradeDataClass.from_instance(submission)
 
 # Create Public Comment
 def create_public_comment(user, classwork_id: str, public_comment_dc: "CommentDataClass") -> "CommentDataClass":

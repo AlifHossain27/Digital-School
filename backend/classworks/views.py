@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, ClassworkCommentSerializer, ClassworkPrivateCommentSerializer
+from .serializers import ClassworkSerializer, CreateUpdateClassworkSerializer, ClassworkSubmissionSerializer, CreateUpdateClassworkSubmissionSerializer, UpdateClassworkSubmissionGradeSerializer, ClassworkCommentSerializer, ClassworkPrivateCommentSerializer
 from . import services
 from .models import ClassworkSubmission
 from users.permissions import IsAdministrator, IsStaff, IsTeacher, IsStudent
@@ -80,6 +80,13 @@ class UpdateDeleteClassworkSubmission(views.APIView):
     def get(self, request, submission_id):
         submission = services.get_submission_data(submission_id=submission_id)
         serializer = ClassworkSubmissionSerializer(submission)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, submission_id):
+        serializer = UpdateClassworkSubmissionGradeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        serializer.instance = services.update_grade(submission_id=submission_id, grade_dc=data)
         return response.Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, submission_id):

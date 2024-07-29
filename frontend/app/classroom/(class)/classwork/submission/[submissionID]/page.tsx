@@ -6,6 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { ImSpinner2 } from "react-icons/im";
 import Link from 'next/link';
 import SubmissionPrivateComment from '@/components/Classwork/SubmissionPrivateComment';
+import AddClassworkSubmissionGrade from '@/components/Classwork/AddClassworkSubmissionGrade';
 
 interface Student {
   profile_uid: string;
@@ -29,7 +30,8 @@ interface Submission {
   turn_in: boolean;
   attachment: string;
   attachment_name: string;
-  attachment_size: number
+  attachment_size: number;
+  obtained_points: number;
 }
 
 const SubmissionViewPage = ( { params }: { params: { submissionID: string}} ) => {
@@ -57,6 +59,7 @@ const SubmissionViewPage = ( { params }: { params: { submissionID: string}} ) =>
           </div>
           
           <div className='px-4 py-4 w-screen md:w-full lg:w-full'>
+            <AddClassworkSubmissionGrade submission_id={params.submissionID} obtained_points={submission?.obtained_points} />
             <SubmissionPrivateComment/>
           </div>
       </div>
