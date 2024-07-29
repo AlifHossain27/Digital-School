@@ -104,7 +104,7 @@ const ClassworkSubmissionList = () => {
                     <HiCursorClick className='text-green-600' size={20}/>
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{((submissionCount/studentList.length)*100).toFixed(2)} %</div>
+                    <div className='text-2xl font-bold'>{((submissionCount/studentList?.length)*100).toFixed(2)} %</div>
                     <p className='text-xs text-muted-foreground pt-1'>Rate of Assignment submission</p>
                 </CardContent>
               </Card>

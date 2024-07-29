@@ -51,13 +51,12 @@ const AddClassworkSubmissionGrade = ( { submission_id, obtained_points }: Grade)
         }),
         }),
         onSuccess: async (_, values) => {
-        queryClient.invalidateQueries({queryKey: ['classwork-submission']})
+        queryClient.invalidateQueries({queryKey: ['submission']})
         toast({
             title: "Point Updated",
             description: `Successfully updated point`,
         });
         router.back();
-        router.refresh();
         },
         onError: (error) => {
         toast({
