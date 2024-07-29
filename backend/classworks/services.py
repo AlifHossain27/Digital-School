@@ -16,6 +16,7 @@ class ClassworkDataClass:
     due_date: str
     teacher: str
     classroom: str
+    total_points: int 
     classwork_id: str = None
     id: int = None
 
@@ -27,6 +28,7 @@ class ClassworkDataClass:
             due_date = classwork_model.due_date,
             teacher = classwork_model.teacher,
             classroom = classwork_model.classroom,
+            total_points = classwork_model.total_points,
             classwork_id = classwork_model.classwork_id,
             id = classwork_model.id
         )
@@ -38,6 +40,7 @@ class CreateUpdateClassworkDataClass:
     description: str
     due_date: str
     classroom: str
+    total_points: int
     teacher: str = None
     classwork_id: str = None
     id: int = None
@@ -50,6 +53,7 @@ class CreateUpdateClassworkDataClass:
             due_date = classwork_model.due_date,
             teacher = classwork_model.teacher,
             classroom = classwork_model.classroom,
+            total_points = classwork_model.total_points,
             classwork_id = classwork_model.classwork_id,
             id = classwork_model.id
         )
@@ -58,6 +62,7 @@ class CreateUpdateClassworkDataClass:
 @dataclasses.dataclass
 class ClassworkSubmissionDataClass:
     classwork: str
+    obtained_points: int
     student: str = None
     turn_in: bool = False
     attachment: any = None
@@ -73,6 +78,7 @@ class ClassworkSubmissionDataClass:
             student = classwork_submission_model.student,
             turn_in = classwork_submission_model.turn_in,
             attachment = classwork_submission_model.attachment,
+            obtained_points = classwork_submission_model.obtained_points,
             submission_id = classwork_submission_model.submission_id,
             id = classwork_submission_model.id
         )
@@ -154,6 +160,7 @@ def create_classwork(user: "TeacherProfile", classwork_dc: "CreateUpdateClasswor
         due_date = classwork_dc.due_date,
         teacher = get_object_or_404(TeacherProfile, profile_uid = user.uid),
         classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom),
+        total_points = classwork_dc.total_points,
         classwork_id = Classwork.objects.create_classwork_id()
     )
     instance.save()
@@ -183,6 +190,7 @@ def update_classwork(user: "TeacherProfile",classwork_id: str, classwork_dc: "Cr
     classwork.due_date = classwork_dc.due_date
     classwork.teacher = teacher
     classwork.classroom = get_object_or_404(Classroom, class_id = classwork_dc.classroom)
+    classwork.total_points = classwork_dc.total_points
     classwork.classwork_id = classwork.classwork_id
     classwork.save()
     return CreateUpdateClassworkDataClass.from_instance(classwork)

@@ -31,6 +31,7 @@ interface Classwork {
     due_date: string;
     teacher: string;
     classroom: string;
+    total_points: number;
 }
 
 const ClassworkList = () => {
@@ -80,6 +81,7 @@ const ClassworkList = () => {
                                             classworkTitle={classwork.title} 
                                             classworkDescription={classwork.description}
                                             classworkDueDate={classwork.due_date}
+                                            classworkPoints={classwork.total_points}
                                         />
                                     <DeleteClasswork 
                                             classworkID={classwork.classwork_id} 

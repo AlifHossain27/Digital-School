@@ -94,7 +94,7 @@ const ClassworkSubmissionList = () => {
                     <User className='text-yellow-600'/>
                 </CardHeader>
                 <CardContent>
-                    <div className='text-2xl font-bold'>{studentList.length}</div>
+                    <div className='text-2xl font-bold'>{studentList?.length}</div>
                     <p className='text-xs text-muted-foreground pt-1'>Total students in the classroom</p>
                 </CardContent>
               </Card>

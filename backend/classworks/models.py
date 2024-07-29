@@ -19,6 +19,7 @@ class Classwork(models.Model):
     due_date = models.DateTimeField(verbose_name="Due Date")
     teacher = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE, verbose_name="Assigned Teacher", related_name="classworks")
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, verbose_name="Classroom", related_name="classworks")
+    total_points = models.IntegerField(default=0, verbose_name="Total Points")
 
     objects = ClassworkManager()
     
@@ -46,6 +47,7 @@ class ClassworkSubmission(models.Model):
     submission_time = models.DateTimeField(auto_now_add=True, verbose_name="Submission Time")
     attachment = models.FileField(upload_to=classwork_submission_file_path, null=True, blank=True, verbose_name="File Upload")
     turn_in = models.BooleanField(default=False, verbose_name="Turn In")
+    obtained_points = models.IntegerField(default=0, verbose_name="Obtained Points")
 
     objects = ClassworkSubmissionManager()
 

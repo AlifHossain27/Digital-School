@@ -18,7 +18,7 @@ interface Classwork {
     description: string;
     due_date: any;
     classroom: number;
-    
+    total_points: number;
   }
 
 const ClassworkDetails = () => {
@@ -46,9 +46,8 @@ const ClassworkDetails = () => {
             {classwork?.title}
           </h1>
           <div className='flex flex-row justify-between text-[14px] text-[#5F6368] pb-4 border-b border-[#1967D2]'>
-            <h1>{classwork?.teacher.full_name}</h1>
-            
             <h1>Due date: {new Date(classwork?.due_date).toLocaleString('default', { month: 'long', day: 'numeric' })}</h1>
+            <h1>Total Points: {classwork?.total_points}</h1>
           </div>
           <div className='py-4 border-b border-[#5F6368]'>
             <h1 className='text-[16px]'>{classwork?.description}</h1>

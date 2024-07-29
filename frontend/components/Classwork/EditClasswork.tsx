@@ -37,17 +37,19 @@ import { Button } from "../ui/button"
 const formSchema = z.object({
     title: z.string(),
     description: z.string(),
-    due_date: z.any()
+    due_date: z.any(),
+    points: z.coerce.number()
 })
 
 type ClassworkData = {
     classworkID: string,
     classworkTitle: string,
     classworkDescription: string,
-    classworkDueDate: any
+    classworkDueDate: any,
+    classworkPoints: number
 }
 
-const EditClasswork = ({classworkID, classworkTitle, classworkDescription, classworkDueDate}: ClassworkData) => {
+const EditClasswork = ({classworkID, classworkTitle, classworkDescription, classworkDueDate, classworkPoints}: ClassworkData) => {
     const { toast } = useToast()
     const router = useRouter()
     const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
@@ -57,7 +59,8 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
         defaultValues: {
             title: classworkTitle,
             description: classworkDescription,
-            due_date: classworkDueDate
+            due_date: classworkDueDate,
+            points: classworkPoints
         },
     });
 
@@ -75,7 +78,8 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
             "description": values.description,
             "due_date": values.due_date
             ? format(new Date(values.due_date), "yyyy-MM-dd HH:mm:ss.SSSSSS")
-            : null
+            : null,
+            "total_points": Number(values.points)
         }),
         }),
         onSuccess: async (_, values) => {
@@ -177,6 +181,19 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
                             </PopoverContent>
                         </Popover>
                         <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="points"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel className='text-lg pb-2'>Points:</FormLabel>
+                    <FormControl>
+                        <Input autoComplete='off' type="number" placeholder="Points" {...field} />
+                    </FormControl>
+                    <FormMessage />
                     </FormItem>
                 )}
                 />
