@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "classrooms",
     "classworks",
     "exams",
+    "posts"
 ]
 
 MIDDLEWARE = [
