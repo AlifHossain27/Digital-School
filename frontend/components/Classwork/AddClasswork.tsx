@@ -30,6 +30,7 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import { useAppSelector } from '@/redux/store';
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
+import { createPost } from '@/actions/classroom_post'
 import { Input } from "@/components/ui/input"
 import { Button } from "../ui/button"
 import { Plus } from "lucide-react"
@@ -80,6 +81,7 @@ const AddClasswork = () => {
             description: `Successfully created ${values.title} to the Classroom`,
         });
         await form.reset();
+        await createPost(classroomID, "A new classwork has been uploaded", "classwork")
         },
         onError: (error) => {
         toast({
