@@ -7,8 +7,14 @@ from classrooms.models import Classroom
 class ClassworkManager(models.Manager):
     def create_classwork_id(self, **extra_fields):
         current_time = timezone.now()
-        unique_number = Classwork.objects.count() + 1
-        classwork_id = f"CLASSWORK-{current_time.strftime('%Y')}-{unique_number:04d}"
+        try:
+            last_classwork = self.latest('id')
+            last_id_number = int(last_classwork.classwork_id.split('-')[-1])
+            new_id_number = last_id_number + 1
+        except Classwork.DoesNotExist:
+            new_id_number = 1
+
+        classwork_id = f"CLASSWORK-{current_time.strftime('%Y')}-{new_id_number:04d}"
         return classwork_id
     
 # Classwork Model

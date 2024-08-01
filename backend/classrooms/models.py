@@ -12,8 +12,13 @@ class Classroom(models.Model):
     def save(self, *args, **kwargs):
         if not self.class_id:
             current_time = timezone.now()
-            unique_number = self.__class__.objects.count() + 1
-            self.class_id = f"CLASSROOM-{current_time.strftime('%Y')}-{unique_number:04d}"
+            try:
+                last_classroom = self.latest('id')
+                last_id_number = int(last_classroom.class_id.split('-')[-1])
+                new_id_number = last_id_number + 1
+            except Classroom.DoesNotExist:
+                new_id_number = 1
+            self.class_id = f"CLASSROOM-{current_time.strftime('%Y')}-{new_id_number:04d}"
         super().save(*args, **kwargs)
 
     def __str__(self):
