@@ -13,11 +13,14 @@ import { Button } from '@/components/ui/button'
 import React, { useTransition } from 'react'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
+import { useAppSelector } from '@/redux/store';
 import { FaSpinner } from 'react-icons/fa'
 import { MdOutlinePublish } from 'react-icons/md'
 import { publishExam } from '@/actions/exam'
+import { createPost } from '@/actions/classroom_post'
 
 const PublishFormBtn = ({examID}: {examID:number}) => {
+  const classID = useAppSelector((state) => state.classroomReducer.value.classroomID)
   const [loading, startTransition] = useTransition();
   const { toast } = useToast()
   const router = useRouter()
@@ -28,6 +31,7 @@ const PublishFormBtn = ({examID}: {examID:number}) => {
         title: "Success",
         description: "Your Exam is now Published",
       });
+      await createPost(classID, "A new exam has been uploaded", "exam")
       router.push("/classroom/exam/")
     } catch (error) {
       toast({
