@@ -1,14 +1,12 @@
-'use client'
+"use client"
 import React from 'react'
-import { useAppSelector } from '@/redux/store';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image'
+import { useAppSelector } from '@/redux/store';
 import AddPosts from '@/components/Posts/AddPosts';
 import PostList from '@/components/Posts/PostList';
 
-const page = () => {
-    const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
-    const router = useRouter()
+const HomePage = () => {
+  const user_type = useAppSelector((state) => state.authReducer.value.userType)
   return (
     <div className='flex flex-col'>
       <div className='px-5 py-5 container'>
@@ -19,10 +17,12 @@ const page = () => {
           alt="Picture of the author" className='w-full h-60 rounded-md'>
         </Image>
       </div>
-      <AddPosts/>
-      <PostList/>
+      {user_type === "teacher" && (
+        <AddPosts/>
+      )}
+      <PostList/>   
     </div>
   )
 }
 
-export default page
+export default HomePage

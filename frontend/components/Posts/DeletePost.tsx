@@ -1,7 +1,7 @@
+import React from 'react'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogClose,
     DialogHeader,
     DialogTitle,
@@ -10,26 +10,22 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from "@/components/ui/use-toast"
 import {  useMutation, useQueryClient } from '@tanstack/react-query';
+import { delPost } from '@/actions/classroom_post';
 
-type ClassworkData = {
-    classworkID: string,
-    classworkTitle: string
+type PostData = {
+    postID: number
 }
 
-const DeleteClasswork = ({classworkID, classworkTitle}: ClassworkData) => {
+const DeletePost = ( {postID}: PostData ) => {
     const { toast } = useToast()
     const queryClient = useQueryClient()
 
     const { mutate } = useMutation({
-        mutationFn: async () => fetch(`http://localhost:8000/api/classwork/${classworkID}/`,{
-          method: "DELETE",
-          credentials: "include"
-        }),
+        mutationFn: () => delPost(postID),
         onSuccess: () => {
-          queryClient.invalidateQueries({queryKey: ['classworks']})
+          queryClient.invalidateQueries({queryKey: ['posts']})
           toast({
-            title: "Classroom deleted",
-            description: `Successfully Deleted ${classworkTitle}`,
+            title: "Post deleted",
           })
         },
         onError: (error) => {
@@ -41,7 +37,7 @@ const DeleteClasswork = ({classworkID, classworkTitle}: ClassworkData) => {
         }
       })
 
-    async function deleteClasswork(){
+    async function deletePost(){
         try {
           await mutate();
         } catch (error) {
@@ -55,15 +51,14 @@ const DeleteClasswork = ({classworkID, classworkTitle}: ClassworkData) => {
         </DialogTrigger>
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Are you sure you want to Delete this Classwork?</DialogTitle>
+                <DialogTitle>Are you sure you want to Delete this Post?</DialogTitle>
             </DialogHeader>
-            <DialogDescription className='text-xl'>Classwork Title: {classworkTitle}</DialogDescription>
             <DialogClose asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="destructive" className='w-full' type="submit" onClick={deleteClasswork}>Delete</Button>
+              <Button variant="destructive" className='w-full' type="submit" onClick={deletePost}>Delete</Button>
             </DialogClose>
         </DialogContent>
-        </Dialog>
+    </Dialog>
   )
 }
 
-export default DeleteClasswork
+export default DeletePost

@@ -115,7 +115,7 @@ const EditClasswork = ({classworkID, classworkTitle, classworkDescription, class
     </DialogTrigger>
     <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
-        <DialogTitle>Create A New Classwork</DialogTitle>
+        <DialogTitle>Update Classwork</DialogTitle>
         </DialogHeader>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-6">

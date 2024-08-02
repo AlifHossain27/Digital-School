@@ -8,6 +8,8 @@ import {
 import { useAppSelector } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query'
 import { getExam, unpublishExam } from '@/actions/exam';
+import { createPost } from '@/actions/classroom_post'
+import {  useQueryClient } from '@tanstack/react-query';
 import { ImSpinner2 } from 'react-icons/im'
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation'
@@ -55,7 +57,9 @@ interface Exam {
 const Submissions = () => {
     const { toast } = useToast()
     const router = useRouter()
+    const queryClient = useQueryClient()
     const examID = useAppSelector((state) => state.examReducer.value.examID)
+    const classroomID = useAppSelector((state) => state.classroomReducer.value.classroomID)
     const {data: exam, isLoading} = useQuery<Exam>({
         queryFn: () => getExam(examID),
         queryKey: ['exam']
@@ -77,6 +81,8 @@ const Submissions = () => {
             title: "Success",
             description: "Your Exam is now Published",
           });
+          await createPost(classroomID, `The result of ${exam?.name} has been published`, "exam")
+          await queryClient.invalidateQueries({queryKey: ['posts']})
           router.push("/classroom/exam/")
         } catch (error) {
           toast({
@@ -93,7 +99,7 @@ const Submissions = () => {
             <div className='flex justify-between container'>
                 <h1 className='text-4xl font-bold truncate'>{exam?.name}</h1>
                 <Button className='w-[200px]' onClick={unpublishForm}>
-                    Unpublish Exam
+                    Publish Result
                 </Button>
             </div>
         </div>

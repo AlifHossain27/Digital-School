@@ -62,7 +62,7 @@ const AddPosts = () => {
           }
     }
   return (
-    <div className='w-full container py-4'>
+    <div className='w-full container pt-10 pb-6'>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField
